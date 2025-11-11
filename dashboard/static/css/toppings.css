@@ -1,3 +1,8 @@
+/* ================================
+   Topping Management Page Styles
+   Cleaned & Organized Version
+================================ */
+
 /* --- General Layout --- */
 body {
   font-family: 'Poppins', sans-serif;
@@ -11,7 +16,7 @@ body {
   margin: 40px auto;
   background: #fff;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 30px;
 }
 
@@ -59,7 +64,7 @@ body {
   padding: 30px;
   background: #e6ffff; /* soft teal */
   border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   text-align: center;
 }
 
@@ -70,7 +75,7 @@ body {
   font-weight: 600;
 }
 
-/* Keep form centered and even */
+/* Form Layout */
 .add-form form {
   display: flex;
   justify-content: center;
@@ -80,6 +85,7 @@ body {
   flex-shrink: 0;
 }
 
+/* Input Fields */
 .add-form input {
   width: 200px;
   padding: 10px 15px;
@@ -161,7 +167,7 @@ input[type=number]::-webkit-outer-spin-button {
   color: #333;
 }
 
-/* Actions styling */
+/* --- Actions --- */
 .actions a,
 .actions button {
   margin-right: 8px;
@@ -184,7 +190,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #a6f2f2;
 }
 
-/* Empty message */
+/* --- Empty Message --- */
 .no-data {
   text-align: center;
   color: #777;

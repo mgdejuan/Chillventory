@@ -4,74 +4,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Packaging Management</title>
+  <title>Packaging | Sweets N’ Treats</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/packaging.css' %}"> 
+  <link rel="stylesheet" href="{% static 'css/packaging.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* Remove arrows (spinners) from number inputs */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
 </head>
 <body>
 
-<a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
-
-<div class="container">
-  <h2>PACKAGING MANAGEMENT</h2>
-
-  <!-- Add/Edit Form -->
-  <div class="form-section">
-    <form method="POST">
-      {% csrf_token %}
-      <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
-        <div style="display: flex; flex-direction: column;">
-          <label>Packaging Type:</label>
-          <input type="text" name="type" value="{{ packaging_to_edit.type|default_if_none:'' }}" placeholder="Enter packaging type" required>
-        </div>
-        <div style="display: flex; flex-direction: column;">
-          <label>Cost:</label>
-          <input type="text" name="cost" value="{{ packaging_to_edit.cost|default_if_none:'' }}" placeholder="Enter cost" required>
-        </div>
-        <div style="display: flex; flex-direction: column;">
-          <label>Quantity:</label>
-          <input type="number" name="quantity" value="{{ packaging_to_edit.quantity|default_if_none:0 }}" min="0" required>
-        </div>
-        <!-- Add/Update button inline -->
-        <div>
-          <button type="submit" class="add-btn">
-            {% if packaging_to_edit %}Update{% else %}Add Packaging{% endif %}
-          </button>
-        </div>
+  <div class="container">
+    <!-- Header Section -->
+    <header class="header">
+      <a href="{% url 'home' %}" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </a>
+      <h1><i class="fa-solid fa-box"></i> Packaging Management</h1>
+      <div class="admin-profile">
+        <span>{{ request.user.username|title }}</span>
+        <i class="fa-solid fa-user"></i>
       </div>
-    </form>
-  </div>
+    </header>
 
-  <!-- Packaging Table -->
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Type</th>
-        <th>Cost</th>
-        <th>Quantity</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody">
-      {% for pack in packaging_list %}
-      <tr data-id="{{ pack.id }}">
-        <td>{{ pack.id }}</td>
-        <td>{{ pack.type }}</td>
-        <td>{{ pack.cost }}</td>
-        <td>{{ pack.quantity }}</td>
-        <td>
-          <a href="{% url 'update_packaging' pack.id %}" class="action-btn edit-btn">Edit</a>
-          <a href="{% url 'delete_packaging' pack.id %}" class="action-btn delete-btn">Delete</a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="5">No packaging found.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+    <!-- Add Packaging Form -->
+    <section class="add-form">
+      <h2>ADD NEW PACKAGING</h2>
+      <form method="POST" action="{% url 'packaging' %}">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Packaging Name" required>
+        <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
+        <button type="submit" class="add-btn">
+            <i class="fa-solid fa-plus"></i> Add Packaging
+        </button>
+      </form>
+    </section>
+
+    <!-- Packaging List Table -->
+    <section class="flavor-list">
+      <h2>CURRENT PACKAGING</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Packaging Name</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pack in packaging_list %}
+            <tr>
+              {% if packaging_to_edit and packaging_to_edit.id == pack.id %}
+                <form method="POST" action="{% url 'packaging' %}" class="inline-edit-form">
+                  {% csrf_token %}
+                  <td><input type="text" name="name" value="{{ pack.name }}"></td>
+                  <td><input type="number" name="quantity" value="{{ pack.quantity }}"></td>
+                  <td class="actions">
+                    <button type="submit" name="action" value="update_packaging">Save</button>
+                    <a href="{% url 'packaging' %}" class="cancel-btn">Cancel</a>
+                    <input type="hidden" name="packaging_id" value="{{ pack.id }}">
+                  </td>
+                </form>
+              {% else %}
+                <td>{{ pack.name }}</td>
+                <td>{{ pack.quantity }}</td>
+                <td class="actions">
+                  <a href="{% url 'packaging' %}?edit={{ pack.id }}" title="Edit">
+                    <i class="fa-solid fa-pen"></i>
+                  </a>
+                  <a href="{% url 'delete_packaging' pack.id %}"
+                     onclick="return confirm('Are you sure you want to delete {{ pack.name }}?')"
+                     title="Delete">
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
+                </td>
+              {% endif %}
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="no-data">No packaging found.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
 
 </body>
 </html>
