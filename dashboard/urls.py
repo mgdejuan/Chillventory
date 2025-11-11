@@ -23,4 +23,7 @@ urlpatterns = [
     path('add_packaging/', views.add_packaging, name='add_packaging'),
     # Logs
     path('log-history/', views.log_history, name='log_history'),
+
+    path('', views.dashboard, name='dashboard'),
+    path('log-history/', views.log_history, name='log_history'),
 ]
