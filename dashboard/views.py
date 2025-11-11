@@ -206,68 +206,63 @@ def delete_topping(request, id):
     return redirect('toppings')
 
 # ----------------- PACKAGING CRUD -----------------
-def packaging(request):
+def add_packaging(request):
     packaging_list = Packaging.objects.all().order_by('name')
     packaging_to_edit = None
 
+    # Check if user is editing
     if 'edit' in request.GET:
         packaging_to_edit = get_object_or_404(Packaging, id=request.GET['edit'])
 
-    return render(request, 'dashboard/packaging.html', {
-        'packaging_list': packaging_list,
-        'packaging_to_edit': packaging_to_edit,
-    })
-
-
-# ----------------- ADD PACKAGING -----------------
-def add_packaging(request):
-    if request.method == 'POST':
+    if request.method == "POST":
+        action = request.POST.get('action')
         name = request.POST.get('name')
         quantity = request.POST.get('quantity')
 
-        if name and quantity:
+        # 🟢 ADD NEW PACKAGING
+        if action is None:
             Packaging.objects.create(name=name, quantity=quantity)
 
-            # Optional log
+            # 🧾 Log add
             Log.objects.create(
                 user=request.user,
                 action=f"added packaging '{name}'",
                 timestamp=timezone.now()
             )
 
-    return redirect('packaging')
+        # 🟡 UPDATE PACKAGING
+        elif action == "update_packaging":
+            packaging_id = request.POST.get('packaging_id')
+            pack = get_object_or_404(Packaging, id=packaging_id)
+            pack.name = name
+            pack.quantity = quantity
+            pack.save()
 
+            # 🧾 Log update
+            Log.objects.create(
+                user=request.user,
+                action=f"updated packaging '{name}'",
+                timestamp=timezone.now()
+            )
 
-# ----------------- EDIT PACKAGING -----------------
-def edit_packaging(request):
-    if request.method == 'POST':
-        packaging_id = request.POST.get('packaging_id')
-        name = request.POST.get('name')
-        quantity = request.POST.get('quantity')
+        return redirect('packaging')
 
-        pack = get_object_or_404(Packaging, id=packaging_id)
-        pack.name = name
-        pack.quantity = quantity
-        pack.save()
-
-        Log.objects.create(
-            user=request.user,
-            action=f"updated packaging '{name}'",
-            timestamp=timezone.now()
-        )
-
-    return redirect('packaging')
+    return render(request, 'dashboard/packaging.html', {
+        'packaging_list': packaging_list,
+        'packaging_to_edit': packaging_to_edit
+    })
 
 
 # ----------------- DELETE PACKAGING -----------------
 def delete_packaging(request, id):
-    pack = get_object_or_404(Packaging, id=id)
-    pack_name = pack.name
-    pack.delete()
+    packaging = Packaging.objects.get(pk=id)
+    packaging.delete()
+    return redirect('packaging')
 
+    # 🧾 Log delete
     Log.objects.create(
         user=request.user,
-        action=f"deleted packaging '{pack_name}'",
+        action=f"deleted packaging '{name}'",
         timestamp=timezone.now()
     )
 
