@@ -4,67 +4,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ingredients Management</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Ingredients | Sweets N’ Treats</title>
+
   <link rel="stylesheet" href="{% static 'css/ingredients.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* Remove arrows (spinners) from number inputs */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
 </head>
 <body>
 
-<a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
-
-<div class="container">
-  <h2>INGREDIENTS MANAGEMENT</h2>
-
-  <!-- Add/Edit Form -->
-  <div class="form-section">
-    <form method="POST">
-      {% csrf_token %}
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
-        <div style="display: flex; flex-direction: column;">
-          <label>Ingredient Name:</label>
-          <input type="text" name="name" value="{{ ingredient_to_edit.name|default_if_none:'' }}" placeholder="Enter ingredient name" required>
-        </div>
-        <div style="display: flex; flex-direction: column;">
-          <label>Quantity:</label>
-          <input type="number" name="quantity" value="{{ ingredient_to_edit.quantity|default_if_none:0 }}" min="0" required>
-        </div>
-        <!-- Add button inline -->
-        <div>
-          <button type="submit" class="add-btn">
-            {% if ingredient_to_edit %}Update{% else %}Add Ingredient{% endif %}
-          </button>
-        </div>
+  <div class="container">
+    <!-- Header Section -->
+    <header class="header">
+      <a href="{% url 'home' %}" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </a>
+      <h1><i class="fa-solid fa-seedling"></i> Ingredients Management</h1>
+      <div class="admin-profile">
+        <span>{{ request.user.username|title }}</span>
+        <i class="fa-solid fa-user"></i>
       </div>
-    </form>
-  </div>
+    </header>
 
-  <!-- Ingredients Table -->
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for ing in ingredients %}
-      <tr>
-        <td>{{ ing.id }}</td>
-        <td>{{ ing.name }}</td>
-        <td>{{ ing.quantity }}</td>
-        <td>
-          <a href="{% url 'update_ingredient' ing.id %}" class="action-btn edit-btn">Edit</a>
-          <a href="{% url 'delete_ingredient' ing.id %}" class="action-btn delete-btn">Delete</a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="4">No ingredients found.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+    <!-- Add Ingredient Form -->
+    <section class="add-form">
+      <h2>ADD NEW INGREDIENT</h2>
+      <form method="POST" action="{% url 'ingredients' %}">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Ingredient Name" required>
+        <input type="number" name="price" placeholder="Price" step="0.01" required>
+        <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
+        <input type="date" name="expiration_date" placeholder="Expiration Date" required>
+        <button type="submit" class="add-btn">
+          <i class="fa-solid fa-plus"></i> Add Ingredient
+        </button>
+      </form>
+    </section>
+
+    <!-- Ingredient List Table -->
+    <section class="ingredient-list">
+      <h2>CURRENT INGREDIENTS</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Expiration Date</th>
+            <th>Ingredient Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ingredient in ingredients %}
+            <tr>
+              {% if ingredient_to_edit and ingredient_to_edit.id == ingredient.id %}
+                <form method="POST" action="{% url 'ingredients' %}" class="inline-edit-form">
+                  {% csrf_token %}
+                  <td>
+                    <input type="date" name="expiration_date" value="{{ ingredient.expiration_date|date:'Y-m-d' }}">
+                  </td>
+                  <td>
+                    <input type="text" name="name" value="{{ ingredient.name }}">
+                  </td>
+                  <td>
+                    <input type="number" name="price" value="{{ ingredient.price }}" step="0.01">
+                  </td>
+                  <td>
+                    <input type="number" name="quantity" value="{{ ingredient.quantity }}">
+                  </td>
+                  <td class="actions">
+                    <button type="submit" name="action" value="update_ingredient">Save</button>
+                    <a href="{% url 'ingredients' %}" class="cancel-btn">Cancel</a>
+                    <input type="hidden" name="ingredient_id" value="{{ ingredient.id }}">
+                      </td>
+                    </form>
+                  {% else %}
+                    <td>{{ ingredient.expiration_date|date:"M d, Y" }}</td>
+                    <td>{{ ingredient.name }}</td>
+                    <td>₱{{ ingredient.price|floatformat:2 }}</td>
+                    <td>{{ ingredient.quantity }}</td>
+                    <td class="actions">
+                      <a href="{% url 'ingredients' %}?edit={{ ingredient.id }}" title="Edit">
+                        <i class="fa-solid fa-pen"></i>
+                      </a>
+                      <a href="{%url 'delete_flavor' ingredient.id %}"
+                        onclick="return confirm('Are you sure you want to delete {{ ingredient.name }}?')"
+                        title="Delete">
+                        <i class="fa-solid fa-trash"></i>
+                      </a>
+                    </td>
+                   {% endif %}
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="5" class="no-data">No ingredients found.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
 
 </body>
 </html>

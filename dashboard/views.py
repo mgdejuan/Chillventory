@@ -17,15 +17,7 @@ def flavors(request):
         name = request.POST.get('name')
         price = request.POST.get('price')
         quantity = request.POST.get('quantity')
-        expiration_date_str = request.POST.get('expiration_date')
-
-        # ✅ Convert expiration_date string to a Python date
-        expiration_date = None
-        if expiration_date_str:
-            try:
-                expiration_date = datetime.strptime(expiration_date_str, "%Y-%m-%d").date()
-            except ValueError:
-                expiration_date = None
+        expiration_date = request.POST.get('expiration_date')  # ← new field
 
         if action == 'update_flavor':
             flavor = Flavor.objects.get(id=request.POST.get('flavor_id'))
@@ -48,7 +40,7 @@ def flavors(request):
         'flavors': flavors,
         'flavor_to_edit': flavor_to_edit
     })
-
+    
 # ----- INGREDIENTS CRUD -----
 def ingredients(request, ingredient_id=None):
     ingredient_to_edit = None
