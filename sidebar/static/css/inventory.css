@@ -52,11 +52,12 @@ h1 {
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 
 .back-btn:hover {
   background-color: #ffe8aa;
+  transform: translateY(-1px);
 }
 
 /* --- Admin Profile --- */
@@ -66,10 +67,10 @@ h1 {
   gap: 8px;
   font-weight: 600;
   color: #333;
-  text-decoration: none;
   background-color: #fff3e1;
   padding: 8px 14px;
   border-radius: 20px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   transition: background 0.2s;
 }
 
@@ -82,6 +83,7 @@ h1 {
   font-size: 18px;
   color: #555;
   margin-bottom: 15px;
+  font-weight: 600;
 }
 
 /* --- Table --- */
@@ -97,8 +99,8 @@ table {
 
 th, td {
   border: 1px solid #f0e2c1;
-  padding: 12px;
-  text-align: left;
+  padding: 12px 15px;
+  text-align: center ;
 }
 
 th {
@@ -113,6 +115,15 @@ td {
   color: #555;
 }
 
+tr:nth-child(even) {
+  background-color: #fffdf5;
+}
+
+tr:hover {
+  background-color: #fff8e6;
+  transition: background 0.2s ease;
+}
+
 /* --- Status Badges --- */
 .status-badge {
   padding: 5px 10px;
@@ -125,36 +136,26 @@ td {
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-/* Green: In Stock */
 .status-in {
   background-color: #e6ffe6;
   color: #1a7044;
   border: 1px solid #c2f0c2;
 }
 
-/* Yellow: Low Stock */
 .status-low {
   background-color: #fffde6;
   color: #8f6c14;
   border: 1px solid #ffeb99;
 }
 
-/* Orange: Critical */
 .status-critical {
   background-color: #ffefdf;
   color: #d8813a;
   border: 1px solid #ffe3c9;
 }
 
-/* Red: Out of Stock */
 .status-out {
   background-color: #ffe6e6;
   color: #c73636;
   border: 1px solid #ffcccc;
-}
-
-/* --- Hover Effects --- */
-tr:hover {
-  background-color: #fff9e6;
-  transition: 0.2s;
 }

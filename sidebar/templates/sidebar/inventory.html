@@ -5,16 +5,22 @@
   <meta charset="UTF-8">
   <title>Inventory</title>
   <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="container">
-    <!-- Header Section -->
+    <!-- Header -->
     <div class="header">
       <div class="left-header">
         <a href="{% url 'home' %}" class="back-btn">← Back</a>
         <h1>Inventory</h1>
       </div>
-      <a href="#" class="admin-profile">{{ request.user.username|title }}</a>
+
+      <div class="admin-profile">
+        <i class="fa-solid fa-user"></i>
+        <span>{{ request.user.username|title }}</span>
+      </div>
     </div>
 
     <!-- Inventory Table -->
@@ -41,8 +47,6 @@
                 <span class="status-badge status-in">In Stock</span>
               {% elif item.status == 'Low Stock' %}
                 <span class="status-badge status-low">Low Stock</span>
-              {% elif item.status == 'Critical' %}
-                <span class="status-badge status-critical">Critical</span>
               {% elif item.status == 'Out of Stock' %}
                 <span class="status-badge status-out">Out of Stock</span>
               {% else %}
