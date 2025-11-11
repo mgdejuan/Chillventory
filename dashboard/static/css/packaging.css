@@ -1,7 +1,7 @@
 /* --- General Layout --- */
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f9f9f7;
+  background-color: #fff8e1;
   margin: 0;
   padding: 0;
 }
@@ -9,233 +9,159 @@ body {
 .container {
   max-width: 1100px;
   margin: 40px auto;
-  background: #fffbea; /* Light Cream */
+  background: #fffef8;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(255, 188, 61, 0.2);
   padding: 30px;
 }
 
-/* =========================================================
-   HEADER SECTION
-   ========================================================= */
+/* --- Header --- */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #FFD897; /* Light Gold */
+  justify-content: space-between;
+  border-bottom: 3px solid #ffd27f;
   padding-bottom: 10px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
 }
 
 .header h1 {
-  font-size: 24px;
-  color: #f3b04d; /* Golden Orange */
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  color: #ffa726;
+  font-weight: 700;
 }
 
 .back-btn {
-  background: none;
-  border: none;
-  color: #555;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  color: #444;
   text-decoration: none;
+  font-weight: 500;
+}
+
+.back-btn i {
+  margin-right: 5px;
 }
 
 .admin-profile {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  color: #333;
+  font-weight: 500;
+}
+
+.admin-profile i {
   color: #444;
 }
 
-/* =========================================================
-   ADD FORM SECTION
-   ========================================================= */
+/* --- Add Form Section --- */
 .add-form {
-  margin-top: 30px;
-  padding: 30px;
-  background: #fff3d1; /* Pale Yellow */
+  background-color: #fff2cc;
   border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 30px;
   text-align: center;
+  margin-top: 30px;
 }
 
 .add-form h2 {
+  color: #ffa726;
+  font-weight: 700;
   margin-bottom: 20px;
-  color: #f3b04d;
-  font-size: 22px;
-  font-weight: 600;
 }
 
-/* --- Form Layout --- */
 .add-form form {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 15px;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
+  flex-wrap: wrap;
 }
 
 .add-form input {
-  width: 200px;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
+  padding: 12px;
+  border: 2px solid #ffd27f;
+  border-radius: 10px;
+  width: 250px;
   text-align: center;
-  background-color: #fff;
-}
-
-/* --- Remove number input arrows --- */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* --- Add Button --- */
-.add-btn {
-  background-color: #FFD897;
-  color: #333;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 44px; /* Same height as inputs */
-  width: 200px; /* Same width as inputs */
   font-size: 15px;
+  outline: none;
+}
+
+.add-btn {
+  background-color: #ffb74d;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .add-btn:hover {
-  background-color: #f3b04d;
-  color: white;
+  background-color: #ffa726;
 }
 
-/* =========================================================
-   TABLE SECTION
-   ========================================================= */
-.packaging-list {
-  margin-top: 40px;
-  overflow-x: auto;
-  border: 2px solid #FFD897;
+/* --- Table Section --- */
+.flavor-list {
+  background: #fffbea;
+  border: 2px solid #ffd27f;
   border-radius: 12px;
-  padding: 15px;
-  background-color: #fffbea;
+  margin-top: 30px;
+  padding: 20px;
 }
 
-.packaging-list h2 {
-  color: #f3b04d;
+.flavor-list h2 {
   text-align: center;
+  color: #ffa726;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
-/* --- Table Styling --- */
-.packaging-list table {
+table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
-  min-width: 600px;
+  background-color: #fffdf3;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 14px;
   text-align: center;
+  border-bottom: 1px solid #ffe29a;
 }
 
-.packaging-list th,
-.packaging-list td {
-  padding: 12px 15px;
-  border: 1px solid #FFD897;
-  vertical-align: middle;
-}
-
-.packaging-list th {
-  background-color: #ffedc2;
-  font-weight: 600;
-  text-align: center;
-}
-
-.packaging-list td {
-  font-weight: 500;
+th {
+  background-color: #ffecb3;
   color: #333;
+  font-weight: 600;
 }
 
-/* =========================================================
-   ACTION BUTTONS
-   ========================================================= */
-.actions a,
-.actions button {
-  margin-right: 8px;
-  color: #f3b04d;
+td {
+  color: #333;
+  font-size: 15px;
+}
+
+tr:nth-child(even) {
+  background-color: #fff9e6;
+}
+
+/* --- Actions --- */
+.actions a {
+  margin: 0 8px;
+  color: #ffa726;
   text-decoration: none;
-  font-size: 16px;
-  border: none;
-  background: none;
-  cursor: pointer;
+  transition: 0.3s;
 }
 
-.actions button {
-  padding: 4px 8px;
-  border-radius: 4px;
-  background-color: #ffeab7;
-  transition: 0.2s;
+.actions a:hover {
+  color: #fb8c00;
 }
 
-.actions button:hover {
-  background-color: #ffdd94;
+.actions i {
+  font-size: 18px;
 }
 
-/* =========================================================
-   EMPTY MESSAGE
-   ========================================================= */
-.no-packaging {
+.no-data {
   text-align: center;
-  color: #777;
+  color: #999;
+  padding: 15px 0;
   font-style: italic;
-  padding: 20px 0;
-}
-
-/* =========================================================
-   RESPONSIVE DESIGN
-   ========================================================= */
-@media (max-width: 1024px) {
-  .add-form form {
-    flex-wrap: wrap;
-  }
-
-  .add-form input,
-  .add-btn {
-    width: 45%;
-  }
-}
-
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .add-form form {
-    flex-direction: column;
-  }
-
-  .add-form input,
-  .add-btn {
-    width: 100%;
-  }
-
-  .packaging-list table {
-    min-width: 100%;
-  }
 }

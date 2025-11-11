@@ -39,10 +39,10 @@
     <!-- Add Packaging Form -->
     <section class="add-form">
       <h2>ADD NEW PACKAGING</h2>
-      <form method="POST" action="{% url 'packaging' %}">
+      <form method="POST" action="{% url 'add_packaging' %}">
         {% csrf_token %}
         <input type="text" name="name" placeholder="Packaging Name" required>
-        <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
+        <input type="number" name="quantity" placeholder="Stock Quantity" required>
         <button type="submit" class="add-btn">
             <i class="fa-solid fa-plus"></i> Add Packaging
         </button>

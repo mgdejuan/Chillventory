@@ -78,7 +78,6 @@ def delete_flavor(request, delete_id):
 
 
 # ----------------- INGREDIENTS CRUD -----------------
-# ----------------- INGREDIENTS CRUD -----------------
 def ingredients(request):
     ingredients = Ingredient.objects.all().order_by('name')
     ingredient_to_edit = None
@@ -206,89 +205,73 @@ def delete_topping(request, id):
     topping.delete()
     return redirect('toppings')
 
-    # 🧾 Log delete
-    Log.objects.create(
-        user=request.user,
-        action=f"deleted topping '{name}'",
-        timestamp=timezone.now()
-    )
-
-    topping = get_object_or_404(Topping, id=id)
-    name = topping.name
-    topping.delete()
-
-    Log.objects.create(
-        user=request.user,
-        action=f"deleted topping '{name}'",
-        timestamp=timezone.now()
-    )
-
-    return redirect('toppings')
-
-
 # ----------------- PACKAGING CRUD -----------------
 def packaging(request):
+    packaging_list = Packaging.objects.all().order_by('name')
+    packaging_to_edit = None
+
+    if 'edit' in request.GET:
+        packaging_to_edit = get_object_or_404(Packaging, id=request.GET['edit'])
+
+    return render(request, 'dashboard/packaging.html', {
+        'packaging_list': packaging_list,
+        'packaging_to_edit': packaging_to_edit,
+    })
+
+
+# ----------------- ADD PACKAGING -----------------
+def add_packaging(request):
     if request.method == 'POST':
-        type = request.POST.get('type')
-        cost = request.POST.get('cost')
+        name = request.POST.get('name')
         quantity = request.POST.get('quantity')
 
-        if type and cost and quantity is not None:
-            Packaging.objects.create(
-                type=type,
-                cost=cost,
-                quantity=int(quantity)
-            )
+        if name and quantity:
+            Packaging.objects.create(name=name, quantity=quantity)
 
+            # Optional log
             Log.objects.create(
                 user=request.user,
-                action=f"added packaging '{type}'",
+                action=f"added packaging '{name}'",
                 timestamp=timezone.now()
             )
 
-        return redirect('packaging')
-
-    packaging_list = Packaging.objects.all()
-    return render(request, 'dashboard/packaging.html', {'packaging_list': packaging_list})
+    return redirect('packaging')
 
 
-def update_packaging(request, id):
-    pack = get_object_or_404(Packaging, id=id)
-
+# ----------------- EDIT PACKAGING -----------------
+def edit_packaging(request):
     if request.method == 'POST':
-        pack.type = request.POST.get('type')
-        pack.cost = request.POST.get('cost')
-        pack.quantity = int(request.POST.get('quantity'))
+        packaging_id = request.POST.get('packaging_id')
+        name = request.POST.get('name')
+        quantity = request.POST.get('quantity')
+
+        pack = get_object_or_404(Packaging, id=packaging_id)
+        pack.name = name
+        pack.quantity = quantity
         pack.save()
 
         Log.objects.create(
             user=request.user,
-            action=f"updated packaging '{pack.type}'",
+            action=f"updated packaging '{name}'",
             timestamp=timezone.now()
         )
 
-        return redirect('packaging')
-
-    packaging_list = Packaging.objects.all()
-    return render(request, 'dashboard/packaging.html', {
-        'packaging_to_edit': pack,
-        'packaging_list': packaging_list
-    })
+    return redirect('packaging')
 
 
+# ----------------- DELETE PACKAGING -----------------
 def delete_packaging(request, id):
     pack = get_object_or_404(Packaging, id=id)
-    type_name = pack.type
+    pack_name = pack.name
     pack.delete()
 
     Log.objects.create(
         user=request.user,
-        action=f"deleted packaging '{type_name}'",
+        action=f"deleted packaging '{pack_name}'",
         timestamp=timezone.now()
     )
 
     return redirect('packaging')
-
 
 # ----------------- LOG HISTORY -----------------
 def log_history(request):

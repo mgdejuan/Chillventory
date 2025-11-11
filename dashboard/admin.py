@@ -20,6 +20,5 @@ class ToppingAdmin(admin.ModelAdmin):
 
 @admin.register(Packaging)
 class PackagingAdmin(admin.ModelAdmin):
-    list_display = ('type', 'cost', 'is_available', 'created_at')
-    search_fields = ('type',)
-    list_filter = ('is_available', 'created_at')
+    list_display = ('name', 'quantity')
+    search_fields = ('name',)

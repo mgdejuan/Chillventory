@@ -18,8 +18,9 @@ urlpatterns = [
 
 
     path('packaging/', views.packaging, name='packaging'),
-    path('packaging/update/<int:packaging_id>/', views.packaging, name='update_packaging'),
-    path('packaging/delete/<int:id>/', views.delete_packaging, name='delete_packaging'),
-
+    path('add_packaging/', views.add_packaging, name='add_packaging'),
+    path('delete_packaging/<int:id>/', views.delete_packaging, name='delete_packaging'),
+    path('edit_packaging/', views.edit_packaging, name='edit_packaging'),
+    
     path('log-history/', views.log_history, name='log_history'),
 ]
