@@ -1,133 +1,226 @@
-* {
-  font-family: 'Poppins', sans-serif;
-  box-sizing: border-box;
-}
-
+/* --- General Layout --- */
 body {
-  background-color: #f5f5f5;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f0ffff; /* very light teal tone */
   margin: 0;
   padding: 0;
 }
 
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background-color: #00d4d4; /* Teal/Cyan */
-  border: none;
-  border-radius: 20px;
-  padding: 8px 15px;
-  color: white;
-  cursor: pointer;
-  margin: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  text-decoration: none; /* Added for the anchor tag */
-}
-
 .container {
-  background-color: #fffbea; /* Light Cream */
-  max-width: 950px;
-  margin: 0 auto;
-  padding: 25px 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  max-width: 1100px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 30px;
 }
 
-h2 {
+/* --- Header --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #b3f0f0;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: #00bfbf;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #444;
+}
+
+/* --- Add Form --- */
+.add-form {
+  margin-top: 30px;
+  padding: 30px;
+  background: #e6ffff; /* soft teal */
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   text-align: center;
-  color: #00d4d4;
-  font-weight: 700;
-  margin-bottom: 25px;
 }
 
-.form-section {
+.add-form h2 {
+  margin-bottom: 20px;
+  color: #00bfbf;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Keep form centered and even */
+.add-form form {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   gap: 15px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
-label {
-  font-weight: 500;
-  color: #555;
-}
-
-input {
-  padding: 8px 10px;
+.add-form input {
+  width: 200px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  border: none;
-  background-color: #e5e0c3; /* Pale beige input background */
-  font-size: 14px;
-  width: 180px;
+  font-size: 15px;
+  text-align: center;
+  background-color: white;
 }
 
+/* Remove number input arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Add Topping Button */
 .add-btn {
   background-color: #00d4d4;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 15px;
   color: white;
-  font-weight: 600;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: 0.2s;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  width: 200px;
+  font-size: 15px;
 }
 
 .add-btn:hover {
   background-color: #00bfbf;
 }
 
-table {
+/* --- Table --- */
+.topping-list {
+  margin-top: 40px;
+  overflow-x: auto;
+  border: 2px solid #00bfbf;
+  border-radius: 12px;
+  padding: 15px;
+  background-color: #e6ffff;
+}
+
+.topping-list h2 {
+  color: #00bfbf;
+  text-align: center;
+}
+
+.topping-list table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
-  font-size: 14px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 10px;
+  margin-top: 15px;
+  min-width: 600px;
   text-align: center;
 }
 
-th {
-  background-color: #00d4d4;
-  color: white;
+.topping-list th,
+.topping-list td {
+  padding: 12px 15px;
+  border: 1px solid #00bfbf;
+  vertical-align: middle;
+}
+
+.topping-list th {
+  background-color: #b3f0f0;
   font-weight: 600;
-}
-
-.action-btn {
-  background-color: #00d4d4;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  padding: 6px 12px;
-  margin: 3px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: opacity 0.2s;
-}
-
-.action-btn:hover {
-  opacity: 0.9;
-}
-
-/* Edit and Delete buttons inherit .action-btn, no specific colors were defined in the original style, so they look the same. */
-/* If you want different colors for Edit/Delete, you would add classes like this: */
-/*
-.edit-btn { background-color: #008080; }
-.delete-btn { background-color: #ff4d4d; }
-*/
-
-input.quantity-input {
-  width: 70px;
-  background-color: #fff;
-  border: 1px solid #ddd;
   text-align: center;
-  border-radius: 6px;
+}
+
+.topping-list td {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Actions styling */
+.actions a,
+.actions button {
+  margin-right: 8px;
+  color: #00bfbf;
+  text-decoration: none;
+  font-size: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.actions button {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #c2fafa;
+  transition: 0.2s;
+}
+
+.actions button:hover {
+  background-color: #a6f2f2;
+}
+
+/* Empty message */
+.no-data {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+/* --- Responsive Fixes --- */
+@media (max-width: 1024px) {
+  .add-form form {
+    flex-wrap: wrap;
+  }
+
+  .add-form input,
+  .add-btn {
+    width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .add-form form {
+    flex-direction: column;
+  }
+
+  .add-form input,
+  .add-btn {
+    width: 100%;
+  }
+
+  .topping-list table {
+    min-width: 100%;
+  }
 }

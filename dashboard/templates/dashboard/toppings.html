@@ -4,78 +4,117 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toppings Management</title>
+  <title>Toppings | Sweets N’ Treats</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Use toppings.css for teal/cyan theme -->
   <link rel="stylesheet" href="{% static 'css/toppings.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* Remove arrows (spinners) from number inputs */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
 </head>
-<body style="font-family: 'Poppins', sans-serif;">
+<body>
 
-<a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
-
-<div class="container">
-  <h2>TOPPINGS MANAGEMENT</h2>
-
-  <!-- Add / Edit Form -->
-  <div class="form-section">
-    {% if topping_to_edit %}
-      <h3>Edit Topping</h3>
-    {% else %}
-      <h3></h3>
-    {% endif %}
-    <form method="POST">
-      {% csrf_token %}
-      <div style="display: flex; gap: 10px; align-items: flex-end;">
-        <div style="display: flex; flex-direction: column;">
-          <label>Topping name:</label>
-          <input type="text" name="name" value="{{ topping_to_edit.name|default_if_none:'' }}" placeholder="Enter topping name" required>
-        </div>
-        <div style="display: flex; flex-direction: column;">
-          <label>Price:</label>
-          <input type="text" name="price" value="{{ topping_to_edit.price|default_if_none:'' }}" placeholder="Enter price" required>
-        </div>
-        <div style="display: flex; flex-direction: column;">
-          <label>Stock:</label>
-          <input type="number" name="stock" value="{{ topping_to_edit.stock|default_if_none:0 }}" min="0" required>
-        </div>
-        <div>
-          <button type="submit" class="add-btn">
-            {% if topping_to_edit %}Update{% else %}Add{% endif %}
-          </button>
-        </div>
+  <div class="container">
+    <!-- Header Section -->
+    <header class="header">
+      <a href="{% url 'home' %}" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </a>
+      <h1><i class="fa-solid fa-cookie-bite"></i> Toppings Management</h1>
+      <div class="admin-profile">
+        <span>{{ request.user.username|title }}</span>
+        <i class="fa-solid fa-user"></i>
       </div>
-    </form>
-  </div>
+    </header>
 
-  <!-- Toppings Table -->
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Stock</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for topping in toppings %}
-      <tr>
-        <td>{{ topping.id }}</td>
-        <td>{{ topping.name }}</td>
-        <td>{{ topping.price }}</td>
-        <td>{{ topping.stock }}</td>
-        <td>
-          <a href="{% url 'update_topping' topping.id %}" class="action-btn edit-btn">Edit</a>
-          <a href="{% url 'delete_topping' topping.id %}" class="action-btn delete-btn">Delete</a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="5">No toppings found.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+    <!-- Add Topping Form -->
+    <section class="add-form">
+      <h2>ADD NEW TOPPING</h2>
+      <form method="POST" action="{% url 'toppings' %}">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Topping Name" required>
+        <input type="number" name="price" placeholder="Price" step="0.01" required>
+        <input type="number" name="stock" placeholder="Stock Quantity" min="0" required>
+        <input type="date" name="expiration_date" placeholder="Expiration Date" required>
+        <button type="submit" class="add-btn">
+          <i class="fa-solid fa-plus"></i> Add Topping
+        </button>
+      </form>
+    </section>
+
+    <!-- Topping List Table -->
+    <section class="topping-list">
+      <h2>CURRENT TOPPINGS</h2>
+      <table>
+        <thead>
+          <tr>
+            <th> Expiration Date</th>
+            <th>Topping Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for topping in toppings %}
+            <tr>
+              {% if topping_to_edit and topping_to_edit.id == topping.id %}
+                <form method="POST" action="{% url 'toppings' %}" class="inline-edit-form">
+                  {% csrf_token %}
+                  <td>
+                    <input type="date" name="expiration_date" value="{{ topping.expiration_date }}">
+                  </td>
+                  <td>
+                    <input type="text" name="name" value="{{ topping.name }}">
+                  </td>
+                  <td>
+                    <input type="number" name="price" value="{{ topping.price }}" step="0.01">
+                  </td>
+                  <td>
+                    <input type="number" name="stock" value="{{ topping.stock }}">
+                  </td>
+                  <td class="actions">
+                    <button type="submit" name="action" value="update_topping">Save</button>
+                    <a href="{% url 'toppings' %}" class="cancel-btn">Cancel</a>
+                    <input type="hidden" name="topping_id" value="{{ topping.id }}">
+                  </td>
+                </form>
+              {% else %}
+                <td>{{ topping.expiration_date|date:"M d, Y" }}</td>
+                <td>{{ topping.name }}</td>
+                <td>₱{{ topping.price|floatformat:2 }}</td>
+                <td>{{ topping.stock }}</td>
+                <td class="actions">
+                  <a href="{% url 'toppings' %}?edit={{ topping.id }}" title="Edit">
+                    <i class="fa-solid fa-pen"></i>
+                  </a>
+                  <a href="{% url 'delete_topping' topping.id %}"
+                     onclick="return confirm('Are you sure you want to delete {{ topping.name }}?')"
+                     title="Delete">
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
+                </td>
+              {% endif %}
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="no-data">No toppings found.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
 
 </body>
 </html>
