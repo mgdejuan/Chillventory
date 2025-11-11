@@ -15,7 +15,9 @@ body {
   padding: 30px;
 }
 
-/* --- Header --- */
+/* =========================================================
+   HEADER SECTION
+   ========================================================= */
 .header {
   display: flex;
   justify-content: space-between;
@@ -54,7 +56,9 @@ body {
   color: #444;
 }
 
-/* --- Add Form --- */
+/* =========================================================
+   ADD FORM SECTION
+   ========================================================= */
 .add-form {
   margin-top: 30px;
   padding: 30px;
@@ -97,9 +101,6 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input[type=number] {
-  -moz-appearance: textfield;
-}
 
 /* --- Add Button --- */
 .add-btn {
@@ -115,8 +116,8 @@ input[type=number] {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 44px; /* same height as inputs */
-  width: 200px; /* same width as inputs */
+  height: 44px; /* Same height as inputs */
+  width: 200px; /* Same width as inputs */
   font-size: 15px;
 }
 
@@ -125,7 +126,9 @@ input[type=number] {
   color: white;
 }
 
-/* --- Table Section --- */
+/* =========================================================
+   TABLE SECTION
+   ========================================================= */
 .packaging-list {
   margin-top: 40px;
   overflow-x: auto;
@@ -167,7 +170,9 @@ input[type=number] {
   color: #333;
 }
 
-/* --- Actions --- */
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
 .actions a,
 .actions button {
   margin-right: 8px;
@@ -190,7 +195,9 @@ input[type=number] {
   background-color: #ffdd94;
 }
 
-/* --- Empty Message --- */
+/* =========================================================
+   EMPTY MESSAGE
+   ========================================================= */
 .no-packaging {
   text-align: center;
   color: #777;
@@ -198,7 +205,9 @@ input[type=number] {
   padding: 20px 0;
 }
 
-/* --- Responsive Design --- */
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
 @media (max-width: 1024px) {
   .add-form form {
     flex-wrap: wrap;
