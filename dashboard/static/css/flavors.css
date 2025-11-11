@@ -46,10 +46,6 @@ body {
   gap: 5px;
 }
 
-.back-btn i {
-  font-size: 16px;
-}
-
 .admin-profile {
   display: flex;
   align-items: center;
@@ -57,61 +53,77 @@ body {
   color: #444;
 }
 
-.admin-profile i {
-  font-size: 18px;
-}
-
 /* --- Add Form --- */
 .add-form {
   margin-top: 30px;
-  padding: 20px;
+  padding: 30px;
   background: #fff3ea;
   border-radius: 12px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  text-align: center;
 }
 
 .add-form h2 {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   color: #e26a6a;
-  font-size: 20px;
-  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
 }
 
+/* Keep form centered and even */
 .add-form form {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   justify-content: center;
   align-items: center;
+  gap: 15px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
 .add-form input {
-  flex: 1 1 200px;
-  padding: 10px 12px;
+  width: 200px;
+  padding: 10px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 15px;
+  text-align: center;
+  background-color: white;
+}
+
+/* Date input styling */
+input[type="date"] {
+  width: 200px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
   text-align: center;
 }
 
-/* Remove number input arrows globally */
+/* Remove number input arrows */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+/* Add Flavor Button */
 .add-btn {
   background-color: #e26a6a;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
   transition: 0.2s;
+  font-weight: 500;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  height: 44px; /* 👈 same as input height */
+  width: 200px; /* 👈 same width as inputs */
+  font-size: 15px;
 }
 
 .add-btn:hover {
@@ -154,33 +166,20 @@ input[type=number]::-webkit-outer-spin-button {
   text-align: center;
 }
 
-/* Format table cells */
+/* Table Cell Styles */
 .flavor-list td.flavor-name {
   font-weight: 500;
   color: #333;
-  text-align: center;
 }
 
 .flavor-list td.flavor-price {
   color: #27ae60;
   font-weight: 600;
-  text-align: center;
 }
 
 .flavor-list td.flavor-stock {
   color: #555;
   font-weight: 500;
-  text-align: center;
-}
-
-/* Input styling for inline editing */
-.flavor-list input[type="text"],
-.flavor-list input[type="number"] {
-  width: 90%;
-  padding: 6px 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  text-align: center;
 }
 
 /* Actions styling */
@@ -195,11 +194,6 @@ input[type=number]::-webkit-outer-spin-button {
   cursor: pointer;
 }
 
-.actions a:hover,
-.actions button:hover {
-  color: #cf5858;
-}
-
 .actions button {
   padding: 4px 8px;
   border-radius: 4px;
@@ -211,6 +205,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #ffd1b3;
 }
 
+/* Empty message */
 .no-flavors {
   text-align: center;
   color: #777;
@@ -218,16 +213,19 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 20px 0;
 }
 
-input[type="date"] {
-  flex: 1 1 200px;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  text-align: center;
+/* --- Responsive Fixes --- */
+@media (max-width: 1024px) {
+  .add-form form {
+    flex-wrap: wrap;
+  }
+
+  .add-form input,
+  .add-btn,
+  input[type="date"] {
+    width: 45%;
+  }
 }
 
-/* --- Responsive --- */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
@@ -239,13 +237,13 @@ input[type="date"] {
     flex-direction: column;
   }
 
-  .flavor-list table {
-    min-width: 100%;
+  .add-form input,
+  .add-btn,
+  input[type="date"] {
+    width: 100%;
   }
 
-  .actions a,
-  .actions button {
-    margin-right: 5px;
-    font-size: 14px;
+  .flavor-list table {
+    min-width: 100%;
   }
 }
