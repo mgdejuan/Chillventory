@@ -76,6 +76,7 @@ body {
   align-items: center;
   gap: 15px;
   flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
 /* Input fields */
@@ -164,24 +165,41 @@ input[type=number]::-webkit-outer-spin-button {
 
 .ingredient-list th {
   background-color: #e7c8b0;
-  color: #4b352e;
+  font-weight: 600;
+  text-align: center;
+}
+/* Table Cell Styles */
+.ingredients-list td.ingredients-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.ingredients-list td.ingredients-price {
+  color: #27ae;
   font-weight: 600;
 }
 
-.ingredient-list td {
-  color: #4b352e;
+.ingredients-list td.ingredients-stock {
+  color: #555;
   font-weight: 500;
 }
 
+
 /* Action buttons */
+.actions a,
 .actions button {
   margin-right: 8px;
-  color: #fff;
+  color: #835d53;
+  text-decoration: none;
+  font-size: 16px;
   border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 14px;
+  background: none;
   cursor: pointer;
+}
+
+.actions button {
+  border-radius: 4px;
+  padding: 4px 8px;
   transition: 0.2s;
 }
 

@@ -12,18 +12,14 @@ class Flavor(models.Model):
         return self.name
 
 
-
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
-    quantity = models.PositiveIntegerField(default=0)
-    stock = models.PositiveIntegerField(default=0)
-    is_available = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    quantity = models.PositiveIntegerField()
+    expiration_date = models.DateField()
 
     def __str__(self):
-        return f"{self.name} ({self.quantity})"
-
-
+        return self.name
 
 class Topping(models.Model):
     name = models.CharField(max_length=100)

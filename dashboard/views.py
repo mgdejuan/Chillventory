@@ -5,6 +5,10 @@ from datetime import datetime
 def dashboard(request):
     return render(request, 'dashboard/home.html')
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Flavor, Ingredient
+
+# --- FLAVORS VIEW ---
 def flavors(request):
     flavors = Flavor.objects.all().order_by('name')
     flavor_to_edit = None
@@ -17,7 +21,7 @@ def flavors(request):
         name = request.POST.get('name')
         price = request.POST.get('price')
         quantity = request.POST.get('quantity')
-        expiration_date = request.POST.get('expiration_date')  # ← new field
+        expiration_date = request.POST.get('expiration_date')
 
         if action == 'update_flavor':
             flavor = Flavor.objects.get(id=request.POST.get('flavor_id'))
@@ -40,43 +44,58 @@ def flavors(request):
         'flavors': flavors,
         'flavor_to_edit': flavor_to_edit
     })
+
+
+# --- DELETE FLAVOR FUNCTION ---
+def delete_flavor(request, delete_id):
+    flavor = get_object_or_404(Flavor, id=delete_id)
+    flavor.delete()
+    return redirect('flavors')
+
     
 # ----- INGREDIENTS CRUD -----
-def ingredients(request, ingredient_id=None):
+def ingredients(request):
+    ingredients = Ingredient.objects.all().order_by('name')
     ingredient_to_edit = None
 
-    # If editing
-    if ingredient_id:
-        ingredient_to_edit = get_object_or_404(Ingredient, id=ingredient_id)
+    # --- Handle Edit Mode ---
+    if 'edit' in request.GET:
+        ingredient_to_edit = Ingredient.objects.get(id=request.GET['edit'])
 
+    # --- Handle Create / Update ---
     if request.method == 'POST':
+        action = request.POST.get('action')
         name = request.POST.get('name')
+        price = request.POST.get('price')
         quantity = request.POST.get('quantity')
+        expiration_date = request.POST.get('expiration_date')
 
-        if ingredient_to_edit:
-            # Update existing ingredient
-            ingredient_to_edit.name = name
-            ingredient_to_edit.quantity = quantity
-            ingredient_to_edit.save()
+        if action == 'update_ingredient':
+            ingredient = Ingredient.objects.get(id=request.POST.get('ingredient_id'))
+            ingredient.name = name
+            ingredient.price = price
+            ingredient.quantity = quantity
+            ingredient.expiration_date = expiration_date
+            ingredient.save()
         else:
-            # Add new ingredient
-            if name and quantity:
-                Ingredient.objects.create(name=name, quantity=quantity)
+            Ingredient.objects.create(
+                name=name,
+                price=price,
+                quantity=quantity,
+                expiration_date=expiration_date
+            )
 
         return redirect('ingredients')
 
-    ingredients_list = Ingredient.objects.all()
-
-    context = {
-        'ingredients': ingredients_list,
+    return render(request, 'dashboard/ingredients.html', {
+        'ingredients': ingredients,
         'ingredient_to_edit': ingredient_to_edit
-    }
-
-    return render(request, 'dashboard/ingredients.html', context)
+    })
 
 
-def delete_ingredient(request, id):
-    ingredient = get_object_or_404(Ingredient, id=id)
+def delete_ingredient(request, ingredient_id):
+    """Delete an ingredient"""
+    ingredient = get_object_or_404(Ingredient, id=ingredient_id)
     ingredient.delete()
     return redirect('ingredients')
 

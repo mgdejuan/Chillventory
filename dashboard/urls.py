@@ -7,12 +7,10 @@ urlpatterns = [
 
     # Flavors
     path('flavors/', views.flavors, name='flavors'),  # add / list
-    path('flavors/<int:id>/', views.flavors, name='update_flavor'),  # edit inline
-    path('flavors/delete/<int:delete_id>/', views.flavors, name='delete_flavor'),  # delete inline
+    path('flavors/delete/<int:delete_id>/', views.delete_flavor, name='delete_flavor'),  # delete inline
 
     path('ingredients/', views.ingredients, name='ingredients'),
-    path('ingredients/update/<int:ingredient_id>/', views.ingredients, name='update_ingredient'),
-    path('ingredients/delete/<int:id>/', views.delete_ingredient, name='delete_ingredient'),
+    path('ingredients/delete/<int:ingredient_id>/', views.delete_ingredient, name='delete_ingredient'),
 
 
     path('toppings/', views.toppings, name='toppings'),

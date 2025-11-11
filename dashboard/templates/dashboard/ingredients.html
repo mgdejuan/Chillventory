@@ -97,7 +97,7 @@
                       <a href="{% url 'ingredients' %}?edit={{ ingredient.id }}" title="Edit">
                         <i class="fa-solid fa-pen"></i>
                       </a>
-                      <a href="{%url 'delete_flavor' ingredient.id %}"
+                      <a href="{%url 'delete_ingredient' ingredient.id %}"
                         onclick="return confirm('Are you sure you want to delete {{ ingredient.name }}?')"
                         title="Delete">
                         <i class="fa-solid fa-trash"></i>

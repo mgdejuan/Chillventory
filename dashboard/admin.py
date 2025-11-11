@@ -3,15 +3,13 @@ from .models import Flavor, Ingredient, Topping, Packaging
 
 @admin.register(Flavor)
 class FlavorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'quantity', 'created_at', 'expiration_date')
+    list_display = ('name', 'price', 'quantity', 'expiration_date')
     search_fields = ('name',)
-    list_filter = ('expiration_date',)
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'stock', 'is_available', 'created_at')
+    list_display = ('name', 'price', 'quantity', 'expiration_date')
     search_fields = ('name',)
-    list_filter = ('is_available', 'created_at')
 
 
 @admin.register(Topping)
