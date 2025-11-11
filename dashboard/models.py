@@ -1,16 +1,16 @@
 from django.db import models
+from django.utils import timezone
 
 class Flavor(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    quantity = models.PositiveIntegerField(default=0)  # if you want quantity
-
-    is_available = models.BooleanField(default=True)   # add this
-    created_at = models.DateTimeField(auto_now_add=True)  # add this
-
+    quantity = models.PositiveIntegerField(default=0)
+    expiration_date = models.DateField(null=True, blank=True)  # 👈 Add this
+    created_at = models.DateTimeField(default=timezone.now)    # 👈 Keep if you want timestamps
 
     def __str__(self):
         return self.name
+
 
 
 class Ingredient(models.Model):

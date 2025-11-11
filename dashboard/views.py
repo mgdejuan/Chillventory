@@ -1,40 +1,52 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Flavor, Ingredient, Topping, Packaging
-
+from datetime import datetime
 
 def dashboard(request):
     return render(request, 'dashboard/home.html')
 
 def flavors(request):
-    flavors = Flavor.objects.all()
+    flavors = Flavor.objects.all().order_by('name')
     flavor_to_edit = None
 
-    # Check if an edit parameter exists
-    edit_id = request.GET.get('edit')
-    if edit_id:
-        flavor_to_edit = get_object_or_404(Flavor, id=edit_id)
+    if 'edit' in request.GET:
+        flavor_to_edit = Flavor.objects.get(id=request.GET['edit'])
 
-    if request.method == "POST":
-        action = request.POST.get("action")
-        if action == "update_flavor":
-            flavor_id = request.POST.get("flavor_id")
-            flavor = get_object_or_404(Flavor, id=flavor_id)
-            flavor.name = request.POST.get("name")
-            flavor.price = request.POST.get("price")
-            flavor.quantity = request.POST.get("quantity")
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        quantity = request.POST.get('quantity')
+        expiration_date_str = request.POST.get('expiration_date')
+
+        # ✅ Convert expiration_date string to a Python date
+        expiration_date = None
+        if expiration_date_str:
+            try:
+                expiration_date = datetime.strptime(expiration_date_str, "%Y-%m-%d").date()
+            except ValueError:
+                expiration_date = None
+
+        if action == 'update_flavor':
+            flavor = Flavor.objects.get(id=request.POST.get('flavor_id'))
+            flavor.name = name
+            flavor.price = price
+            flavor.quantity = quantity
+            flavor.expiration_date = expiration_date
             flavor.save()
-            return redirect('flavors')
         else:
-            # handle adding a new flavor
-            name = request.POST.get("name")
-            price = request.POST.get("price")
-            quantity = request.POST.get("quantity")
-            Flavor.objects.create(name=name, price=price, quantity=quantity)
-            return redirect('flavors')
+            Flavor.objects.create(
+                name=name,
+                price=price,
+                quantity=quantity,
+                expiration_date=expiration_date
+            )
 
-    return render(request, "dashboard/flavors.html", {
-        "flavors": flavors,
-        "flavor_to_edit": flavor_to_edit
+        return redirect('flavors')
+
+    return render(request, 'dashboard/flavors.html', {
+        'flavors': flavors,
+        'flavor_to_edit': flavor_to_edit
     })
 
 # ----- INGREDIENTS CRUD -----

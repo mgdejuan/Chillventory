@@ -94,6 +94,13 @@ body {
   text-align: center;
 }
 
+/* Remove number input arrows globally */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .add-btn {
   background-color: #e26a6a;
   color: white;
@@ -121,6 +128,11 @@ body {
   background-color: #fff3ea;
 }
 
+.flavor-list h2 {
+  color: #e26a6a;
+  text-align: center;
+}
+
 .flavor-list table {
   width: 100%;
   border-collapse: collapse;
@@ -139,8 +151,29 @@ body {
 .flavor-list th {
   background-color: #ffe6d9;
   font-weight: 600;
+  text-align: center;
 }
 
+/* Format table cells */
+.flavor-list td.flavor-name {
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+}
+
+.flavor-list td.flavor-price {
+  color: #27ae60;
+  font-weight: 600;
+  text-align: center;
+}
+
+.flavor-list td.flavor-stock {
+  color: #555;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Input styling for inline editing */
 .flavor-list input[type="text"],
 .flavor-list input[type="number"] {
   width: 90%;
@@ -150,6 +183,7 @@ body {
   text-align: center;
 }
 
+/* Actions styling */
 .actions a,
 .actions button {
   margin-right: 8px;
@@ -177,11 +211,20 @@ body {
   background-color: #ffd1b3;
 }
 
-.no-data {
+.no-flavors {
   text-align: center;
   color: #777;
   font-style: italic;
   padding: 20px 0;
+}
+
+input[type="date"] {
+  flex: 1 1 200px;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
 }
 
 /* --- Responsive --- */
