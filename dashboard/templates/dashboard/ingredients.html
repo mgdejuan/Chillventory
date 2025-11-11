@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingredients Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/ingredients.css' %}">
+</head>
+<body>
+
+<a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
+
+<div class="container">
+  <h2>INGREDIENTS MANAGEMENT</h2>
+
+  <!-- Add/Edit Form -->
+  <div class="form-section">
+    <form method="POST">
+      {% csrf_token %}
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+        <div style="display: flex; flex-direction: column;">
+          <label>Ingredient Name:</label>
+          <input type="text" name="name" value="{{ ingredient_to_edit.name|default_if_none:'' }}" placeholder="Enter ingredient name" required>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <label>Quantity:</label>
+          <input type="number" name="quantity" value="{{ ingredient_to_edit.quantity|default_if_none:0 }}" min="0" required>
+        </div>
+        <!-- Add button inline -->
+        <div>
+          <button type="submit" class="add-btn">
+            {% if ingredient_to_edit %}Update{% else %}Add Ingredient{% endif %}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Ingredients Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ing in ingredients %}
+      <tr>
+        <td>{{ ing.id }}</td>
+        <td>{{ ing.name }}</td>
+        <td>{{ ing.quantity }}</td>
+        <td>
+          <a href="{% url 'update_ingredient' ing.id %}" class="action-btn edit-btn">Edit</a>
+          <a href="{% url 'delete_ingredient' ing.id %}" class="action-btn delete-btn">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">No ingredients found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

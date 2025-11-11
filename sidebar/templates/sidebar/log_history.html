@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log History | Sweets N’ Treats</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/log_history.css' %}">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="left-header">
+        <!-- ✅ Back Button -->
+        <button onclick="window.history.back()" class="back-btn">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
+
+        <h1><i class="fa-solid fa-clipboard-list"></i> Log History</h1>
+      </div>
+
+      <!-- ✅ Admin Profile -->
+      <a href="#" class="admin-profile">
+        <span>{{ request.user.username|title }}</span>
+        <i class="fa-solid fa-user"></i>
+      </a>
+    </header>
+
+    <!-- Log Table Section -->
+    <section class="log-section">
+      <h2>System Activity Logs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Product Name</th>
+            <th>Action Taken</th>
+            <th>Stock Status</th>
+            <th>Staff</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in logs %}
+          <tr>
+            <td>{{ log.date }}</td>
+            <td>{{ log.product_name }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ log.status }}</td>
+            <td>{{ log.staff }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="no-data">No log entries found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+</body>
+</html>

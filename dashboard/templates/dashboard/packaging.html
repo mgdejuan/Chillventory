@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packaging Management</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/packaging.css' %}"> 
+</head>
+<body>
+
+<a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
+
+<div class="container">
+  <h2>PACKAGING MANAGEMENT</h2>
+
+  <!-- Add/Edit Form -->
+  <div class="form-section">
+    <form method="POST">
+      {% csrf_token %}
+      <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+        <div style="display: flex; flex-direction: column;">
+          <label>Packaging Type:</label>
+          <input type="text" name="type" value="{{ packaging_to_edit.type|default_if_none:'' }}" placeholder="Enter packaging type" required>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <label>Cost:</label>
+          <input type="text" name="cost" value="{{ packaging_to_edit.cost|default_if_none:'' }}" placeholder="Enter cost" required>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <label>Quantity:</label>
+          <input type="number" name="quantity" value="{{ packaging_to_edit.quantity|default_if_none:0 }}" min="0" required>
+        </div>
+        <!-- Add/Update button inline -->
+        <div>
+          <button type="submit" class="add-btn">
+            {% if packaging_to_edit %}Update{% else %}Add Packaging{% endif %}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Packaging Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Cost</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      {% for pack in packaging_list %}
+      <tr data-id="{{ pack.id }}">
+        <td>{{ pack.id }}</td>
+        <td>{{ pack.type }}</td>
+        <td>{{ pack.cost }}</td>
+        <td>{{ pack.quantity }}</td>
+        <td>
+          <a href="{% url 'update_packaging' pack.id %}" class="action-btn edit-btn">Edit</a>
+          <a href="{% url 'delete_packaging' pack.id %}" class="action-btn delete-btn">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5">No packaging found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

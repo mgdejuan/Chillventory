@@ -1,0 +1,208 @@
+/* --- General Layout --- */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff8f0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 30px;
+}
+
+/* --- Header --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f3d6c1;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: #e26a6a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.back-btn i {
+  font-size: 16px;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #444;
+}
+
+.admin-profile i {
+  font-size: 18px;
+}
+
+/* --- Add Form --- */
+.add-form {
+  margin-top: 30px;
+  padding: 20px;
+  background: #fff3ea;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.add-form h2 {
+  margin-bottom: 15px;
+  color: #e26a6a;
+  font-size: 20px;
+  text-align: center;
+}
+
+.add-form form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-form input {
+  flex: 1 1 200px;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.add-btn {
+  background-color: #e26a6a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-btn:hover {
+  background-color: #cf5858;
+}
+
+/* --- Table --- */
+.flavor-list {
+  margin-top: 40px;
+  overflow-x: auto;
+  border: 2px solid #e26a6a;
+  border-radius: 12px;
+  padding: 15px;
+  background-color: #fff3ea;
+}
+
+.flavor-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  min-width: 600px;
+  text-align: center;
+}
+
+.flavor-list th,
+.flavor-list td {
+  padding: 12px 15px;
+  border: 1px solid #e26a6a;
+  vertical-align: middle;
+}
+
+.flavor-list th {
+  background-color: #ffe6d9;
+  font-weight: 600;
+}
+
+.flavor-list input[type="text"],
+.flavor-list input[type="number"] {
+  width: 90%;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.actions a,
+.actions button {
+  margin-right: 8px;
+  color: #e26a6a;
+  text-decoration: none;
+  font-size: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.actions a:hover,
+.actions button:hover {
+  color: #cf5858;
+}
+
+.actions button {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #ffe6d9;
+  transition: 0.2s;
+}
+
+.actions button:hover {
+  background-color: #ffd1b3;
+}
+
+.no-data {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .add-form form {
+    flex-direction: column;
+  }
+
+  .flavor-list table {
+    min-width: 100%;
+  }
+
+  .actions a,
+  .actions button {
+    margin-right: 5px;
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/about.css' %}">
+</head>
+<body>
+
+<a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
+
+<div class="container">
+  <h2>About Us</h2>
+
+  <div class="content">
+    <p>Welcome to our management dashboard! This is AGS Bliss.</p>
+    <p>Our goal is to streamline inventory, pricing, and availability so you can focus on creating amazing products for your customers.</p>
+  </div>
+
+  <div class="team">
+    <h3>Meet Our Team</h3>
+    <div class="team-cards">
+      
+      <a href="https://portfolio.janedoe.com" target="_blank" class="card">
+        <div class="card-img">
+          <img src="{% static 'images/jane.jpg' %}" alt="Jane Doe">
+        </div>
+        <h4>Genelyn De Juan</h4>
+        <p>Frontend Developer</p>
+      </a>
+
+      <a href="https://portfolio.johnsmith.com" target="_blank" class="card">
+        <div class="card-img">
+          <img src="{% static 'images/john.jpg' %}" alt="John Smith">
+        </div>
+        <h4>Alessanda Sophia Keith Santos</h4>
+        <p>Lead Developer</p>
+      </a>
+
+      <a href="https://portfolio.alexa.com" target="_blank" class="card">
+        <div class="card-img">
+          <img src="{% static 'images/ALEXA.jpg' %}" alt="Alexa Nicole">
+        </div>
+        <h4>Alexa Nicole Tilan</h4>
+        <p>Frontend Developer</p>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

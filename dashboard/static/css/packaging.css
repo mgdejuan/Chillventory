@@ -1,0 +1,148 @@
+* {
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f9f9f7;
+  margin: 0;
+  padding: 0;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #FFD897; /* Light Gold */
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  color: #333;
+  cursor: pointer;
+  margin: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: 0.2s;
+  text-decoration: none; /* Added for the anchor tag */
+}
+
+.back-btn:hover {
+  background-color: #ffcc80;
+}
+
+.container {
+  background-color: #fffbea; /* Light Cream */
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+  text-align: center;
+  color: #f3b04d; /* Golden Orange */
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.form-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: 500;
+  color: #555;
+}
+
+input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #e5e0c3; /* Pale Yellow/Beige */
+  font-size: 14px;
+  width: 180px;
+  outline: none;
+}
+
+.add-btn {
+  background-color: #FFD897;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 15px;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #f3b04d;
+  color: white;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  font-size: 14px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #FFD897;
+  color: #333;
+  font-weight: 600;
+}
+
+.action-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin: 3px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.edit-btn {
+  background-color: #ffcc80;
+  color: #333;
+}
+
+.edit-btn:hover {
+  background-color: #f3b04d;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #ffcc80;
+  color: #333;
+}
+
+.delete-btn:hover {
+  background-color: #ef4444; /* Red */
+  color: white;
+}
+
+input.quantity-input {
+  width: 70px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+}

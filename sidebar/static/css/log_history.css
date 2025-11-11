@@ -1,0 +1,118 @@
+/* ==== General Styling ==== */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #fffbee;
+  color: #5a4635;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  margin: 30px auto;
+}
+
+/* ==== Header ==== */
+.header {
+  background-color: #fff3d4;
+  border-radius: 10px;
+  padding: 15px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ==== Back Button ==== */
+.back-btn {
+  background-color: #ffefd2;
+  border: none;
+  color: #4a3c2a;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.back-btn i {
+  margin-right: 5px;
+}
+
+.back-btn:hover {
+  background-color: #ffe2b3;
+  transform: scale(1.05);
+}
+
+/* ==== Title ==== */
+.header h1 {
+  font-size: 1.8rem;
+  color: #5a4635;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header h1 i {
+  color: #8b5e34;
+}
+
+/* ==== Admin Profile ==== */
+.admin-profile {
+  background-color: #f3e4c3;
+  padding: 8px 15px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: #5a4635;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+
+.admin-profile:hover {
+  background-color: #f7d9a9;
+}
+
+/* ==== Table Section ==== */
+.log-section {
+  background-color: #fffef6;
+  padding: 25px;
+  margin-top: 25px;
+  border-radius: 10px;
+  border: 1px solid #ead9b0;
+}
+
+.log-section h2 {
+  margin-bottom: 15px;
+  color: #4a3c2a;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fffdf5;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd2a6;
+}
+
+th {
+  background-color: #fff3d4;
+  color: #4a3c2a;
+}
+
+.no-data {
+  text-align: center;
+  color: #8b7b68;
+  padding: 20px;
+}

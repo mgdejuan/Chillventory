@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sweets N’ Treats</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul>
+                <li><a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="{% url 'inventory' %}"><i class="fa-solid fa-cube"></i> Inventory</a></li>
+                <li><a href="{% url 'notifications' %}"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+                <li><a href="{% url 'log_history' %}"><i class="fa-solid fa-clipboard-list"></i> Log History</a></li>
+                <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About</a></li>
+                <li class="logout"><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                   <a href="{% url 'notifications' %}" class="notification-icon" title="View Notifications">
+    <i class="fa-solid fa-bell"></i>
+    <span class="badge">{{ unread_notifications }}</span>
+</a>
+
+                    <span>{{ request.user.username|default:"Admin"|title }}</span>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </header>
+
+            <!-- Dashboard Cards -->
+            <section class="cards">
+                <a href="{% url 'flavors' %}" class="card flavor">
+                    <i class="fa-solid fa-ice-cream"></i>
+                    <p>Flavors</p>
+                </a>
+                <a href="{% url 'ingredients' %}" class="card ingredients">
+                    <i class="fa-solid fa-bowl-food"></i>
+                    <p>Ingredients</p>
+                </a>
+                <a href="{% url 'toppings' %}" class="card toppings">
+                    <i class="fa-solid fa-cheese"></i>
+                    <p>Toppings</p>
+                </a>
+                <a href="{% url 'packaging' %}" class="card packaging">
+                    <i class="fa-solid fa-box"></i>
+                    <p>Packaging</p>
+                </a>
+            </section>
+
+            <!-- Logs Section -->
+            <section class="log-section">
+                <h2>Logs for Tracking</h2>
+                <div class="log-list">
+                    {% for log in recent_logs %}
+                        <div class="log-entry">
+                            <i class="fa-regular fa-clock"></i>
+                            <strong>{{ log.date_and_time|date:"F j, Y, g:i A" }}</strong> — 
+                            {% if log.action_taken == "LOGIN" %}
+                                Admin {{ log.staff.username|default:"System"|title }} successfully logged in.
+                            {% elif log.action_taken == "ADD" %}
+                                {{ log.staff.username|title }} added {{ log.product_name }} to inventory ({{ log.stock_status|default:"N/A" }}).
+                            {% elif log.action_taken == "UPDATE" %}
+                                {{ log.staff.username|title }} updated {{ log.product_name }} ({{ log.stock_status|default:"N/A" }}).
+                            {% elif log.action_taken == "DELETE" %}
+                                {{ log.staff.username|title }} deleted {{ log.product_name }} from inventory.
+                            {% else %}
+                                {{ log.staff.username|title }} performed an action: {{ log.get_action_taken_display }}.
+                            {% endif %}
+                        </div>
+                    {% empty %}
+                        <p class="no-data">No recent activity logs found.</p>
+                    {% endfor %}
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

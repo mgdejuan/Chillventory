@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toppings Management</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/toppings.css' %}">
+</head>
+<body style="font-family: 'Poppins', sans-serif;">
+
+<a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
+
+<div class="container">
+  <h2>TOPPINGS MANAGEMENT</h2>
+
+  <!-- Add / Edit Form -->
+  <div class="form-section">
+    {% if topping_to_edit %}
+      <h3>Edit Topping</h3>
+    {% else %}
+      <h3></h3>
+    {% endif %}
+    <form method="POST">
+      {% csrf_token %}
+      <div style="display: flex; gap: 10px; align-items: flex-end;">
+        <div style="display: flex; flex-direction: column;">
+          <label>Topping name:</label>
+          <input type="text" name="name" value="{{ topping_to_edit.name|default_if_none:'' }}" placeholder="Enter topping name" required>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <label>Price:</label>
+          <input type="text" name="price" value="{{ topping_to_edit.price|default_if_none:'' }}" placeholder="Enter price" required>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <label>Stock:</label>
+          <input type="number" name="stock" value="{{ topping_to_edit.stock|default_if_none:0 }}" min="0" required>
+        </div>
+        <div>
+          <button type="submit" class="add-btn">
+            {% if topping_to_edit %}Update{% else %}Add{% endif %}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Toppings Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for topping in toppings %}
+      <tr>
+        <td>{{ topping.id }}</td>
+        <td>{{ topping.name }}</td>
+        <td>{{ topping.price }}</td>
+        <td>{{ topping.stock }}</td>
+        <td>
+          <a href="{% url 'update_topping' topping.id %}" class="action-btn edit-btn">Edit</a>
+          <a href="{% url 'delete_topping' topping.id %}" class="action-btn delete-btn">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5">No toppings found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

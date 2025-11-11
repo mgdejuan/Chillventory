@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications | Sweets N’ Treats</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/notifications.css' %}">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="left-header">
+        <!-- ✅ Back Button -->
+        <button onclick="window.history.back()" class="back-btn">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
+
+        <h1><i class="fa-solid fa-bell"></i> Notifications</h1>
+      </div>
+
+      <!-- ✅ Admin Profile -->
+      <div class="admin-profile">
+        <span>{{ request.user.username|title }}</span>
+        <i class="fa-solid fa-user"></i>
+      </div>
+    </header>
+
+    <!-- Notification Section -->
+    <section class="notifications">
+      <h2>Recent Alerts</h2>
+
+      <div class="notification success">
+        <i class="fa-solid fa-circle-check"></i>
+        <div class="details">
+          <p><strong>Stock Updated:</strong> Vanilla Syrup has been restocked successfully.</p>
+          <span class="time">10 mins ago</span>
+        </div>
+      </div>
+
+      <div class="notification warning">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div class="details">
+          <p><strong>Low Stock:</strong> Sprinkles are running low! Please restock soon.</p>
+          <span class="time">30 mins ago</span>
+        </div>
+      </div>
+
+      <div class="notification info">
+        <i class="fa-solid fa-info-circle"></i>
+        <div class="details">
+          <p><strong>New Feature:</strong> You can now filter logs by date and staff name.</p>
+          <span class="time">2 hours ago</span>
+        </div>
+      </div>
+
+      <div class="notification error">
+        <i class="fa-solid fa-circle-xmark"></i>
+        <div class="details">
+          <p><strong>Out of Stock:</strong> Chocolate Toppings have run out.</p>
+          <span class="time">Yesterday</span>
+        </div>
+      </div>
+
+      {% if notifications|length == 0 %}
+      <p class="no-data">No new notifications.</p>
+      {% endif %}
+    </section>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flavors | Sweets N’ Treats</title>
+    <link rel="stylesheet" href="{% static 'css/flavors.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <a href="{% url 'home' %}" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </a>
+            <h1><i class="fa-solid fa-ice-cream"></i> Flavors Management</h1>
+            <div class="admin-profile">
+                <span>{{ request.user.username|title }}</span>
+                <i class="fa-solid fa-user"></i>
+            </div>
+        </header>
+
+        <section class="add-form">
+            <h2>ADD NEW FLAVOR</h2>
+            <form method="POST" action="{% url 'flavors' %}">
+                {% csrf_token %}
+                <input type="text" name="name" placeholder="Flavor Name" required>
+                <input type="number" name="price" placeholder="Price" step="0.01" required>
+                <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
+                <button type="submit" class="add-btn"><i class="fa-solid fa-plus"></i> Add Flavor</button>
+            </form>
+        </section>
+
+        <section class="flavor-list">
+            <h2>CURRENT FLAVORS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Flavor Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flavor in flavors %}
+                        <tr>
+                            {% if flavor_to_edit and flavor_to_edit.id == flavor.id %}
+                                <form method="POST" action="{% url 'flavors' %}" class="inline-edit-form">
+                                    {% csrf_token %}
+                                    <td>
+                                        <input type="text" name="name" value="{{ flavor.name }}">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="price" value="{{ flavor.price }}" step="0.01">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="quantity" value="{{ flavor.quantity }}">
+                                    </td>
+                                    <td class="actions">
+                                        <button type="submit" name="action" value="update_flavor">Save</button>
+                                        <a href="{% url 'flavors' %}" class="cancel-btn">Cancel</a>
+                                        <input type="hidden" name="flavor_id" value="{{ flavor.id }}">
+                                    </td>
+                                </form>
+                            {% else %}
+                                <td>{{ flavor.name }}</td>
+                                <td>{{ flavor.price }}</td>
+                                <td>{{ flavor.quantity }}</td>
+                                <td class="actions">
+                                    <a href="{% url 'flavors' %}?edit={{ flavor.id }}" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                                    <a href="{% url 'delete_flavor' flavor.id %}" onclick="return confirm('Are you sure you want to delete {{ flavor.name }}?')" title="Delete"><i class="fa-solid fa-trash"></i></a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="no-flavors">No flavors found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+</body>
+</html>

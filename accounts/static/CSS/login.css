@@ -1,0 +1,108 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #FDECC8;
+  background-image: url("../images/waffle_bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+h2 {
+  color: #5A3B2E;
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.login-box {
+  background-color: rgba(255, 247, 231, 0.92); /* transparent vanilla */
+  padding: 40px;
+  border-radius: 25px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
+  width: 350px;
+  backdrop-filter: blur(4px); /* light blur for readability */
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #F3D9A4;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+}
+
+.icon {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #B58C7E;
+}
+
+.input-group input {
+  border: none;
+  background: none;
+  outline: none;
+  flex: 1;
+  font-size: 15px;
+  color: #5A3B2E;
+  font-weight: 600;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 14px;
+  color: #5A3B2E;
+}
+
+.options a {
+  text-decoration: none;
+  color: #5A3B2E;
+  font-weight: 600;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #F7A8B8;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #f489a2;
+}
+
+.error {
+  color: red;
+  background-color: #ffeaea;
+  border: 1px solid #ffb5b5;
+  padding: 8px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}

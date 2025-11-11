@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <title>Login | Sweets N' Treats</title>
+</head>
+<body>
+  <div class="container">
+    <h2>WELCOME TO SWEETS N' TREATS</h2>
+
+    <div class="login-box">
+      {% if messages %}
+        {% for message in messages %}
+          <p class="error">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+        
+        <div class="input-group">
+          <span class="icon">👤</span>
+          <input type="text" name="username" placeholder="Username" required>
+        </div>
+
+        <div class="input-group">
+          <span class="ri-lock-2-line"></span>
+          <input type="password" name="password" placeholder="Password" required>
+        </div>
+
+        <div class="options">
+          <label><input type="checkbox" name="remember"> Remember me</label>
+          <a href="#">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">LOGIN</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
