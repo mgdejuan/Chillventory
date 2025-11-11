@@ -18,3 +18,25 @@ class LogHistory(models.Model):
 
     def __str__(self):
         return f"{self.staff} - {self.action_taken} - {self.date_and_time.strftime('%Y-%m-%d %H:%M')}"
+
+from django.db import models
+
+class Inventory(models.Model):
+    CATEGORY_CHOICES = [
+        ('FLAVORS', 'Flavors'),
+        ('INGREDIENTS', 'Ingredients'),
+        ('TOPPINGS', 'Toppings'),
+        ('PACKAGING', 'Packaging'),
+    ]
+    product_name = models.CharField(max_length=100)
+    category = models.CharField(max_length=100)
+    stock = models.PositiveIntegerField()
+    status = models.CharField(max_length=50, choices=[
+        ('In Stock', 'In Stock'),
+        ('Low Stock', 'Low Stock'),
+        ('Out of Stock', 'Out of Stock')
+    ])
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.product_name} ({self.category})"

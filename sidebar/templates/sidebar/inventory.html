@@ -2,153 +2,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory | Sweets N’ Treats</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+  <meta charset="UTF-8">
+  <title>Inventory</title>
+  <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
 </head>
 <body>
-
-    <div class="container">
-
-        <header class="header">
-            <div class="left-header">
-                <a href="{% url 'home' %}" class="back-btn">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </a>
-                <h1><i class="fa-solid fa-cubes"></i> Inventory</h1>
-            </div>
-
-            <a href="#" class="admin-profile">
-                <span>{{ request.user.username|default:"Admin"|title }}</span>
-                <i class="fa-solid fa-user"></i>
-            </a>
-        </header>
-
-        <section class="inventory-box">
-            <h3>Manage Product Stocks</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Stock Quantity</th>
-                        <th>Status</th>
-                        <th>Last Updated</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="inventoryTableBody">
-                    </tbody>
-            </table>
-        </section>
-
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header">
+      <div class="left-header">
+        <a href="{% url 'home' %}" class="back-btn">← Back</a>
+        <h1>Inventory</h1>
+      </div>
+      <a href="#" class="admin-profile">{{ request.user.username|title }}</a>
     </div>
 
-    <script>
-        const inventoryTableBody = document.getElementById('inventoryTableBody');
-
-        function getLocalStorageData(key) {
-            const data = localStorage.getItem(key) || localStorage.getItem(key.toLowerCase()) || localStorage.getItem(key.charAt(0).toUpperCase() + key.slice(1));
-            try {
-                return JSON.parse(data) || [];
-            } catch {
-                return [];
-            }
-        }
-
-        // 🌟 UPDATED: Status logic reflecting your requirements
-        function getStatus(quantity) {
-            if (quantity > 20) return { text: "IN STOCK", class: "status-in" };
-            if (quantity > 5) return { text: "LOW STOCK", class: "status-low" };
-            if (quantity > 0) return { text: "CRITICAL", class: "status-critical" };
-            return { text: "OUT OF STOCK", class: "status-out" };
-        }
-
-        function aggregateInventory() {
-            const categories = ['flavors', 'ingredients', 'toppings', 'packaging'];
-            let allProducts = [];
-
-            categories.forEach(categoryKey => {
-                const categoryName = categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1);
-                const data = getLocalStorageData(categoryKey);
-                
-                const mappedData = data.map(item => ({ 
-                    ...item, 
-                    category: categoryName, 
-                    lastUpdated: item.lastUpdated || 'N/A' 
-                }));
-                allProducts = [...allProducts, ...mappedData];
-            });
-            
-            return allProducts;
-        }
-
-        function renderInventoryTable() {
-            const allProducts = aggregateInventory();
-            inventoryTableBody.innerHTML = '';
-
-            if (allProducts.length === 0) {
-                inventoryTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No inventory items found in any category.</td></tr>';
-                return;
-            }
-
-            allProducts.forEach(product => {
-                // 🌟 STATUS LOGIC IS APPLIED HERE
-                const status = getStatus(product.quantity); 
-                const row = document.createElement('tr');
-                
-                const lastUpdatedDisplay = product.lastUpdated === 'N/A' ? 'Not tracked' : product.lastUpdated;
-
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>${product.category}</td>
-                    <td>${product.quantity}</td>
-                    <td><span class="status-badge ${status.class}">${status.text}</span></td>
-                    <td>${lastUpdatedDisplay}</td>
-                    <td>
-                        <button class="action-btn restock-btn" data-category="${product.category}" data-id="${product.id}">Restock</button>
-                    </td>
-                `;
-                
-                inventoryTableBody.appendChild(row);
-
-                row.querySelector('.restock-btn').addEventListener('click', (e) => {
-                    handleRestock(product.category, product.id, product.name);
-                });
-            });
-        }
-
-        function handleRestock(category, id, name) {
-            const quantityToAdd = prompt(`Enter quantity to restock for ${name} (${category}):`);
-            const quantity = parseInt(quantityToAdd);
-
-            if (quantityToAdd === null || isNaN(quantity) || quantity <= 0) {
-                if (quantityToAdd !== null && quantityToAdd.trim() !== "") alert("Invalid quantity. Please enter a positive number.");
-                return;
-            }
-
-            const key = category.toLowerCase();
-            
-            let data = getLocalStorageData(key);
-            let product = data.find(p => p.id === id);
-
-            if (product) {
-                product.quantity = (product.quantity || 0) + quantity;
-                product.lastUpdated = new Date().toISOString().slice(0, 10);
-                
-                localStorage.setItem(key, JSON.stringify(data));
-                
-                renderInventoryTable();
-                
-                alert(`Restocked ${name} with ${quantity}. New quantity: ${product.quantity}`);
-            } else {
-                alert(`Error: Could not find product with ID ${id} in ${category}.`);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', renderInventoryTable);
-    </script>
+    <!-- Inventory Table -->
+    <div class="inventory-box">
+      <h3>Inventory Overview</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in inventory %}
+          <tr>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.stock }}</td>
+            <td>
+              {% if item.status == 'In Stock' %}
+                <span class="status-badge status-in">In Stock</span>
+              {% elif item.status == 'Low Stock' %}
+                <span class="status-badge status-low">Low Stock</span>
+              {% elif item.status == 'Critical' %}
+                <span class="status-badge status-critical">Critical</span>
+              {% elif item.status == 'Out of Stock' %}
+                <span class="status-badge status-out">Out of Stock</span>
+              {% else %}
+                <span class="status-badge">{{ item.status }}</span>
+              {% endif %}
+            </td>
+            <td>{{ item.last_updated|date:"M. d, Y, g:i a" }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" style="text-align:center;">No inventory data found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 </html>

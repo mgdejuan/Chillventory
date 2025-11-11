@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import LogHistory
+from .models import LogHistory, Inventory
 
 # Home page (requires login)
 @login_required
@@ -37,3 +37,7 @@ def about(request):
 @login_required
 def logout_view(request):
     return render(request, 'logout_view.html')
+
+def inventory_view(request):
+    inventory = Inventory.objects.all().order_by('category', 'product_name')
+    return render(request, 'sidebar/inventory.html', {'inventory': inventory})
