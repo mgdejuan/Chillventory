@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Flavor, Ingredient, Topping, Packaging
+from django.utils import timezone
+from .models import Flavor, Ingredient, Topping, Packaging, Log
 from datetime import datetime
 
+
+# ----------------- DASHBOARD -----------------
 def dashboard(request):
     return render(request, 'dashboard/home.html')
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Flavor, Ingredient
 
-# --- FLAVORS VIEW ---
+# ----------------- FLAVORS CRUD -----------------
 def flavors(request):
     flavors = Flavor.objects.all().order_by('name')
     flavor_to_edit = None
@@ -30,12 +31,27 @@ def flavors(request):
             flavor.quantity = quantity
             flavor.expiration_date = expiration_date
             flavor.save()
+
+            # 🧾 Log update
+            Log.objects.create(
+                user=request.user,
+                action=f"updated flavor '{name}'",
+                timestamp=timezone.now()
+            )
+
         else:
             Flavor.objects.create(
                 name=name,
                 price=price,
                 quantity=quantity,
                 expiration_date=expiration_date
+            )
+
+            # 🧾 Log add
+            Log.objects.create(
+                user=request.user,
+                action=f"added flavor '{name}'",
+                timestamp=timezone.now()
             )
 
         return redirect('flavors')
@@ -46,23 +62,30 @@ def flavors(request):
     })
 
 
-# --- DELETE FLAVOR FUNCTION ---
 def delete_flavor(request, delete_id):
     flavor = get_object_or_404(Flavor, id=delete_id)
+    name = flavor.name
     flavor.delete()
+
+    # 🧾 Log delete
+    Log.objects.create(
+        user=request.user,
+        action=f"deleted flavor '{name}'",
+        timestamp=timezone.now()
+    )
+
     return redirect('flavors')
 
-    
-# ----- INGREDIENTS CRUD -----
+
+# ----------------- INGREDIENTS CRUD -----------------
+# ----------------- INGREDIENTS CRUD -----------------
 def ingredients(request):
     ingredients = Ingredient.objects.all().order_by('name')
     ingredient_to_edit = None
 
-    # --- Handle Edit Mode ---
     if 'edit' in request.GET:
         ingredient_to_edit = Ingredient.objects.get(id=request.GET['edit'])
 
-    # --- Handle Create / Update ---
     if request.method == 'POST':
         action = request.POST.get('action')
         name = request.POST.get('name')
@@ -77,12 +100,27 @@ def ingredients(request):
             ingredient.quantity = quantity
             ingredient.expiration_date = expiration_date
             ingredient.save()
+
+            # 🧾 Log update
+            Log.objects.create(
+                user=request.user,
+                action=f"updated ingredient '{name}'",
+                timestamp=timezone.now()
+            )
+
         else:
             Ingredient.objects.create(
                 name=name,
                 price=price,
                 quantity=quantity,
                 expiration_date=expiration_date
+            )
+
+            # 🧾 Log add
+            Log.objects.create(
+                user=request.user,
+                action=f"added ingredient '{name}'",
+                timestamp=timezone.now()
             )
 
         return redirect('ingredients')
@@ -93,18 +131,26 @@ def ingredients(request):
     })
 
 
-def delete_ingredient(request, ingredient_id):
-    """Delete an ingredient"""
-    ingredient = get_object_or_404(Ingredient, id=ingredient_id)
+def delete_ingredient(request, delete_id):
+    ingredient = get_object_or_404(Ingredient, id=delete_id)
+    name = ingredient.name
     ingredient.delete()
+
+    # 🧾 Log delete
+    Log.objects.create(
+        user=request.user,
+        action=f"deleted ingredient '{name}'",
+        timestamp=timezone.now()
+    )
+
     return redirect('ingredients')
 
 
-# ----- TOPPINGS CRUD -----
+
+# ----------------- TOPPINGS CRUD -----------------
 def toppings(request, topping_id=None):
     topping_to_edit = None
 
-    # If editing
     if topping_id:
         topping_to_edit = get_object_or_404(Topping, id=topping_id)
 
@@ -114,13 +160,17 @@ def toppings(request, topping_id=None):
         stock = request.POST.get('stock')
 
         if topping_to_edit:
-            # Update existing topping
             topping_to_edit.name = name
             topping_to_edit.price = price
             topping_to_edit.stock = stock
             topping_to_edit.save()
+
+            Log.objects.create(
+                user=request.user,
+                action=f"updated topping '{name}'",
+                timestamp=timezone.now()
+            )
         else:
-            # Add new topping
             if name and price and stock:
                 Topping.objects.create(
                     name=name,
@@ -128,38 +178,37 @@ def toppings(request, topping_id=None):
                     stock=stock
                 )
 
+                Log.objects.create(
+                    user=request.user,
+                    action=f"added topping '{name}'",
+                    timestamp=timezone.now()
+                )
+
         return redirect('toppings')
 
     all_toppings = Topping.objects.all()
-    context = {
+    return render(request, 'dashboard/toppings.html', {
         'toppings': all_toppings,
         'topping_to_edit': topping_to_edit
-    }
-    return render(request, 'dashboard/toppings.html', context)
+    })
 
 
 def delete_topping(request, id):
     topping = get_object_or_404(Topping, id=id)
+    name = topping.name
     topping.delete()
+
+    Log.objects.create(
+        user=request.user,
+        action=f"deleted topping '{name}'",
+        timestamp=timezone.now()
+    )
+
     return redirect('toppings')
 
-
-
-def delete_topping(request, id):
-    topping = get_object_or_404(Topping, id=id)
-    topping.delete()
-    return redirect('toppings')
-
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Packaging
 
 # ----------------- PACKAGING CRUD -----------------
-
 def packaging(request):
-    """
-    Display packaging list and handle adding new packaging.
-    """
     if request.method == 'POST':
         type = request.POST.get('type')
         cost = request.POST.get('cost')
@@ -171,6 +220,13 @@ def packaging(request):
                 cost=cost,
                 quantity=int(quantity)
             )
+
+            Log.objects.create(
+                user=request.user,
+                action=f"added packaging '{type}'",
+                timestamp=timezone.now()
+            )
+
         return redirect('packaging')
 
     packaging_list = Packaging.objects.all()
@@ -178,9 +234,6 @@ def packaging(request):
 
 
 def update_packaging(request, id):
-    """
-    Edit an existing packaging item.
-    """
     pack = get_object_or_404(Packaging, id=id)
 
     if request.method == 'POST':
@@ -188,9 +241,15 @@ def update_packaging(request, id):
         pack.cost = request.POST.get('cost')
         pack.quantity = int(request.POST.get('quantity'))
         pack.save()
+
+        Log.objects.create(
+            user=request.user,
+            action=f"updated packaging '{pack.type}'",
+            timestamp=timezone.now()
+        )
+
         return redirect('packaging')
 
-    # Pass both the item to edit and the full list to reuse the template
     packaging_list = Packaging.objects.all()
     return render(request, 'dashboard/packaging.html', {
         'packaging_to_edit': pack,
@@ -199,9 +258,20 @@ def update_packaging(request, id):
 
 
 def delete_packaging(request, id):
-    """
-    Delete a packaging item.
-    """
     pack = get_object_or_404(Packaging, id=id)
+    type_name = pack.type
     pack.delete()
+
+    Log.objects.create(
+        user=request.user,
+        action=f"deleted packaging '{type_name}'",
+        timestamp=timezone.now()
+    )
+
     return redirect('packaging')
+
+
+# ----------------- LOG HISTORY -----------------
+def log_history(request):
+    logs = Log.objects.all().order_by('-timestamp')
+    return render(request, 'log_history.html', {'logs': logs})
