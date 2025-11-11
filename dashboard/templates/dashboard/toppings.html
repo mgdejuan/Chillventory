@@ -44,7 +44,7 @@
         {% csrf_token %}
         <input type="text" name="name" placeholder="Topping Name" required>
         <input type="number" name="price" placeholder="Price" step="0.01" required>
-        <input type="number" name="stock" placeholder="Stock Quantity" min="0" required>
+        <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
         <input type="date" name="expiration_date" placeholder="Expiration Date" required>
         <button type="submit" class="add-btn">
           <i class="fa-solid fa-plus"></i> Add Topping
@@ -58,7 +58,7 @@
       <table>
         <thead>
           <tr>
-            <th> Expiration Date</th>
+            <th>Expiration Date</th>
             <th>Topping Name</th>
             <th>Price</th>
             <th>Stock</th>
@@ -72,7 +72,7 @@
                 <form method="POST" action="{% url 'toppings' %}" class="inline-edit-form">
                   {% csrf_token %}
                   <td>
-                    <input type="date" name="expiration_date" value="{{ topping.expiration_date }}">
+                    <input type="date" name="expiration_date" value="{{ topping.expiration_date|date:'Y-m-d' }}">
                   </td>
                   <td>
                     <input type="text" name="name" value="{{ topping.name }}">
@@ -81,7 +81,7 @@
                     <input type="number" name="price" value="{{ topping.price }}" step="0.01">
                   </td>
                   <td>
-                    <input type="number" name="stock" value="{{ topping.stock }}">
+                    <input type="number" name="quantity" value="{{ topping.quantity}}">
                   </td>
                   <td class="actions">
                     <button type="submit" name="action" value="update_topping">Save</button>
@@ -93,7 +93,7 @@
                 <td>{{ topping.expiration_date|date:"M d, Y" }}</td>
                 <td>{{ topping.name }}</td>
                 <td>₱{{ topping.price|floatformat:2 }}</td>
-                <td>{{ topping.stock }}</td>
+                <td>{{ topping.quantity}}</td>
                 <td class="actions">
                   <a href="{% url 'toppings' %}?edit={{ topping.id }}" title="Edit">
                     <i class="fa-solid fa-pen"></i>

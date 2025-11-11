@@ -12,7 +12,6 @@ urlpatterns = [
     path('ingredients/', views.ingredients, name='ingredients'),
     path('ingredients/delete/<int:ingredient_id>/', views.delete_ingredient, name='delete_ingredient'),
 
-
     path('toppings/', views.toppings, name='toppings'),
     path('toppings/update/<int:topping_id>/', views.toppings, name='update_topping'),
     path('toppings/delete/<int:id>/', views.delete_topping, name='delete_topping'),

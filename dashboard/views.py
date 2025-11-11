@@ -148,52 +148,71 @@ def delete_ingredient(request, delete_id):
 
 
 # ----------------- TOPPINGS CRUD -----------------
-def toppings(request, topping_id=None):
+def toppings(request):
+    toppings = Topping.objects.all().order_by('name')
     topping_to_edit = None
 
-    if topping_id:
-        topping_to_edit = get_object_or_404(Topping, id=topping_id)
+    # If user clicks “Edit”
+    if 'edit' in request.GET:
+        topping_to_edit = Topping.objects.get(id=request.GET['edit'])
 
     if request.method == 'POST':
+        action = request.POST.get('action')
         name = request.POST.get('name')
         price = request.POST.get('price')
-        stock = request.POST.get('stock')
+        quantity = request.POST.get('quantity')
+        expiration_date = request.POST.get('expiration_date')
 
-        if topping_to_edit:
-            topping_to_edit.name = name
-            topping_to_edit.price = price
-            topping_to_edit.stock = stock
-            topping_to_edit.save()
+        if action == 'update_topping':
+            topping = Topping.objects.get(id=request.POST.get('topping_id'))
+            topping.name = name
+            topping.price = price
+            topping.quantity = quantity
+            topping.expiration_date = expiration_date
+            topping.save()
 
+            # 🧾 Log update
             Log.objects.create(
                 user=request.user,
                 action=f"updated topping '{name}'",
                 timestamp=timezone.now()
             )
-        else:
-            if name and price and stock:
-                Topping.objects.create(
-                    name=name,
-                    price=price,
-                    stock=stock
-                )
 
-                Log.objects.create(
-                    user=request.user,
-                    action=f"added topping '{name}'",
-                    timestamp=timezone.now()
-                )
+        else:
+            Topping.objects.create(
+                name=name,
+                price=price,
+                quantity=quantity,
+                expiration_date=expiration_date
+            )
+
+            # 🧾 Log add
+            Log.objects.create(
+                user=request.user,
+                action=f"added topping '{name}'",
+                timestamp=timezone.now()
+            )
 
         return redirect('toppings')
 
-    all_toppings = Topping.objects.all()
     return render(request, 'dashboard/toppings.html', {
-        'toppings': all_toppings,
+        'toppings': toppings,
         'topping_to_edit': topping_to_edit
     })
 
 
 def delete_topping(request, id):
+    topping = Topping.objects.get(id=id)
+    topping.delete()
+    return redirect('toppings')
+
+    # 🧾 Log delete
+    Log.objects.create(
+        user=request.user,
+        action=f"deleted topping '{name}'",
+        timestamp=timezone.now()
+    )
+
     topping = get_object_or_404(Topping, id=id)
     name = topping.name
     topping.delete()

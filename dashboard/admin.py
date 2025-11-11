@@ -14,9 +14,8 @@ class IngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Topping)
 class ToppingAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'is_available', 'created_at')
+    list_display = ('name', 'price', 'quantity', 'expiration_date')
     search_fields = ('name',)
-    list_filter = ('is_available', 'created_at')
 
 
 @admin.register(Packaging)
