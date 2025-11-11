@@ -1,249 +1,149 @@
-/* --- General Layout --- */
+/* ----------------- BODY & CONTAINER ----------------- */
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #fff8f0;
-  margin: 0;
-  padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
 }
 
 .container {
-  max-width: 1100px;
-  margin: 40px auto;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  padding: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* --- Header --- */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #f3d6c1;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
+/* ----------------- FORM ----------------- */
+form div {
+    margin-bottom: 15px;
 }
 
-.header h1 {
-  font-size: 24px;
-  color: #e26a6a;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  color: #555;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.admin-profile {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #444;
-}
-
-/* --- Add Form --- */
-.add-form {
-  margin-top: 30px;
-  padding: 30px;
-  background: #fff3ea;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  text-align: center;
-}
-
-.add-form h2 {
-  margin-bottom: 20px;
-  color: #e26a6a;
-  font-size: 22px;
-  font-weight: 600;
-}
-
-/* Keep form centered and even */
-.add-form form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-}
-
-.add-form input {
-  width: 200px;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
-  text-align: center;
-  background-color: white;
-}
-
-/* Date input styling */
-input[type="date"] {
-  width: 200px;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
-  text-align: center;
-}
-
-/* Remove number input arrows */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Add Flavor Button */
-.add-btn {
-  background-color: #e26a6a;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 44px; /* 👈 same as input height */
-  width: 200px; /* 👈 same width as inputs */
-  font-size: 15px;
-}
-
-.add-btn:hover {
-  background-color: #cf5858;
-}
-
-/* --- Table --- */
-.flavor-list {
-  margin-top: 40px;
-  overflow-x: auto;
-  border: 2px solid #e26a6a;
-  border-radius: 12px;
-  padding: 15px;
-  background-color: #fff3ea;
-}
-
-.flavor-list h2 {
-  color: #e26a6a;
-  text-align: center;
-}
-
-.flavor-list table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  min-width: 600px;
-  text-align: center;
-}
-
-.flavor-list th,
-.flavor-list td {
-  padding: 12px 15px;
-  border: 1px solid #e26a6a;
-  vertical-align: middle;
-}
-
-.flavor-list th {
-  background-color: #ffe6d9;
-  font-weight: 600;
-  text-align: center;
-}
-
-/* Table Cell Styles */
-.flavor-list td.flavor-name {
-  font-weight: 500;
-  color: #333;
-}
-
-.flavor-list td.flavor-price {
-  color: #27ae60;
-  font-weight: 600;
-}
-
-.flavor-list td.flavor-stock {
-  color: #555;
-  font-weight: 500;
-}
-
-/* Actions styling */
-.actions a,
-.actions button {
-  margin-right: 8px;
-  color: #e26a6a;
-  text-decoration: none;
-  font-size: 16px;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.actions button {
-  padding: 4px 8px;
-  border-radius: 4px;
-  background-color: #ffe6d9;
-  transition: 0.2s;
-}
-
-.actions button:hover {
-  background-color: #ffd1b3;
-}
-
-/* Empty message */
-.no-flavors {
-  text-align: center;
-  color: #777;
-  font-style: italic;
-  padding: 20px 0;
-}
-
-/* --- Responsive Fixes --- */
-@media (max-width: 1024px) {
-  .add-form form {
-    flex-wrap: wrap;
-  }
-
-  .add-form input,
-  .add-btn,
-  input[type="date"] {
-    width: 45%;
-  }
-}
-
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .add-form form {
-    flex-direction: column;
-  }
-
-  .add-form input,
-  .add-btn,
-  input[type="date"] {
+form input {
     width: 100%;
-  }
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
 
-  .flavor-list table {
-    min-width: 100%;
-  }
+form button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+/* ----------------- TABLE ----------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: 700;
+}
+
+/* ----------------- STOCK ALERTS ----------------- */
+#stock-alerts-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.stock-alert {
+    margin-bottom: 10px;
+    padding: 12px 18px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+    min-width: 250px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    animation: slideIn 0.5s ease;
+}
+
+/* Alert types */
+.stock-alert.critical {
+    background-color: #e74c3c;
+}
+
+.stock-alert.low {
+    background-color: #f39c12;
+}
+
+.stock-alert.runout {
+    background-color: #2c3e50;
+}
+
+/* Slide-in animation */
+@keyframes slideIn {
+    0% { transform: translateX(300px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+/* Stock Alerts Navbar */
+.stock-alerts-navbar {
+    position: fixed; /* stays on top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
+    justify-content: flex-start; /* alerts align left */
+    gap: 10px;
+    padding: 10px;
+    background-color: #fff8e1; /* light background */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Alerts style */
+.stock-alerts-navbar .alert {
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.alert.critical {
+    background-color: #ffcccc;
+    color: #990000;
+}
+
+.alert.low {
+    background-color: #fff0b3;
+    color: #996600;
+}
+
+/* Optional: hover effect */
+.stock-alerts-navbar .alert:hover {
+    opacity: 0.8;
+}
+
+/* Make list horizontal */
+.stock-alerts-navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 5px;
 }

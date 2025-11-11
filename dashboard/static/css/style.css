@@ -1,0 +1,27 @@
+#stock-alerts-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.alert {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: white;
+    min-width: 250px;
+    font-weight: bold;
+    opacity: 1;
+    transition: opacity 0.5s, transform 0.5s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.alert.runout { background-color: #000; }
+.alert.critical { background-color: #f44336; }
+.alert.low { background-color: #ff9800; }
+
+.alert.fade-out {
+    opacity: 0;
+    transform: translateX(100%);
+}

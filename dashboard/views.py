@@ -64,45 +64,56 @@ def home(request):
     })
 
 
-# ----------------- FLAVORS CRUD -----------------
 def flavors(request):
-    flavors = Flavor.objects.all().order_by('name')
-    flavor_to_edit = None
+    # Check if editing
+    edit_id = request.GET.get('edit')
+    if edit_id:
+        flavor_to_edit = get_object_or_404(Flavor, id=edit_id)
+    else:
+        flavor_to_edit = None
 
-    if 'edit' in request.GET:
-        flavor_to_edit = Flavor.objects.get(id=request.GET['edit'])
-
+    # Handle POST (Add / Update)
     if request.method == 'POST':
-        action = request.POST.get('action')
         name = request.POST.get('name')
         price = request.POST.get('price')
-        quantity = request.POST.get('quantity')
-        expiration_date = request.POST.get('expiration_date')
+        quantity = int(request.POST.get('quantity') or 0)
+        expiration_date = request.POST.get('expiration_date') or None
 
-        if action == 'update_flavor':
-            flavor = Flavor.objects.get(id=request.POST.get('flavor_id'))
-            flavor.name = name
-            flavor.price = price
-            flavor.quantity = quantity
-            flavor.expiration_date = expiration_date
-            flavor.save()
-            Log.objects.create(user=request.user, action=f"updated flavor '{name}'", timestamp=timezone.now())
+        if flavor_to_edit:
+            flavor_to_edit.name = name
+            flavor_to_edit.price = price
+            flavor_to_edit.quantity = quantity
+            flavor_to_edit.expiration_date = expiration_date
+            flavor_to_edit.save()
         else:
-            Flavor.objects.create(name=name, price=price, quantity=quantity, expiration_date=expiration_date)
-            Log.objects.create(user=request.user, action=f"added flavor '{name}'", timestamp=timezone.now())
-
+            Flavor.objects.create(
+                name=name,
+                price=price,
+                quantity=quantity,
+                expiration_date=expiration_date
+            )
         return redirect('flavors')
 
-    return render(request, 'dashboard/flavors.html', {'flavors': flavors, 'flavor_to_edit': flavor_to_edit})
+    # Query all flavors
+    flavors_list = Flavor.objects.all()
 
+    # Stock alerts
+    runout_flavors = flavors_list.filter(quantity=0)
+    critical_flavors = [f for f in flavors_list if 0 < f.quantity <= f.critical_threshold]
+    low_flavors = [f for f in flavors_list if f.critical_threshold < f.quantity <= f.low_threshold]
+
+    return render(request, 'dashboard/flavors.html', {
+        'flavors': flavors_list,
+        'flavor_to_edit': flavor_to_edit,
+        'runout_flavors': runout_flavors,
+        'critical_flavors': critical_flavors,
+        'low_flavors': low_flavors,
+    })
 
 def delete_flavor(request, delete_id):
     flavor = get_object_or_404(Flavor, id=delete_id)
-    name = flavor.name
     flavor.delete()
-    Log.objects.create(user=request.user, action=f"deleted flavor '{name}'", timestamp=timezone.now())
     return redirect('flavors')
-
 
 # ----------------- INGREDIENTS CRUD -----------------
 def ingredients(request):
