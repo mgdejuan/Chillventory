@@ -1,118 +1,86 @@
-/* ==== General Styling ==== */
+/* ===== Log History Page CSS ===== */
+
 body {
-  font-family: "Poppins", sans-serif;
-  background-color: #fffbee;
-  color: #5a4635;
-  margin: 0;
-  padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fdf6f0;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-  width: 90%;
-  margin: 30px auto;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* ==== Header ==== */
-.header {
-  background-color: #fff3d4;
-  border-radius: 10px;
-  padding: 15px 25px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.left-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* ==== Back Button ==== */
-.back-btn {
-  background-color: #ffefd2;
-  border: none;
-  color: #4a3c2a;
-  padding: 8px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.back-btn i {
-  margin-right: 5px;
-}
-
-.back-btn:hover {
-  background-color: #ffe2b3;
-  transform: scale(1.05);
-}
-
-/* ==== Title ==== */
-.header h1 {
-  font-size: 1.8rem;
-  color: #5a4635;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.header h1 i {
-  color: #8b5e34;
-}
-
-/* ==== Admin Profile ==== */
-.admin-profile {
-  background-color: #f3e4c3;
-  padding: 8px 15px;
-  border-radius: 25px;
-  text-decoration: none;
-  color: #5a4635;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: 0.3s;
-}
-
-.admin-profile:hover {
-  background-color: #f7d9a9;
-}
-
-/* ==== Table Section ==== */
-.log-section {
-  background-color: #fffef6;
-  padding: 25px;
-  margin-top: 25px;
-  border-radius: 10px;
-  border: 1px solid #ead9b0;
-}
-
-.log-section h2 {
-  margin-bottom: 15px;
-  color: #4a3c2a;
+h1 {
+    text-align: center;
+    color: #ff6b81;
+    margin-bottom: 25px;
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #fffdf5;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 th, td {
-  text-align: left;
-  padding: 12px 15px;
-  border-bottom: 1px solid #ddd2a6;
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
 }
 
 th {
-  background-color: #fff3d4;
-  color: #4a3c2a;
+    background-color: #ffcccb;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
 }
 
-.no-data {
-  text-align: center;
-  color: #8b7b68;
-  padding: 20px;
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #ffe4e1;
+    transition: 0.3s;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-buttons button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.action-buttons .edit {
+    background-color: #ffb347;
+    color: #fff;
+}
+
+.action-buttons .delete {
+    background-color: #ff6b6b;
+    color: #fff;
+}
+
+.action-buttons button:hover {
+    opacity: 0.85;
+}
+
+.no-logs {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 16px;
+    color: #999;
 }

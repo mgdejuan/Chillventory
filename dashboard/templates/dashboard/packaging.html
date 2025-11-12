@@ -4,30 +4,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Packaging | Sweets N’ Treats</title>
+  <title>Packaging Management | Sweets N’ Treats</title>
 
-  <link rel="stylesheet" href="{% static 'css/packaging.css' %}">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/packaging.css' %}">
+
+  <!-- Remove spinners -->
   <style>
-    /* Remove arrows (spinners) from number inputs */
     input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
   </style>
 </head>
-<body>
 
+<body>
   <div class="container">
-    <!-- Header Section -->
+    <!-- Header -->
     <header class="header">
       <a href="{% url 'home' %}" class="back-btn">
-        <i class="fa-solid fa-arrow-left"></i> Back
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
       </a>
       <h1><i class="fa-solid fa-box"></i> Packaging Management</h1>
       <div class="admin-profile">
@@ -41,21 +40,34 @@
       <h2>ADD NEW PACKAGING</h2>
       <form method="POST" action="{% url 'add_packaging' %}">
         {% csrf_token %}
-        <input type="text" name="name" placeholder="Packaging Name" required>
-        <input type="number" name="quantity" placeholder="Stock Quantity" required>
-        <button type="submit" class="add-btn">
+        <div class="form-section">
+          <div>
+            <label>Packaging Name:</label><br>
+            <input type="text" name="name" placeholder="Enter packaging name" required>
+          </div>
+          <div>
+            <label>Quantity:</label><br>
+            <input type="number" name="quantity" placeholder="0" min="0" required>
+          </div>
+          <div>
+            <label>Price:</label><br>
+            <input type="text" name="price" placeholder="Enter price">
+          </div>
+          <button type="submit" class="add-btn">
             <i class="fa-solid fa-plus"></i> Add Packaging
-        </button>
+          </button>
+        </div>
       </form>
     </section>
 
-    <!-- Packaging List Table -->
+    <!-- Packaging Table -->
     <section class="flavor-list">
       <h2>CURRENT PACKAGING</h2>
       <table>
         <thead>
           <tr>
             <th>Packaging Name</th>
+            <th>Price</th>
             <th>Quantity</th>
             <th>Actions</th>
           </tr>
@@ -67,6 +79,7 @@
                 <form method="POST" action="{% url 'packaging' %}" class="inline-edit-form">
                   {% csrf_token %}
                   <td><input type="text" name="name" value="{{ pack.name }}"></td>
+                  <td><input type="text" name="price" value="{{ pack.price }}"></td>
                   <td><input type="number" name="quantity" value="{{ pack.quantity }}"></td>
                   <td class="actions">
                     <button type="submit" name="action" value="update_packaging">Save</button>
@@ -76,28 +89,22 @@
                 </form>
               {% else %}
                 <td>{{ pack.name }}</td>
+                <td>{{ pack.price }}</td>
                 <td>{{ pack.quantity }}</td>
                 <td class="actions">
-                  <a href="{% url 'packaging' %}?edit={{ pack.id }}" title="Edit">
-                    <i class="fa-solid fa-pen"></i>
-                  </a>
+                  <a href="{% url 'packaging' %}?edit={{ pack.id }}" title="Edit"><i class="fa-solid fa-pen"></i></a>
                   <a href="{% url 'delete_packaging' pack.id %}"
                      onclick="return confirm('Are you sure you want to delete {{ pack.name }}?')"
-                     title="Delete">
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
+                     title="Delete"><i class="fa-solid fa-trash"></i></a>
                 </td>
               {% endif %}
             </tr>
           {% empty %}
-            <tr>
-              <td colspan="5" class="no-data">No packaging found.</td>
-            </tr>
+            <tr><td colspan="4" class="no-data">No packaging found.</td></tr>
           {% endfor %}
         </tbody>
       </table>
     </section>
   </div>
-
 </body>
 </html>

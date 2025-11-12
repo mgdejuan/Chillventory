@@ -2,108 +2,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Inventory Dashboard</title>
-    <link rel="stylesheet" href="{% static 'dashboard/css/inventory.css' %}">
+  <meta charset="UTF-8">
+  <title>Inventory Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
 </head>
 <body>
-    <h1>Inventory Dashboard</h1>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="left-header">
+        <a href="{% url 'home' %}" class="back-btn">← Back</a>
+        <h1>Inventory Dashboard</h1>
+      </div>
+      <div class="admin-profile">
+        <span>Admin</span>
+      </div>
+    </div>
 
-    <table>
+    <div class="inventory-box">
+      <h3>Inventory Summary</h3>
+
+      <table>
         <thead>
-            <tr>
-                <th>Item</th>
-                <th>Type</th>
-                <th>Quantity</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
+          <tr>
+            <th>Item</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
         </thead>
         <tbody>
-            <!-- Flavors -->
-            {% for item in stock.flavors %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>Flavor</td>
-                <td>{{ item.quantity }}</td>
-                <td>
-                    {% if item.quantity == 0 %}
-                        Out of stock
-                    {% elif item.quantity <= item.critical_threshold %}
-                        Critical
-                    {% elif item.quantity <= item.low_threshold %}
-                        Low
-                    {% else %}
-                        OK
-                    {% endif %}
-                </td>
-                <td><a href="{% url 'restock_flavor' item.id %}">Restock</a></td>
-            </tr>
-            {% endfor %}
+          <!-- Flavors -->
+          {% for item in stock.flavors %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>Flavor</td>
+            <td>{{ item.quantity }}</td>
+            <td>
+              {% if item.quantity == 0 %}
+                <span class="status-badge status-out">Out of stock</span>
+              {% elif item.quantity <= item.critical_threshold %}
+                <span class="status-badge status-critical">Critical</span>
+              {% elif item.quantity <= item.low_threshold %}
+                <span class="status-badge status-low">Low</span>
+              {% else %}
+                <span class="status-badge status-in">OK</span>
+              {% endif %}
+            </td>
+            <td><a href="{% url 'restock_flavor' item.id %}" class="back-btn">Restock</a></td>
+          </tr>
+          {% endfor %}
 
-            <!-- Ingredients -->
-            {% for item in stock.ingredients %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>Ingredient</td>
-                <td>{{ item.quantity }}</td>
-                <td>
-                    {% if item.quantity == 0 %}
-                        Out of stock
-                    {% elif item.quantity <= 2 %}
-                        Critical
-                    {% elif item.quantity <= 5 %}
-                        Low
-                    {% else %}
-                        OK
-                    {% endif %}
-                </td>
-                <td><a href="{% url 'restock_ingredient' item.id %}">Restock</a></td>
-            </tr>
-            {% endfor %}
+          <!-- Ingredients -->
+          {% for item in stock.ingredients %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>Ingredient</td>
+            <td>{{ item.quantity }}</td>
+            <td>
+              {% if item.quantity == 0 %}
+                <span class="status-badge status-out">Out of stock</span>
+              {% elif item.quantity <= 2 %}
+                <span class="status-badge status-critical">Critical</span>
+              {% elif item.quantity <= 5 %}
+                <span class="status-badge status-low">Low</span>
+              {% else %}
+                <span class="status-badge status-in">OK</span>
+              {% endif %}
+            </td>
+            <td><a href="{% url 'restock_ingredient' item.id %}" class="back-btn">Restock</a></td>
+          </tr>
+          {% endfor %}
 
-            <!-- Toppings -->
-            {% for item in stock.toppings %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>Topping</td>
-                <td>{{ item.quantity }}</td>
-                <td>
-                    {% if item.quantity == 0 %}
-                        Out of stock
-                    {% elif item.quantity <= 2 %}
-                        Critical
-                    {% elif item.quantity <= 5 %}
-                        Low
-                    {% else %}
-                        OK
-                    {% endif %}
-                </td>
-                <td><a href="{% url 'restock_topping' item.id %}">Restock</a></td>
-            </tr>
-            {% endfor %}
+          <!-- Toppings -->
+          {% for item in stock.toppings %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>Topping</td>
+            <td>{{ item.quantity }}</td>
+            <td>
+              {% if item.quantity == 0 %}
+                <span class="status-badge status-out">Out of stock</span>
+              {% elif item.quantity <= 2 %}
+                <span class="status-badge status-critical">Critical</span>
+              {% elif item.quantity <= 5 %}
+                <span class="status-badge status-low">Low</span>
+              {% else %}
+                <span class="status-badge status-in">OK</span>
+              {% endif %}
+            </td>
+            <td><a href="{% url 'restock_topping' item.id %}" class="back-btn">Restock</a></td>
+          </tr>
+          {% endfor %}
 
-            <!-- Packaging -->
-            {% for item in stock.packaging %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <td>Packaging</td>
-                <td>{{ item.quantity }}</td>
-                <td>
-                    {% if item.quantity == 0 %}
-                        Out of stock
-                    {% elif item.quantity <= 2 %}
-                        Critical
-                    {% elif item.quantity <= 5 %}
-                        Low
-                    {% else %}
-                        OK
-                    {% endif %}
-                </td>
-                <td><a href="{% url 'restock_packaging' item.id %}">Restock</a></td>
-            </tr>
-            {% endfor %}
+          <!-- Packaging -->
+          {% for item in stock.packaging %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>Packaging</td>
+            <td>{{ item.quantity }}</td>
+            <td>
+              {% if item.quantity == 0 %}
+                <span class="status-badge status-out">Out of stock</span>
+              {% elif item.quantity <= 2 %}
+                <span class="status-badge status-critical">Critical</span>
+              {% elif item.quantity <= 5 %}
+                <span class="status-badge status-low">Low</span>
+              {% else %}
+                <span class="status-badge status-in">OK</span>
+              {% endif %}
+            </td>
+            <td><a href="{% url 'restock_packaging' item.id %}" class="back-btn">Restock</a></td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
+  </div>
 </body>
 </html>
