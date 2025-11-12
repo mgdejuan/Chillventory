@@ -6,8 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ingredients | Sweets N’ Treats</title>
 
-  <link rel="stylesheet" href="{% static 'css/ingredients.css' %}">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/ingredients.css' %}">
 
   <style>
     /* Remove arrows (spinners) from number inputs */
@@ -39,16 +43,15 @@
     <!-- Add Ingredient Form -->
     <section class="add-form">
       <h2>ADD NEW INGREDIENT</h2>
-      <form method="POST" action="{% url 'ingredients' %}">
-        {% csrf_token %}
-        <input type="text" name="name" placeholder="Ingredient Name" required>
-        <input type="number" name="price" placeholder="Price" step="0.01" required>
-        <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
-        <input type="date" name="expiration_date" placeholder="Expiration Date" required>
-        <button type="submit" class="add-btn">
+      <div class="form-section">
+        <input type="text" id="ingredientName" placeholder="Ingredient Name" required>
+        <input type="number" id="price" placeholder="Price" step="0.01" required>
+        <input type="number" id="quantity" placeholder="Stock Quantity" min="0" required>
+        <input type="date" id="expirationDate" placeholder="Expiration Date" required>
+        <button type="button" class="add-btn" id="addIngredientBtn">
           <i class="fa-solid fa-plus"></i> Add Ingredient
         </button>
-      </form>
+      </div>
     </section>
 
     <!-- Ingredient List Table -->
@@ -57,6 +60,7 @@
       <table>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Expiration Date</th>
             <th>Ingredient Name</th>
             <th>Price</th>
@@ -64,56 +68,113 @@
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {% for ingredient in ingredients %}
-            <tr>
-              {% if ingredient_to_edit and ingredient_to_edit.id == ingredient.id %}
-                <form method="POST" action="{% url 'ingredients' %}" class="inline-edit-form">
-                  {% csrf_token %}
-                  <td>
-                    <input type="date" name="expiration_date" value="{{ ingredient.expiration_date|date:'Y-m-d' }}">
-                  </td>
-                  <td>
-                    <input type="text" name="name" value="{{ ingredient.name }}">
-                  </td>
-                  <td>
-                    <input type="number" name="price" value="{{ ingredient.price }}" step="0.01">
-                  </td>
-                  <td>
-                    <input type="number" name="quantity" value="{{ ingredient.quantity }}">
-                  </td>
-                  <td class="actions">
-                    <button type="submit" name="action" value="update_ingredient">Save</button>
-                    <a href="{% url 'ingredients' %}" class="cancel-btn">Cancel</a>
-                    <input type="hidden" name="ingredient_id" value="{{ ingredient.id }}">
-                      </td>
-                    </form>
-                  {% else %}
-                    <td>{{ ingredient.expiration_date|date:"M d, Y" }}</td>
-                    <td>{{ ingredient.name }}</td>
-                    <td>₱{{ ingredient.price|floatformat:2 }}</td>
-                    <td>{{ ingredient.quantity }}</td>
-                    <td class="actions">
-                      <a href="{% url 'ingredients' %}?edit={{ ingredient.id }}" title="Edit">
-                        <i class="fa-solid fa-pen"></i>
-                      </a>
-                      <a href="{%url 'delete_ingredient' ingredient.id %}"
-                        onclick="return confirm('Are you sure you want to delete {{ ingredient.name }}?')"
-                        title="Delete">
-                        <i class="fa-solid fa-trash"></i>
-                      </a>
-                    </td>
-                   {% endif %}
-                </tr>
-              {% empty %}
-                <tr>
-                  <td colspan="5" class="no-data">No ingredients found.</td>
-            </tr>
-          {% endfor %}
-        </tbody>
+        <tbody id="ingredientTableBody"></tbody>
       </table>
     </section>
   </div>
 
+  <script>
+    const addBtn = document.getElementById('addIngredientBtn');
+    const nameInput = document.getElementById('ingredientName');
+    const priceInput = document.getElementById('price');
+    const quantityInput = document.getElementById('quantity');
+    const expirationInput = document.getElementById('expirationDate');
+    const tableBody = document.getElementById('ingredientTableBody');
+
+    let ingredients = JSON.parse(localStorage.getItem('ingredients')) || [];
+    let idCounter = ingredients.length ? Math.max(...ingredients.map(i => i.id)) + 1 : 1;
+
+    function saveToLocalStorage() {
+      localStorage.setItem('ingredients', JSON.stringify(ingredients));
+    }
+
+    function renderTable() {
+      tableBody.innerHTML = "";
+      ingredients.forEach(ingredient => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${ingredient.id}</td>
+          <td>${ingredient.expiration}</td>
+          <td>${ingredient.name}</td>
+          <td>₱${parseFloat(ingredient.price).toFixed(2)}</td>
+          <td><input type="number" class="quantity-input" value="${ingredient.quantity}" min="0"></td>
+          <td class="actions">
+            <button class="action-btn edit-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+            <button class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        `;
+
+        // Quantity change
+        row.querySelector('.quantity-input').addEventListener('change', e => {
+          ingredient.quantity = parseInt(e.target.value) || 0;
+          saveToLocalStorage();
+        });
+
+        // Delete button
+        row.querySelector('.delete-btn').addEventListener('click', () => {
+          if (confirm(`Are you sure you want to delete ${ingredient.name}?`)) {
+            ingredients = ingredients.filter(i => i.id !== ingredient.id);
+            saveToLocalStorage();
+            renderTable();
+          }
+        });
+
+        // Edit button
+        row.querySelector('.edit-btn').addEventListener('click', () => {
+          const newName = prompt("Edit ingredient name:", ingredient.name);
+          const newPrice = prompt("Edit price:", ingredient.price);
+          const newQuantity = prompt("Edit quantity:", ingredient.quantity);
+          const newExp = prompt("Edit expiration date (YYYY-MM-DD):", ingredient.expiration);
+
+          if (newName && newPrice && newQuantity && newExp) {
+            ingredient.name = newName.trim();
+            ingredient.price = newPrice.trim();
+            ingredient.quantity = parseInt(newQuantity);
+            ingredient.expiration = newExp.trim();
+            saveToLocalStorage();
+            renderTable();
+          }
+        });
+
+        tableBody.appendChild(row);
+      });
+
+      if (ingredients.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="no-data">No ingredients found.</td></tr>`;
+      }
+    }
+
+    function addIngredient() {
+      const name = nameInput.value.trim();
+      const price = priceInput.value.trim();
+      const quantity = parseInt(quantityInput.value) || 0;
+      const expiration = expirationInput.value;
+
+      if (!name || !price || !expiration) {
+        alert("Please fill out all required fields!");
+        return;
+      }
+
+      const newIngredient = {
+        id: idCounter++,
+        name,
+        price,
+        quantity,
+        expiration
+      };
+
+      ingredients.push(newIngredient);
+      saveToLocalStorage();
+      renderTable();
+
+      nameInput.value = "";
+      priceInput.value = "";
+      quantityInput.value = "";
+      expirationInput.value = "";
+    }
+
+    addBtn.addEventListener('click', addIngredient);
+    renderTable();
+  </script>
 </body>
 </html>

@@ -1,26 +1,60 @@
-/* ================================
-   Topping Management Page Styles
-   Cleaned & Organized Version
-================================ */
+/* ============================================
+   🍧 TOPPING MANAGEMENT PAGE STYLES
+   Clean, Consistent, and Responsive
+============================================ */
 
-/* --- General Layout --- */
-body {
+/* --- GLOBAL RESET --- */
+* {
   font-family: 'Poppins', sans-serif;
-  background-color: #f0ffff; /* very light teal tone */
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fff8f0; /* soft cream like other modules */
   margin: 0;
   padding: 0;
 }
 
-.container {
-  max-width: 1100px;
-  margin: 40px auto;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 30px;
+/* ===============================
+   🔙 BACK BUTTON
+=============================== */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #00d4d4; /* Teal */
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  color: white;
+  cursor: pointer;
+  margin: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  transition: background 0.2s;
 }
 
-/* --- Header --- */
+.back-btn:hover {
+  background-color: #00bfbf;
+}
+
+/* ===============================
+   📦 CONTAINER
+=============================== */
+.container {
+  background-color: #fffbea; /* light cream background */
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   🧭 HEADER
+=============================== */
 .header {
   display: flex;
   justify-content: space-between;
@@ -40,17 +74,6 @@ body {
   gap: 10px;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  color: #555;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
 .admin-profile {
   display: flex;
   align-items: center;
@@ -58,75 +81,80 @@ body {
   color: #444;
 }
 
-/* --- Add Form --- */
+/* ===============================
+   ➕ ADD FORM
+=============================== */
 .add-form {
-  margin-top: 30px;
-  padding: 30px;
-  background: #e6ffff; /* soft teal */
+  margin-top: 20px;
+  background: #e6ffff; /* soft teal highlight */
   border-radius: 12px;
+  padding: 25px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  text-align: center;
 }
 
 .add-form h2 {
-  margin-bottom: 20px;
+  text-align: center;
   color: #00bfbf;
-  font-size: 22px;
   font-weight: 600;
+  margin-bottom: 20px;
 }
 
-/* Form Layout */
-.add-form form {
+/* --- Form Layout --- */
+.form-section {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   gap: 15px;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
-/* Input Fields */
+/* --- Input Fields --- */
 .add-form input {
   width: 200px;
   padding: 10px 15px;
-  border: 1px solid #ddd;
   border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #e5e0c3; /* soft beige tone */
   font-size: 15px;
   text-align: center;
-  background-color: white;
+  height: 44px; /* matches button height */
 }
 
-/* Remove number input arrows */
+/* --- Remove number spinners --- */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-/* Add Topping Button */
+/* --- Add Button --- */
 .add-btn {
   background-color: #00d4d4;
-  color: white;
   border: none;
-  padding: 10px 15px;
   border-radius: 8px;
+  padding: 10px 15px;
+  color: white;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
-  font-weight: 500;
+  transition: background 0.2s, transform 0.1s;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 44px;
   width: 200px;
+  height: 44px; /* same as input height */
   font-size: 15px;
+  margin-top: auto; /* aligns bottom with inputs */
 }
 
 .add-btn:hover {
   background-color: #00bfbf;
+  transform: scale(1.03);
 }
 
-/* --- Table --- */
+/* ===============================
+   📋 TABLE SECTION
+=============================== */
 .topping-list {
   margin-top: 40px;
   overflow-x: auto;
@@ -139,6 +167,7 @@ input[type=number]::-webkit-outer-spin-button {
 .topping-list h2 {
   color: #00bfbf;
   text-align: center;
+  font-weight: 600;
 }
 
 .topping-list table {
@@ -147,8 +176,12 @@ input[type=number]::-webkit-outer-spin-button {
   margin-top: 15px;
   min-width: 600px;
   text-align: center;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
+/* --- Table Cells --- */
 .topping-list th,
 .topping-list td {
   padding: 12px 15px;
@@ -157,9 +190,9 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .topping-list th {
-  background-color: #b3f0f0;
+  background-color: #00d4d4;
+  color: white;
   font-weight: 600;
-  text-align: center;
 }
 
 .topping-list td {
@@ -169,28 +202,28 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* --- Actions --- */
 .actions a,
-.actions button {
-  margin-right: 8px;
-  color: #00bfbf;
-  text-decoration: none;
-  font-size: 16px;
+.actions button,
+.action-btn {
+  background-color: #00d4d4;
   border: none;
-  background: none;
+  border-radius: 8px;
+  color: white;
+  padding: 6px 12px;
+  margin: 3px;
   cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.1s;
 }
 
-.actions button {
-  padding: 4px 8px;
-  border-radius: 4px;
-  background-color: #c2fafa;
-  transition: 0.2s;
+.actions a:hover,
+.actions button:hover,
+.action-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.03);
 }
 
-.actions button:hover {
-  background-color: #a6f2f2;
-}
-
-/* --- Empty Message --- */
+/* --- Empty Table Message --- */
 .no-data {
   text-align: center;
   color: #777;
@@ -198,9 +231,11 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 20px 0;
 }
 
-/* --- Responsive Fixes --- */
+/* ===============================
+   📱 RESPONSIVE DESIGN
+=============================== */
 @media (max-width: 1024px) {
-  .add-form form {
+  .form-section {
     flex-wrap: wrap;
   }
 
@@ -214,11 +249,11 @@ input[type=number]::-webkit-outer-spin-button {
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
   }
 
-  .add-form form {
+  .form-section {
     flex-direction: column;
+    align-items: center;
   }
 
   .add-form input,
