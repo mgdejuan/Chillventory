@@ -22,28 +22,6 @@
   </style>
 </head>
 <body>
-    <!-- GLOBAL STOCK ALERTS -->
-    {% if critical_flavors %}
-        <div class="alert critical">
-            <strong>Critical Flavors!</strong>
-            <ul>
-                {% for flavor in critical_flavors %}
-                    <li>{{ flavor.name }} - {{ flavor.quantity }} left</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-    {% if low_flavors %}
-        <div class="alert low">
-            <strong>Low Flavors</strong>
-            <ul>
-                {% for flavor in low_flavors %}
-                    <li>{{ flavor.name }} - {{ flavor.quantity }} left</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
     <!-- MAIN CONTENT -->
     <div class="container">
         <!-- Header Section -->
