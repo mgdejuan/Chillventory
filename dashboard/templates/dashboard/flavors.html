@@ -6,8 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flavors | Sweets N’ Treats</title>
 
-  <link rel="stylesheet" href="{% static 'css/flavors.css' %}">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/flavors.css' %}">
 
   <style>
     /* Remove arrows (spinners) from number inputs */
@@ -39,17 +43,28 @@
     <!-- Add Flavor Form -->
     <section class="add-form">
       <h2>ADD NEW FLAVOR</h2>
-      <form method="POST" action="{% url 'flavors' %}">
-        {% csrf_token %}
-        <input type="text" name="name" placeholder="Flavor Name" required>
-        <input type="number" name="price" placeholder="Price" step="0.01" required>
-        <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
-        <input type="date" name="expiration_date" placeholder="Expiration Date" required>
-        <button type="submit" class="add-btn">
+      <div class="form-section">
+        <input type="text" id="flavorName" placeholder="Flavor Name" required>
+        <input type="number" id="price" placeholder="Price" step="0.01" required>
+        <input type="number" id="quantity" placeholder="Stock Quantity" min="0" required>
+        <input type="date" id="expirationDate" placeholder="Expiration Date" required>
+        <button type="button" class="add-btn" id="addFlavorBtn">
           <i class="fa-solid fa-plus"></i> Add Flavor
         </button>
-      </form>
+      </div>
     </section>
+
+    <!-- Search & Sort -->
+    <div class="search-sort">
+      <input type="text" id="searchInput" placeholder="Search by name or price">
+      <select id="sortSelect">
+        <option value="">Sort by...</option>
+        <option value="nameAsc">Name (A–Z)</option>
+        <option value="nameDesc">Name (Z–A)</option>
+        <option value="priceAsc">Price (Low–High)</option>
+        <option value="priceDesc">Price (High–Low)</option>
+      </select>
+    </div>
 
     <!-- Flavor List Table -->
     <section class="flavor-list">
@@ -57,6 +72,7 @@
       <table>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Expiration Date</th>
             <th>Flavor Name</th>
             <th>Price</th>
@@ -64,56 +80,129 @@
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {% for flavor in flavors %}
-            <tr>
-              {% if flavor_to_edit and flavor_to_edit.id == flavor.id %}
-                <form method="POST" action="{% url 'flavors' %}" class="inline-edit-form">
-                  {% csrf_token %}
-                  <td>
-                    <input type="date" name="expiration_date" value="{{ flavor.expiration_date|date:'Y-m-d' }}">
-                  </td>
-                  <td>
-                    <input type="text" name="name" value="{{ flavor.name }}">
-                  </td>
-                  <td>
-                    <input type="number" name="price" value="{{ flavor.price }}" step="0.01">
-                  </td>
-                  <td>
-                    <input type="number" name="quantity" value="{{ flavor.quantity }}">
-                  </td>
-                  <td class="actions">
-                    <button type="submit" name="action" value="update_flavor">Save</button>
-                    <a href="{% url 'flavors' %}" class="cancel-btn">Cancel</a>
-                    <input type="hidden" name="flavor_id" value="{{ flavor.id }}">
-                  </td>
-                </form>
-              {% else %}
-                <td>{{ flavor.expiration_date|date:"M d, Y" }}</td>
-                <td>{{ flavor.name }}</td>
-                <td>₱{{ flavor.price|floatformat:2 }}</td>
-                <td>{{ flavor.quantity }}</td>
-                <td class="actions">
-                  <a href="{% url 'flavors' %}?edit={{ flavor.id }}" title="Edit">
-                    <i class="fa-solid fa-pen"></i>
-                  </a>
-                  <a href="{% url 'delete_flavor' flavor.id %}"
-                     onclick="return confirm('Are you sure you want to delete {{ flavor.name }}?')"
-                     title="Delete">
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
-                </td>
-              {% endif %}
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="5" class="no-data">No flavors found.</td>
-            </tr>
-          {% endfor %}
-        </tbody>
+        <tbody id="flavorTableBody"></tbody>
       </table>
     </section>
   </div>
 
+  <!-- JS Logic -->
+  <script>
+    const addBtn = document.getElementById('addFlavorBtn');
+    const flavorNameInput = document.getElementById('flavorName');
+    const priceInput = document.getElementById('price');
+    const quantityInput = document.getElementById('quantity');
+    const expirationInput = document.getElementById('expirationDate');
+    const tableBody = document.getElementById('flavorTableBody');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+
+    let flavors = JSON.parse(localStorage.getItem('flavors')) || [];
+    let idCounter = flavors.length ? Math.max(...flavors.map(f => f.id)) + 1 : 1;
+
+    function saveToLocalStorage() {
+      localStorage.setItem('flavors', JSON.stringify(flavors));
+    }
+
+    function renderTable() {
+      tableBody.innerHTML = "";
+      const searchTerm = searchInput.value.toLowerCase();
+
+      let displayedFlavors = flavors.filter(f =>
+        f.name.toLowerCase().includes(searchTerm) ||
+        f.price.toLowerCase().includes(searchTerm)
+      );
+
+      const sortValue = sortSelect.value;
+      if (sortValue === "nameAsc") displayedFlavors.sort((a, b) => a.name.localeCompare(b.name));
+      if (sortValue === "nameDesc") displayedFlavors.sort((a, b) => b.name.localeCompare(a.name));
+      if (sortValue === "priceAsc") displayedFlavors.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+      if (sortValue === "priceDesc") displayedFlavors.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+
+      displayedFlavors.forEach(flavor => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${flavor.id}</td>
+          <td>${flavor.expiration}</td>
+          <td>${flavor.name}</td>
+          <td>₱${parseFloat(flavor.price).toFixed(2)}</td>
+          <td><input type="number" class="quantity-input" value="${flavor.quantity}" min="0"></td>
+          <td class="actions">
+            <button class="action-btn edit-btn"><i class="fa-solid fa-pen"></i></button>
+            <button class="action-btn delete-btn"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        `;
+
+        row.querySelector('.quantity-input').addEventListener('change', (e) => {
+          flavor.quantity = parseInt(e.target.value) || 0;
+          saveToLocalStorage();
+        });
+
+        row.querySelector('.delete-btn').addEventListener('click', () => {
+          if (confirm(`Are you sure you want to delete ${flavor.name}?`)) {
+            flavors = flavors.filter(f => f.id !== flavor.id);
+            saveToLocalStorage();
+            renderTable();
+          }
+        });
+
+        row.querySelector('.edit-btn').addEventListener('click', () => {
+          const newName = prompt("Edit flavor name:", flavor.name);
+          const newPrice = prompt("Edit price:", flavor.price);
+          const newQuantity = prompt("Edit quantity:", flavor.quantity);
+          const newExp = prompt("Edit expiration date (YYYY-MM-DD):", flavor.expiration);
+
+          if (newName && newPrice && newQuantity && newExp) {
+            flavor.name = newName.trim();
+            flavor.price = newPrice.trim();
+            flavor.quantity = parseInt(newQuantity);
+            flavor.expiration = newExp.trim();
+            saveToLocalStorage();
+            renderTable();
+          }
+        });
+
+        tableBody.appendChild(row);
+      });
+
+      if (displayedFlavors.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="no-data">No flavors found.</td></tr>`;
+      }
+    }
+
+    function addFlavor() {
+      const name = flavorNameInput.value.trim();
+      const price = priceInput.value.trim();
+      const quantity = parseInt(quantityInput.value) || 0;
+      const expiration = expirationInput.value;
+
+      if (!name || !price || !expiration) {
+        alert("Please fill out all required fields!");
+        return;
+      }
+
+      const newFlavor = {
+        id: idCounter++,
+        name,
+        price,
+        quantity,
+        expiration
+      };
+
+      flavors.push(newFlavor);
+      saveToLocalStorage();
+      renderTable();
+
+      flavorNameInput.value = "";
+      priceInput.value = "";
+      quantityInput.value = "";
+      expirationInput.value = "";
+    }
+
+    addBtn.addEventListener('click', addFlavor);
+    searchInput.addEventListener('input', renderTable);
+    sortSelect.addEventListener('change', renderTable);
+
+    renderTable();
+  </script>
 </body>
 </html>

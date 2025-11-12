@@ -1,4 +1,4 @@
-/* --- General Layout --- */
+/* 🌸 --- General Layout --- */
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #fff8f0;
@@ -15,16 +15,16 @@ body {
   padding: 30px;
 }
 
-/* --- Header --- */
+/* 🍨 --- Header --- */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid #f3d6c1;
   padding-bottom: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
 }
 
 .header h1 {
@@ -35,215 +35,80 @@ body {
   gap: 10px;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  color: #555;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.admin-profile {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #444;
-}
-
-/* --- Add Form --- */
+/* 🍓 --- Add Flavor Form --- */
 .add-form {
-  margin-top: 30px;
-  padding: 30px;
-  background: #fff3ea;
+  background: #fdf4e6;
   border-radius: 12px;
+  padding: 30px 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .add-form h2 {
-  margin-bottom: 20px;
-  color: #e26a6a;
+  color: #a1705b;
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* Keep form centered and even */
-.add-form form {
+/* 🧁 --- Form Section --- */
+.form-section {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   gap: 15px;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
 }
 
-.add-form input {
-  width: 200px;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
-  text-align: center;
-  background-color: white;
-}
-
-/* Date input styling */
+/* Input Fields */
+.add-form input,
 input[type="date"] {
   width: 200px;
+  height: 44px;
   padding: 10px 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #cbb8a0;
   border-radius: 8px;
   font-size: 15px;
+  background-color: #f8ecda;
+  color: #555;
   text-align: center;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-/* Remove number input arrows */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.add-form input::placeholder {
+  color: #7c6a58;
 }
 
-/* Add Flavor Button */
+.add-form input:focus,
+input[type="date"]:focus {
+  border-color: #a1705b;
+  outline: none;
+  background-color: #fff;
+}
+
+/* ✅ Add Button aligned */
 .add-btn {
-  background-color: #e26a6a;
-  color: white;
+  background-color: #a1705b;
+  color: #fff;
   border: none;
-  padding: 10px 15px;
   border-radius: 8px;
+  height: 44px;
+  width: 200px;
   cursor: pointer;
-  transition: 0.2s;
-  font-weight: 500;
+  font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 44px; /* 👈 same as input height */
-  width: 200px; /* 👈 same width as inputs */
-  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .add-btn:hover {
-  background-color: #cf5858;
-}
-
-/* --- Table --- */
-.flavor-list {
-  margin-top: 40px;
-  overflow-x: auto;
-  border: 2px solid #e26a6a;
-  border-radius: 12px;
-  padding: 15px;
-  background-color: #fff3ea;
-}
-
-.flavor-list h2 {
-  color: #e26a6a;
-  text-align: center;
-}
-
-.flavor-list table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  min-width: 600px;
-  text-align: center;
-}
-
-.flavor-list th,
-.flavor-list td {
-  padding: 12px 15px;
-  border: 1px solid #e26a6a;
-  vertical-align: middle;
-}
-
-.flavor-list th {
-  background-color: #ffe6d9;
-  font-weight: 600;
-  text-align: center;
-}
-
-/* Table Cell Styles */
-.flavor-list td.flavor-name {
-  font-weight: 500;
-  color: #333;
-}
-
-.flavor-list td.flavor-price {
-  color: #27ae60;
-  font-weight: 600;
-}
-
-.flavor-list td.flavor-stock {
-  color: #555;
-  font-weight: 500;
-}
-
-/* Actions styling */
-.actions a,
-.actions button {
-  margin-right: 8px;
-  color: #e26a6a;
-  text-decoration: none;
-  font-size: 16px;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.actions button {
-  padding: 4px 8px;
-  border-radius: 4px;
-  background-color: #ffe6d9;
-  transition: 0.2s;
-}
-
-.actions button:hover {
-  background-color: #ffd1b3;
-}
-
-/* Empty message */
-.no-flavors {
-  text-align: center;
-  color: #777;
-  font-style: italic;
-  padding: 20px 0;
-}
-
-/* --- Responsive Fixes --- */
-@media (max-width: 1024px) {
-  .add-form form {
-    flex-wrap: wrap;
-  }
-
-  .add-form input,
-  .add-btn,
-  input[type="date"] {
-    width: 45%;
-  }
-}
-
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .add-form form {
-    flex-direction: column;
-  }
-
-  .add-form input,
-  .add-btn,
-  input[type="date"] {
-    width: 100%;
-  }
-
-  .flavor-list table {
-    min-width: 100%;
-  }
+  background-color: #8e5e48;
+  transform: scale(1.03);
 }
