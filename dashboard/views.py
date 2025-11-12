@@ -18,19 +18,19 @@ def flavors(request):
         quantity = int(request.POST.get('quantity') or 0)
         expiration_date = request.POST.get('expiration_date') or None
 
-        if flavor_to_edit:
-            flavor_to_edit.name = name
-            flavor_to_edit.price = price
-            flavor_to_edit.quantity = quantity
-            flavor_to_edit.expiration_date = expiration_date
-            flavor_to_edit.save()
-        else:
-            Flavor.objects.create(
-                name=name,
-                price=price,
-                quantity=quantity,
-                expiration_date=expiration_date
+
+        Flavor.objects.create(
+            name=name,
+            price=price,
+            quantity=quantity,
+            expiration_date=expiration_date
             )
+          # 🧾 Log the flavor addition
+        Log.objects.create(
+            user=request.user,
+            action=f"added flavor '{name}'",
+            timestamp=timezone.now()
+        )
         return redirect('flavors')
 
     flavors_list = Flavor.objects.all()
@@ -119,31 +119,68 @@ def delete_topping(request, id):
     return redirect('toppings')
 
 # ----------------- PACKAGING -----------------
-def packaging(request):
-    edit_id = request.GET.get('edit')
-    packaging_to_edit = get_object_or_404(Packaging, id=edit_id) if edit_id else None
+def add_packaging(request):
+    packaging_list = Packaging.objects.all().order_by('name')
+    packaging_to_edit = None
 
-    if request.method == 'POST':
+    # Check if user is editing
+    if 'edit' in request.GET:
+        packaging_to_edit = get_object_or_404(Packaging, id=request.GET['edit'])
+
+    if request.method == "POST":
+        action = request.POST.get('action')
         name = request.POST.get('name')
-        quantity = int(request.POST.get('quantity') or 0)
+        quantity = request.POST.get('quantity')
+        price = request.POST.get('price')
 
-        if packaging_to_edit:
-            packaging_to_edit.name = name
-            packaging_to_edit.quantity = quantity
-            packaging_to_edit.save()
-        else:
-            Packaging.objects.create(name=name, quantity=quantity)
+        # 🟢 ADD NEW PACKAGING
+        if action is None:
+            Packaging.objects.create(name=name, quantity=quantity, price=price)
+
+            # 🧾 Log add
+            Log.objects.create(
+                user=request.user,
+                action=f"added packaging '{name}'",
+                timestamp=timezone.now()
+            )
+
+        # 🟡 UPDATE PACKAGING
+        elif action == "update_packaging":
+            packaging_id = request.POST.get('packaging_id')
+            pack = get_object_or_404(Packaging, id=packaging_id)
+            pack.name = name
+            pack.quantity = quantity
+            pack.price = price
+            pack.save()
+
+            # 🧾 Log update
+            Log.objects.create(
+                user=request.user,
+                action=f"updated packaging '{name}'",
+                timestamp=timezone.now()
+            )
+
         return redirect('packaging')
 
-    packaging_list = Packaging.objects.all()
     return render(request, 'dashboard/packaging.html', {
         'packaging_list': packaging_list,
         'packaging_to_edit': packaging_to_edit
     })
 
+
+# ----------------- DELETE PACKAGING -----------------
 def delete_packaging(request, id):
-    packaging = get_object_or_404(Packaging, id=id)
+    packaging = Packaging.objects.get(pk=id)
     packaging.delete()
+    return redirect('packaging')
+
+    # 🧾 Log delete
+    Log.objects.create(
+        user=request.user,
+        action=f"deleted packaging '{name}'",
+        timestamp=timezone.now()
+    )
+
     return redirect('packaging')
 
 # ----------------- Inventory View -----------------

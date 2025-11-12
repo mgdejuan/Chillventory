@@ -3,12 +3,14 @@ from django.contrib.auth.decorators import login_required
 from dashboard.models import Log, Flavor, Ingredient, Topping, Packaging
 from .models import LogHistory  # in sidebar/views.py
 
-
 # Home page (requires login)
 @login_required
 def home(request):
-    # recent_logs = LogHistory.objects.all().order_by('-date_and_time')[:10]  # remove/comment this
-    return render(request, 'sidebar/home.html')
+    recent_logs = LogHistory.objects.all().order_by('-date_and_time')[:10]
+    return render(request, 'sidebar/home.html', {
+        'recent_logs': recent_logs
+    })
+
 
 
 # ----------------- Inventory View -----------------
@@ -40,3 +42,5 @@ def about(request):
 @login_required
 def logout_view(request):
     return render(request, 'logout_view.html')
+
+
