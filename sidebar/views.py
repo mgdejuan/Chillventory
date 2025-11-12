@@ -1,26 +1,29 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import LogHistory
+from dashboard.models import Log, Flavor, Ingredient, Topping, Packaging
+from .models import LogHistory  # in sidebar/views.py
+
 
 # Home page (requires login)
 @login_required
 def home(request):
-    recent_logs = LogHistory.objects.all().order_by('-date_and_time')[:10]
-    return render(request, 'sidebar/home.html', {
-        'recent_logs': recent_logs
-    })
+    # recent_logs = LogHistory.objects.all().order_by('-date_and_time')[:10]  # remove/comment this
+    return render(request, 'sidebar/home.html')
 
-# Inventory page (requires login)
+
+# ----------------- Inventory View -----------------
 @login_required
 def inventory(request):
-    inventory_data = [
-        {'name': 'Sprinkles', 'category': 'Toppings', 'stock': 5, 'updated_at': '2025-10-15'},
-        {'name': 'Vanilla Syrup', 'category': 'Flavors', 'stock': 12, 'updated_at': '2025-10-12'},
-    ]
-    return render(request, 'sidebar/inventory.html', {'inventory': inventory_data})
+    # Gather stock for all categories
+    stock = {
+        'flavors': Flavor.objects.all(),
+        'ingredients': Ingredient.objects.all(),
+        'toppings': Topping.objects.all(),
+        'packaging': Packaging.objects.all(),
+    }
+    # Render the template from sidebar/templates/sidebar/
+    return render(request, 'sidebar/inventory.html', {'stock': stock})
 
-# Notifications page
-@login_required
 def notifications(request):
     return render(request, 'sidebar/notifications.html')
 

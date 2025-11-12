@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import F
 
 # ----------------- FLAVOR -----------------
 class Flavor(models.Model):
@@ -10,18 +11,8 @@ class Flavor(models.Model):
     low_threshold = models.IntegerField(default=5)
     critical_threshold = models.IntegerField(default=2)
 
-def stock_alerts(request):
-    """
-    Global stock alerts using Flavor model thresholds.
-    """
-    critical_flavors = Flavor.objects.filter(quantity__lte=F('critical_threshold'), quantity__gt=0)
-    low_flavors = Flavor.objects.filter(quantity__lte=F('low_threshold'), quantity__gt=F('critical_threshold'))
-
-    return {
-        'critical_flavors': critical_flavors,
-        'low_flavors': low_flavors,
-    }
-
+    def __str__(self):
+        return self.name
 
 # ----------------- INGREDIENT -----------------
 class Ingredient(models.Model):
@@ -33,7 +24,6 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
-
 # ----------------- TOPPING -----------------
 class Topping(models.Model):
     name = models.CharField(max_length=100)
@@ -44,7 +34,6 @@ class Topping(models.Model):
     def __str__(self):
         return self.name
 
-
 # ----------------- PACKAGING -----------------
 class Packaging(models.Model):
     name = models.CharField(max_length=100)
@@ -52,7 +41,6 @@ class Packaging(models.Model):
 
     def __str__(self):
         return self.name
-
 
 # ----------------- LOG -----------------
 class Log(models.Model):
@@ -63,3 +51,26 @@ class Log(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.action[:30]}"
 
+# ----------------- STOCK ALERTS -----------------
+def stock_alerts(request):
+    """
+    Returns stock alerts for flavors, ingredients, and toppings.
+    Can be used as a context processor for templates.
+    """
+    critical_flavors = Flavor.objects.filter(quantity__lte=F('critical_threshold'), quantity__gt=0)
+    low_flavors = Flavor.objects.filter(quantity__lte=F('low_threshold'), quantity__gt=F('critical_threshold'))
+
+    critical_ingredients = Ingredient.objects.filter(quantity__lte=2, quantity__gt=0)
+    low_ingredients = Ingredient.objects.filter(quantity__lte=5, quantity__gt=2)
+
+    critical_toppings = Topping.objects.filter(quantity__lte=2, quantity__gt=0)
+    low_toppings = Topping.objects.filter(quantity__lte=5, quantity__gt=2)
+
+    return {
+        'critical_flavors': critical_flavors,
+        'low_flavors': low_flavors,
+        'critical_ingredients': critical_ingredients,
+        'low_ingredients': low_ingredients,
+        'critical_toppings': critical_toppings,
+        'low_toppings': low_toppings,
+    }
