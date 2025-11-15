@@ -39,11 +39,10 @@
     <!-- Add Packaging Form -->
     <section class="add-form">
       <h2>ADD NEW PACKAGING</h2>
-      <form method="POST" action="{% url 'packaging' %}">
+      <form method="POST" action="{% url 'add_packaging' %}">
         {% csrf_token %}
             <input type="text" name="name" placeholder="Packaging Name" required>
             <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
-            <input type="text" name="price" placeholder="Price" step="0.01" required>
             <button type="submit" class="add-btn">
               <i class="fa-solid fa-plus"></i> Add Packaging
           </button>
@@ -57,28 +56,30 @@
         <thead>
           <tr>
             <th>Packaging Name</th>
-            <th>Price</th>
             <th>Quantity</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {% for pack in packagings %}
+          {% for pack in packaging_list %}
             <tr>
               {% if packaging_to_edit and packaging_to_edit.id == pack.id %}
                 <form method="POST" action="{% url 'packaging' %}" class="inline-edit-form">
                   {% csrf_token %}
-                  <td><input type="text" name="name" value="{{ pack.name }}"></td>
-                  <td><input type="text" name="price" value="{{ pack.price }}" step="0.01"></td>
-                  <td><input type="number" name="quantity" value="{{ pack.quantity }}"></td>
-                    <button type="submit" name="action" value="update_packaging">Save</button>
+                  <td>
+                    <input type="text" name="name" value="{{ pack.name }}">
+                  </td>
+                  <td>
+                    <input type="number" name="quantity" value="{{ pack.quantity }}">
+                  </td>
+                  <td class="actions">
+                  <button type="submit" name="action" value="update_packaging">Save</button>
                     <a href="{% url 'packaging' %}" class="cancel-btn">Cancel</a>
                     <input type="hidden" name="packaging_id" value="{{ pack.id }}">
                   </td>
                 </form>
               {% else %}
                 <td>{{ pack.name }}</td>
-                <td>{{ pack.price|floatformat:2 }}</td>
                 <td>{{ pack.quantity }}</td>
                 <td class="actions">
                   <a href="{% url 'packaging' %}?edit={{ pack.id }}" title="Edit"><i class="fa-solid fa-pen"></i></a>
@@ -89,7 +90,7 @@
               {% endif %}
             </tr>
           {% empty %}
-            <tr><td colspan="4" class="no-data">No packaging found.</td></tr>
+            <tr><td colspan="2" class="no-data">No packaging found.</td></tr>
           {% endfor %}
         </tbody>
       </table>
