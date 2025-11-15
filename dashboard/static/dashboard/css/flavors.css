@@ -11,7 +11,7 @@ body {
   margin: 40px auto;
   background: #fff;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   padding: 30px;
 }
 
@@ -95,11 +95,11 @@ body {
 input[type="date"] {
   width: 200px;
   padding: 10px 15px;
-  border: 1px solid #d1bfa7;
+  border: 1px solid #e2aab9;
   border-radius: 8px;
   font-size: 15px;
   text-align: center;
-  background-color: #f5eddd;
+  background-color: #fff0f3;
   color: #5a4039;
 }
 
@@ -110,7 +110,7 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-/* Add Ingredient Button */
+/* Add Flavor Button */
 .add-btn {
   background-color: #d16b86;
   color: white;
@@ -134,7 +134,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /* 🍰 --- Table --- */
-.flavow-list {
+.flavor-list {
   margin-top: 40px;
   overflow-x: auto;
   border: 2px solid #e7a5b5;
@@ -215,7 +215,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /* Empty Message */
-.no-ingredients {
+.no-flavors {
   text-align: center;
   color: #888;
   font-style: italic;
@@ -252,7 +252,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
   }
 
-  .ingredient-list table {
+  .flavor-list table {
     min-width: 100%;
   }
 }
