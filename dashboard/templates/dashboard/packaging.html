@@ -44,7 +44,6 @@
             <input type="text" name="name" placeholder="Packaging Name" required>
             <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
             <input type="text" name="price" placeholder="Price" step="0.01" required>
-            <input type="date" name="expiration_date" placeholder="Expiration Date" required>
             <button type="submit" class="add-btn">
               <i class="fa-solid fa-plus"></i> Add Packaging
           </button>
@@ -57,7 +56,6 @@
       <table>
         <thead>
           <tr>
-            <th>Expiration Date</th>
             <th>Packaging Name</th>
             <th>Price</th>
             <th>Quantity</th>
@@ -70,7 +68,6 @@
               {% if packaging_to_edit and packaging_to_edit.id == pack.id %}
                 <form method="POST" action="{% url 'packaging' %}" class="inline-edit-form">
                   {% csrf_token %}
-                  <td><input type="date" name="expiration_date" value="{{ pack.expiration_date }}"></td>
                   <td><input type="text" name="name" value="{{ pack.name }}"></td>
                   <td><input type="text" name="price" value="{{ pack.price }}" step="0.01"></td>
                   <td><input type="number" name="quantity" value="{{ pack.quantity }}"></td>
@@ -80,7 +77,6 @@
                   </td>
                 </form>
               {% else %}
-                <td>{{ pack.expiration_date|date:'Y-m-d' }}</td>
                 <td>{{ pack.name }}</td>
                 <td>{{ pack.price|floatformat:2 }}</td>
                 <td>{{ pack.quantity }}</td>
@@ -93,7 +89,7 @@
               {% endif %}
             </tr>
           {% empty %}
-            <tr><td colspan="5" class="no-data">No packaging found.</td></tr>
+            <tr><td colspan="4" class="no-data">No packaging found.</td></tr>
           {% endfor %}
         </tbody>
       </table>
