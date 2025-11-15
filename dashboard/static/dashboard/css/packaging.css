@@ -59,7 +59,7 @@ body {
   padding: 30px;
   background: #fff3e0;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   text-align: center;
 }
 
@@ -111,7 +111,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .add-btn {
   background-color: #ffb74d;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 8px;
   padding: 10px 15px;
