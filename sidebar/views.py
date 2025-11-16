@@ -11,8 +11,6 @@ def home(request):
         'recent_logs': recent_logs
     })
 
-
-
 # ----------------- Inventory View -----------------
 @login_required
 def inventory(request):
