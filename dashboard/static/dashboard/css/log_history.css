@@ -1,0 +1,79 @@
+/* 💜 --- General Layout --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f3ff; /* soft violet background */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 2px solid #e5d8ff;
+}
+
+/* 💜 Header Title */
+.container h2 {
+    color: #8a63da;
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #d9c7ff;
+    padding-bottom: 10px;
+}
+
+/* 💜 Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: #faf7ff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead tr {
+    background-color: #d9c7ff;
+    color: #4a3775;
+    text-align: left;
+}
+
+th, td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e6dfff;
+    text-align: center;
+    font-size: 15px;
+}
+
+tbody tr {
+    background-color: #f5efff;
+    transition: 0.3s ease;
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background-color: #e7dcff;
+}
+
+/* Empty Logs Row */
+tbody tr td[colspan] {
+    font-style: italic;
+    color: #9983ba;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    th, td {
+        padding: 10px 8px;
+        font-size: 14px;
+    }
+
+    .container {
+        width: 92%;
+        padding: 20px;
+    }
+}

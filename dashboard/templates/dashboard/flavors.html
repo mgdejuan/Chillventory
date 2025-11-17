@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flavors | Sweets N’ Treats</title>
 
-  <link rel="stylesheet" href="{% static 'css/flavors.css' %}">
+  <link rel="stylesheet" href="{% static 'dashboard/css/flavors.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -22,28 +22,6 @@
   </style>
 </head>
 <body>
-    <!-- GLOBAL STOCK ALERTS -->
-    {% if critical_flavors %}
-        <div class="alert critical">
-            <strong>Critical Flavors!</strong>
-            <ul>
-                {% for flavor in critical_flavors %}
-                    <li>{{ flavor.name }} - {{ flavor.quantity }} left</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-    {% if low_flavors %}
-        <div class="alert low">
-            <strong>Low Flavors</strong>
-            <ul>
-                {% for flavor in low_flavors %}
-                    <li>{{ flavor.name }} - {{ flavor.quantity }} left</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
     <!-- MAIN CONTENT -->
     <div class="container">
         <!-- Header Section -->
@@ -52,7 +30,7 @@
                 <i class="fa-solid fa-arrow-left"></i> Back
             </a>
             <h1><i class="fa-solid fa-ice-cream"></i> Flavors Management</h1>
-            <div class="admin-profile">
+            <div class="admin- profile">
                 <span>{{ request.user.username|title }}</span>
                 <i class="fa-solid fa-user"></i>
             </div>

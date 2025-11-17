@@ -11,8 +11,6 @@ def home(request):
         'recent_logs': recent_logs
     })
 
-
-
 # ----------------- Inventory View -----------------
 @login_required
 def inventory(request):
@@ -32,7 +30,7 @@ def notifications(request):
 # Log history page
 @login_required
 def log_history(request):
-    return render(request, 'sidebar/log_history.html')
+    return render(request, 'dashboard/log_history.html')
 
 # About page
 @login_required

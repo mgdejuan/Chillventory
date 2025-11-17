@@ -1,0 +1,256 @@
+/* --- General Layout --- */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff8e1;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 40px auto;
+  background: #fffef8;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+/* --- Header --- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #ffd27f;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: #ffa726;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+}
+
+/* --- Add Form Section --- */
+.add-form {
+  margin-top: 30px;
+  padding: 30px;
+  background: #fff3e0;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.add-form h2 {
+  color: #ffa726;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.add-form form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
+.add-form input {
+  padding: 10px 15px;
+  border: 1px solid #ffd27f;
+  border-radius: 8px;
+  width: 200px;
+  text-align: center;
+  font-size: 15px;
+  background-color: #fff8e1;
+  color: #5a4039;
+}
+
+/* Date input */
+input[type="date"] {
+  width: 200px;
+  padding: 10px 15px;
+  border: 1px solid #d1bfa7;
+  border-radius: 8px;
+  font-size: 15px;
+  text-align: center;
+  background-color: #f5eddd;
+  color: #5a4039;
+}
+
+/* Remove number arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.add-btn {
+  background-color: #ffb74d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  width: 200px;
+  font-size: 15px;
+}
+
+.add-btn:hover {
+  background-color: #ffa726;
+}
+
+/* --- Table Section --- */
+.flavor-list {
+  background-color: #fffbea;
+  border: 2px solid #ffd27f;
+  border-radius: 12px;
+  margin-top: 40px;
+  padding: 15px;
+  overflow-x: auto;
+}
+
+.flavor-list h2 {
+  text-align: center;
+  color: #ffa726;
+}
+
+.packaging-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  min-width: 600px;
+  text-align: center;
+}
+
+.packaging-list th, 
+.packaging-list td {
+  padding: 12px 15px;
+  border: 1px solid #ffe0b2;
+  vertical-align: middle;
+}
+
+.packaging-list th {
+  background-color: #ffecb3;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Table Cell Styles */
+.packagings-list td.packagings-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.packagings-list td.packagings-price {
+  color: #27ae;
+  font-weight: 600;
+}
+
+.packagings-list td.packagings-stock {
+  color: #555;
+  font-weight: 500;
+}
+/* --- Actions --- */
+.actions a
+.actions button {
+  margin-right: 8px;
+  color: #ffa726;
+  text-decoration: none;
+  font-size: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.actions button {
+  border-radius: 4px;
+  padding: 4px 8px;
+  transition: 0.2s;
+}
+
+.actions .edit-btn {
+  background-color: #4CAF50;
+}
+
+.actions .delete-btn {
+  background-color: #f44336;
+}
+
+.actions button:hover {
+  opacity: 0.85;
+}
+
+/* Empty message */
+.no-packagings {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+/* --- Responsive Fixes --- */
+@media (max-width: 1024px) {
+  .add-form form {
+    flex-wrap: wrap;
+  }
+
+  .add-form input,
+  .add-btn,
+  input[type="date"] {
+    width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .add-form form {
+    flex-direction: column;
+  }
+
+  .add-form input,
+  .add-btn,
+  input[type="date"] {
+    width: 100%;
+  }
+
+  .packaging-list table {
+    min-width: 100%;
+  }
+}

@@ -131,11 +131,10 @@ def add_packaging(request):
         action = request.POST.get('action')
         name = request.POST.get('name')
         quantity = request.POST.get('quantity')
-        price = request.POST.get('price')
 
         # 🟢 ADD NEW PACKAGING
         if action is None:
-            Packaging.objects.create(name=name, quantity=quantity, price=price)
+            Packaging.objects.create(name=name, quantity=quantity)
 
             # 🧾 Log add
             Log.objects.create(
@@ -150,7 +149,6 @@ def add_packaging(request):
             pack = get_object_or_404(Packaging, id=packaging_id)
             pack.name = name
             pack.quantity = quantity
-            pack.price = price
             pack.save()
 
             # 🧾 Log update

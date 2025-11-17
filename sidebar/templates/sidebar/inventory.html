@@ -84,9 +84,9 @@
             <td>
               {% if item.quantity == 0 %}
                 <span class="status-badge status-out">Out of stock</span>
-              {% elif item.quantity <= 2 %}
-                <span class="status-badge status-critical">Critical</span>
               {% elif item.quantity <= 5 %}
+                <span class="status-badge status-critical">Critical</span>
+              {% elif item.quantity <= 10 %}
                 <span class="status-badge status-low">Low</span>
               {% else %}
                 <span class="status-badge status-in">OK</span>
