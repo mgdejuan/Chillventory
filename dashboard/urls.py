@@ -18,9 +18,9 @@ urlpatterns = [
     path('toppings/delete/<int:id>/', views.delete_topping, name='delete_topping'),
 
     # Packaging CRUD
-    path('packaging/', views.add_packaging, name='packaging'),
+    path('packaging/', views.packaging, name='packaging'),
     path('packaging/delete/<int:id>', views.delete_packaging, name='delete_packaging'),
-    path('add_packaging/', views.add_packaging, name='add_packaging'),
+   
     # Logs
     path('log-history/', views.log_history, name='log_history'),
     

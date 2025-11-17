@@ -43,7 +43,7 @@
     <section class="add-form">
       <h2>ADD NEW PACKAGING</h2>
 
-      <form method="POST" action="{% url 'add_packaging' %}">
+      <form method="POST" action="{% url 'packaging' %}">
         {% csrf_token %}
         <input type="text" name="name" placeholder="Packaging Name" required>
         <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
@@ -67,7 +67,7 @@
         </thead>
 
         <tbody>
-          {% for pack in packaging_list %}
+          {% for pack in packagings %}
             {% if packaging_to_edit and packaging_to_edit.id == pack.id %}
               {# Edit mode: wrap the whole row in a form so inputs/buttons remain inside the same form #}
               <form method="POST" action="{% url 'packaging' %}">
