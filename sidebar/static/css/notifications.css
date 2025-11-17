@@ -30,6 +30,25 @@ body {
     padding-bottom: 10px;
 }
 
+.back-btn {
+    background: #ffd7b3;   /* light soft orange */
+    color: #8a3e00;        /* deep orange text */
+    border: none;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.25s;
+}
+
+.back-btn:hover {
+    background: #ffbf80;   /* darker orange on hover */
+    transform: translateX(-3px);
+}
+
 /* ---------------------------------------------------
    NOTIFICATION LIST
 --------------------------------------------------- */
