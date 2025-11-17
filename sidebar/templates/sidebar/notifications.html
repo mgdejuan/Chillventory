@@ -2,74 +2,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notifications | Sweets N’ Treats</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="{% static 'css/notifications.css' %}">
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="{% static 'sidebar/css/notifications.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-  <div class="container">
-    <!-- Header -->
-    <header class="header">
-      <div class="left-header">
-        <!-- ✅ Back Button -->
-        <button onclick="window.history.back()" class="back-btn">
-          <i class="fa-solid fa-arrow-left"></i> Back
-        </button>
+<div class="notif-wrapper">
+    <h1>Notifications</h1>
 
-        <h1><i class="fa-solid fa-bell"></i> Notifications</h1>
-      </div>
+    {% if notification_count > 0 %}
 
-      <!-- ✅ Admin Profile -->
-      <div class="admin-profile">
-        <span>{{ request.user.username|title }}</span>
-        <i class="fa-solid fa-user"></i>
-      </div>
-    </header>
-
-    <!-- Notification Section -->
-    <section class="notifications">
-      <h2>Recent Alerts</h2>
-
-      <div class="notification success">
-        <i class="fa-solid fa-circle-check"></i>
-        <div class="details">
-          <p><strong>Stock Updated:</strong> Vanilla Syrup has been restocked successfully.</p>
-          <span class="time">10 mins ago</span>
+        {% for f in critical_flavors %}
+        <div class="notif-item critical">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ f.name }} (Flavor) is CRITICALLY low!</span>
+            <span class="qty">Qty: {{ f.quantity }}</span>
         </div>
-      </div>
+        {% endfor %}
 
-      <div class="notification warning">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <div class="details">
-          <p><strong>Low Stock:</strong> Sprinkles are running low! Please restock soon.</p>
-          <span class="time">30 mins ago</span>
+        {% for f in low_flavors %}
+        <div class="notif-item low">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>{{ f.name }} (Flavor) is low on stock.</span>
+            <span class="qty">Qty: {{ f.quantity }}</span>
         </div>
-      </div>
+        {% endfor %}
 
-      <div class="notification info">
-        <i class="fa-solid fa-info-circle"></i>
-        <div class="details">
-          <p><strong>New Feature:</strong> You can now filter logs by date and staff name.</p>
-          <span class="time">2 hours ago</span>
+        {% for i in critical_ingredients %}
+        <div class="notif-item critical">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ i.name }} (Ingredient) is CRITICALLY low!</span>
+            <span class="qty">Qty: {{ i.quantity }}</span>
         </div>
-      </div>
+        {% endfor %}
 
-      <div class="notification error">
-        <i class="fa-solid fa-circle-xmark"></i>
-        <div class="details">
-          <p><strong>Out of Stock:</strong> Chocolate Toppings have run out.</p>
-          <span class="time">Yesterday</span>
+        {% for i in low_ingredients %}
+        <div class="notif-item low">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>{{ i.name }} (Ingredient) is low on stock.</span>
+            <span class="qty">Qty: {{ i.quantity }}</span>
         </div>
-      </div>
+        {% endfor %}
 
-      {% if notifications|length == 0 %}
-      <p class="no-data">No new notifications.</p>
-      {% endif %}
-    </section>
-  </div>
+        {% for t in critical_toppings %}
+        <div class="notif-item critical">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ t.name }} (Topping) is CRITICALLY low!</span>
+            <span class="qty">Qty: {{ t.quantity }}</span>
+        </div>
+        {% endfor %}
+
+        {% for t in low_toppings %}
+        <div class="notif-item low">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>{{ t.name }} (Topping) is low on stock.</span>
+            <span class="qty">Qty: {{ t.quantity }}</span>
+        </div>
+        {% endfor %}
+
+        {% for p in critical_packaging %}
+        <div class="notif-item critical">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ p.name }} (Packaging) is CRITICALLY low!</span>
+            <span class="qty">Qty: {{ p.quantity }}</span>
+        </div>
+        {% endfor %}
+
+        {% for p in low_packaging %}
+        <div class="notif-item low">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>{{ p.name }} (Packaging) is low on stock.</span>
+            <span class="qty">Qty: {{ p.quantity }}</span>
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="no-notifs">
+            <i class="fa-solid fa-bell"></i>
+            <p>No notifications. All stock levels are normal.</p>
+        </div>
+    {% endif %}
+</div>
 
 </body>
 </html>
