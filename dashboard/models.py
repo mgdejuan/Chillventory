@@ -74,3 +74,12 @@ def stock_alerts(request):
         'critical_toppings': critical_toppings,
         'low_toppings': low_toppings,
     }
+
+class Notification(models.Model):
+    message = models.CharField(max_length=255)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.message

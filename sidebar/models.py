@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
+from dashboard.models import Notification
 
 
 class LogHistory(models.Model):
