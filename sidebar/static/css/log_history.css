@@ -1,6 +1,4 @@
-/* -------------------------
-   GLOBAL STYLES
---------------------------*/
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8f3ff; /* Light violet background */
@@ -12,7 +10,7 @@ body {
    MAIN CONTAINER
 --------------------------*/
 .container {
-    max-width: 1100px;
+    max-width: 1500px;
     margin: 40px auto;
     background: #ffffff;
     padding: 30px;
