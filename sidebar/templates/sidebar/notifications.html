@@ -2,89 +2,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Notifications</title>
-    <link rel="stylesheet" href="{% static 'sidebar/css/notifications.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications | Chillventory</title>
+  <link rel="stylesheet" href="{% static 'sidebar/css/notifications.css' %}">
 </head>
 <body>
-
-<div class="notif-wrapper">
-    <h1>Notifications</h1>
-
-    {% if notification_count > 0 %}
-
-        {% for f in critical_flavors %}
-        <div class="notif-item critical">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span>{{ f.name }} (Flavor) is CRITICALLY low!</span>
-            <span class="qty">Qty: {{ f.quantity }}</span>
-        </div>
+  <div class="notif-container">
+    <h2>Notifications</h2>
+    
+    {% if notifications %}
+      <ul class="notif-list">
+        {% for notif in notifications %}
+          <li class="notif-item {% if 'low' in notif.message|lower %}low{% elif 'critical' in notif.message|lower %}critical{% endif %}">
+            <span>{{ notif.message }}</span>
+            <small>{{ notif.created_at|date:"M d, Y H:i" }}</small>
+          </li>
         {% endfor %}
-
-        {% for f in low_flavors %}
-        <div class="notif-item low">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <span>{{ f.name }} (Flavor) is low on stock.</span>
-            <span class="qty">Qty: {{ f.quantity }}</span>
-        </div>
-        {% endfor %}
-
-        {% for i in critical_ingredients %}
-        <div class="notif-item critical">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span>{{ i.name }} (Ingredient) is CRITICALLY low!</span>
-            <span class="qty">Qty: {{ i.quantity }}</span>
-        </div>
-        {% endfor %}
-
-        {% for i in low_ingredients %}
-        <div class="notif-item low">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <span>{{ i.name }} (Ingredient) is low on stock.</span>
-            <span class="qty">Qty: {{ i.quantity }}</span>
-        </div>
-        {% endfor %}
-
-        {% for t in critical_toppings %}
-        <div class="notif-item critical">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span>{{ t.name }} (Topping) is CRITICALLY low!</span>
-            <span class="qty">Qty: {{ t.quantity }}</span>
-        </div>
-        {% endfor %}
-
-        {% for t in low_toppings %}
-        <div class="notif-item low">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <span>{{ t.name }} (Topping) is low on stock.</span>
-            <span class="qty">Qty: {{ t.quantity }}</span>
-        </div>
-        {% endfor %}
-
-        {% for p in critical_packaging %}
-        <div class="notif-item critical">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span>{{ p.name }} (Packaging) is CRITICALLY low!</span>
-            <span class="qty">Qty: {{ p.quantity }}</span>
-        </div>
-        {% endfor %}
-
-        {% for p in low_packaging %}
-        <div class="notif-item low">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <span>{{ p.name }} (Packaging) is low on stock.</span>
-            <span class="qty">Qty: {{ p.quantity }}</span>
-        </div>
-        {% endfor %}
-
+      </ul>
     {% else %}
-        <div class="no-notifs">
-            <i class="fa-solid fa-bell"></i>
-            <p>No notifications. All stock levels are normal.</p>
-        </div>
+      <p class="no-notif">No new notifications.</p>
     {% endif %}
-</div>
+  </div>
 
 </body>
 </html>

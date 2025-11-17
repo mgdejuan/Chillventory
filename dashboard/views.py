@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from .models import Flavor, Ingredient, Topping, Packaging, Log
+from sidebar.models import Notification  # Make sure Notification model is imported
 
 # ----------------- DASHBOARD -----------------
 def dashboard(request):
@@ -18,14 +19,12 @@ def flavors(request):
         quantity = int(request.POST.get('quantity') or 0)
         expiration_date = request.POST.get('expiration_date') or None
 
-
         Flavor.objects.create(
             name=name,
             price=price,
             quantity=quantity,
             expiration_date=expiration_date
-            )
-          # 🧾 Log the flavor addition
+        )
         Log.objects.create(
             user=request.user,
             action=f"added flavor '{name}'",
@@ -43,6 +42,7 @@ def delete_flavor(request, id):
     flavor = get_object_or_404(Flavor, id=id)
     flavor.delete()
     return redirect('flavors')
+
 
 # ----------------- INGREDIENTS -----------------
 def ingredients(request):
@@ -81,6 +81,7 @@ def delete_ingredient(request, id):
     ingredient.delete()
     return redirect('ingredients')
 
+
 # ----------------- TOPPINGS -----------------
 def toppings(request):
     edit_id = request.GET.get('edit')
@@ -118,12 +119,12 @@ def delete_topping(request, id):
     topping.delete()
     return redirect('toppings')
 
+
 # ----------------- PACKAGING -----------------
 def add_packaging(request):
     packaging_list = Packaging.objects.all().order_by('name')
     packaging_to_edit = None
 
-    # Check if user is editing
     if 'edit' in request.GET:
         packaging_to_edit = get_object_or_404(Packaging, id=request.GET['edit'])
 
@@ -132,32 +133,24 @@ def add_packaging(request):
         name = request.POST.get('name')
         quantity = request.POST.get('quantity')
 
-        # 🟢 ADD NEW PACKAGING
         if action is None:
             Packaging.objects.create(name=name, quantity=quantity)
-
-            # 🧾 Log add
             Log.objects.create(
                 user=request.user,
                 action=f"added packaging '{name}'",
                 timestamp=timezone.now()
             )
-
-        # 🟡 UPDATE PACKAGING
         elif action == "update_packaging":
             packaging_id = request.POST.get('packaging_id')
             pack = get_object_or_404(Packaging, id=packaging_id)
             pack.name = name
             pack.quantity = quantity
             pack.save()
-
-            # 🧾 Log update
             Log.objects.create(
                 user=request.user,
                 action=f"updated packaging '{name}'",
                 timestamp=timezone.now()
             )
-
         return redirect('packaging')
 
     return render(request, 'dashboard/packaging.html', {
@@ -165,26 +158,15 @@ def add_packaging(request):
         'packaging_to_edit': packaging_to_edit
     })
 
-
-# ----------------- DELETE PACKAGING -----------------
 def delete_packaging(request, id):
     packaging = Packaging.objects.get(pk=id)
     packaging.delete()
     return redirect('packaging')
 
-    # 🧾 Log delete
-    Log.objects.create(
-        user=request.user,
-        action=f"deleted packaging '{name}'",
-        timestamp=timezone.now()
-    )
 
-    return redirect('packaging')
-
-# ----------------- Inventory View -----------------
+# ----------------- INVENTORY -----------------
 @login_required
 def inventory(request):
-    # Gather stock alerts for all dashboards
     stock = {
         'flavors': Flavor.objects.all(),
         'ingredients': Ingredient.objects.all(),
@@ -193,34 +175,77 @@ def inventory(request):
     }
     return render(request, 'dashboard/inventory.html', {'stock': stock})
 
-# ----------------- Restock Functions -----------------
+
+# ----------------- RESTOCK -----------------
+def update_stock_notifications():
+    """Check all inventory and create notifications for low/critical stock"""
+    items = []
+
+    for f in Flavor.objects.all():
+        if f.quantity <= f.critical_threshold:
+            items.append((f.name, "critical"))
+        elif f.quantity <= f.low_threshold:
+            items.append((f.name, "low"))
+
+    for i in Ingredient.objects.all():
+        if i.quantity <= 2:
+            items.append((i.name, "critical"))
+        elif i.quantity <= 5:
+            items.append((i.name, "low"))
+
+    for t in Topping.objects.all():
+        if t.quantity <= 2:
+            items.append((t.name, "critical"))
+        elif t.quantity <= 5:
+            items.append((t.name, "low"))
+
+    for p in Packaging.objects.all():
+        if p.quantity <= 2:
+            items.append((p.name, "critical"))
+        elif p.quantity <= 5:
+            items.append((p.name, "low"))
+
+    for name, status in items:
+        message = f"{name} stock is {status}!"
+        if not Notification.objects.filter(message=message, is_read=False).exists():
+            Notification.objects.create(message=message, created_at=timezone.now())
+
+
 @login_required
 def restock_flavor(request, id):
     flavor = get_object_or_404(Flavor, id=id)
-    flavor.quantity += 10  # example restock amount
+    flavor.quantity += 10
     flavor.save()
+    update_stock_notifications()
     return redirect('inventory')
+
 
 @login_required
 def restock_ingredient(request, id):
     ingredient = get_object_or_404(Ingredient, id=id)
     ingredient.quantity += 10
     ingredient.save()
+    update_stock_notifications()
     return redirect('inventory')
+
 
 @login_required
 def restock_topping(request, id):
     topping = get_object_or_404(Topping, id=id)
     topping.quantity += 10
     topping.save()
+    update_stock_notifications()
     return redirect('inventory')
+
 
 @login_required
 def restock_packaging(request, id):
     pack = get_object_or_404(Packaging, id=id)
     pack.quantity += 10
     pack.save()
+    update_stock_notifications()
     return redirect('inventory')
+
 
 # ----------------- LOG HISTORY -----------------
 @login_required
