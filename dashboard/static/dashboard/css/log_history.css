@@ -27,19 +27,13 @@ body {
 }
 
 /* 💜 Align Back Button + Title */
-.header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
 .back-btn {
     background: #d9c7ff;
     color: #4a3775;
     padding: 8px 15px;
     text-decoration: none;
     border-radius: 8px;
+    margin-right: 10px;
     font-size: 15px;
     font-weight: 500;
     transition: 0.2s;
