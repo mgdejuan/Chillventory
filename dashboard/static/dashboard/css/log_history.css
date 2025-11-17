@@ -77,3 +77,21 @@ tbody tr td[colspan] {
         padding: 20px;
     }
 }
+
+.back-btn {
+    background: #d5c1ff;
+    color: #4c2c92;
+    border: none;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    gap: 8px;
+    transition: 0.25s;
+}
+
+.back-btn:hover {
+    background: #c2a5ff;
+    transform: translateX(-3px);
+}
