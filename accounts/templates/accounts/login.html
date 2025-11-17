@@ -27,18 +27,35 @@
         </div>
 
         <div class="input-group">
-          <span class="ri-lock-2-line"></span>
-          <input type="password" name="password" placeholder="Password" required>
+          <span class="icon">🔒</span>
+          <input type="password" id="password-field" name="password" placeholder="Password" required>
         </div>
 
-        <div class="options">
-          <label><input type="checkbox" name="remember"> Remember me</label>
-          <a href="#">Forgot Password?</a>
+        <div class="show-password">
+          <label class="switch">
+          <input type="checkbox" id="togglePassword">
+          <span class="slider round"></span>
+        </label>
+          <span class="label-text">Show Password</span>
         </div>
-
+        
         <button type="submit" class="login-btn">LOGIN</button>
       </form>
     </div>
   </div>
+
+  <script>
+  const passwordField = document.getElementById("password-field");
+  const togglePassword = document.getElementById("togglePassword");
+
+  togglePassword.addEventListener("change", function () {
+      if (passwordField.type === "password") {
+          passwordField.type = "text";
+      } else {
+          passwordField.type = "password";
+      }
+  });
+</script>
+
 </body>
 </html>
