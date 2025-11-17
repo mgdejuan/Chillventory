@@ -4,10 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Log History</title>
-  <link rel="stylesheet" href="{% static 'dashboard/css/log_history.css' %}">
+  <link rel="stylesheet" href="{% static 'css/log_history.css' %}">
 </head>
 <body>
   <div class="container">
+    <button onclick="window.history.back()" class="back-btn">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
     <h2>Activity Logs</h2>
     <table>
       <thead>

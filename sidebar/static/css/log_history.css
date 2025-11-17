@@ -1,86 +1,167 @@
-/* ===== Log History Page CSS ===== */
-
+/* -------------------------
+   GLOBAL STYLES
+--------------------------*/
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #fdf6f0;
+    background-color: #f8f3ff; /* Light violet background */
     margin: 0;
     padding: 0;
 }
 
+/* -------------------------
+   MAIN CONTAINER
+--------------------------*/
 .container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 40px auto;
-    padding: 20px;
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
-h1 {
-    text-align: center;
-    color: #ff6b81;
-    margin-bottom: 25px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    text-align: left;
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
-}
-
-th {
-    background-color: #ffcccb;
-    color: #333;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tr:hover {
-    background-color: #ffe4e1;
-    transition: 0.3s;
-}
-
-.action-buttons {
+/* -------------------------
+   HEADER
+--------------------------*/
+.header {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #d0b3ff;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header h1 {
+    font-size: 26px;
+    color: #7d42ff;
+    display: flex;
+    align-items: center;
     gap: 10px;
 }
 
-.action-buttons button {
-    padding: 6px 12px;
+/* -------------------------
+   BACK BUTTON (VIOLET)
+--------------------------*/
+.back-btn {
+    background: #d5c1ff;
+    color: #4c2c92;
     border: none;
-    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 13px;
-    transition: 0.3s;
+    align-items: center;
+    gap: 8px;
+    transition: 0.25s;
 }
 
-.action-buttons .edit {
-    background-color: #ffb347;
-    color: #fff;
+.back-btn:hover {
+    background: #c2a5ff;
+    transform: translateX(-3px);
 }
 
-.action-buttons .delete {
-    background-color: #ff6b6b;
-    color: #fff;
+/* -------------------------
+   ADMIN PROFILE
+--------------------------*/
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #5c4c8a;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
 }
 
-.action-buttons button:hover {
-    opacity: 0.85;
+/* -------------------------
+   LOG SECTION BOX (VIOLET)
+--------------------------*/
+.log-section {
+    margin-top: 20px;
+    background: #f0e8ff;
+    padding: 25px;
+    border-radius: 20px;
+    border: 3px solid #bda4ff;
 }
 
-.no-logs {
+.log-section h2 {
     text-align: center;
-    margin-top: 30px;
-    font-size: 16px;
-    color: #999;
+    font-size: 28px;
+    color: #7d42ff;
+    margin-bottom: 20px;
+}
+
+/* -------------------------
+   TABLE STYLING
+--------------------------*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead tr {
+    background: #d9c8ff;
+}
+
+th {
+    padding: 14px;
+    border: 1px solid #bda4ff;
+    font-weight: bold;
+    text-align: center;
+    color: #4c2c92;
+}
+
+td {
+    padding: 14px;
+    border: 1px solid #d0b8ff;
+    text-align: center;
+    background: #faf7ff;
+    color: #4a3d7a;
+}
+
+/* Hover effect for rows */
+tbody tr:hover {
+    background-color: #f3eaff;
+    transition: 0.2s;
+}
+
+/* -------------------------
+   NO DATA MESSAGE
+--------------------------*/
+.no-data {
+    padding: 20px;
+    text-align: center;
+    color: #7d42ff;
+    font-style: italic;
+}
+
+/* -------------------------
+   RESPONSIVE
+--------------------------*/
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    .left-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
 }
