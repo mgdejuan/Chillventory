@@ -7,11 +7,11 @@ urlpatterns = [
 
     # Flavors CRUD
     path('flavors/', views.flavors, name='flavors'),
-    path('flavors/delete/<int:delete_id>/', views.delete_flavor, name='delete_flavor'),
+    path('flavors/delete/<int:id>/', views.delete_flavor, name='delete_flavor'),
 
     # Ingredients CRUD
     path('ingredients/', views.ingredients, name='ingredients'),
-    path('ingredients/delete/<int:delete_id>/', views.delete_ingredient, name='delete_ingredient'),
+    path('ingredients/delete/<int:id>/', views.delete_ingredient, name='delete_ingredient'),
 
     # Toppings CRUD
     path('toppings/', views.toppings, name='toppings'),

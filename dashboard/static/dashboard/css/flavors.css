@@ -1,12 +1,7 @@
-/* ================================
-   Topping Management Page Styles
-   Cleaned & Organized Version
-================================ */
-
-/* --- General Layout --- */
+/* 🌸 --- General Layout --- */
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f0ffff; /* very light teal tone */
+  background-color: #fff5f8; /* very light pink background */
   margin: 0;
   padding: 0;
 }
@@ -16,16 +11,16 @@ body {
   margin: 40px auto;
   background: #fff;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   padding: 30px;
 }
 
-/* --- Header --- */
+/* 💕 --- Header --- */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #b3f0f0;
+  border-bottom: 2px solid #f7cad0;
   padding-bottom: 10px;
   margin-bottom: 20px;
   flex-wrap: wrap;
@@ -34,7 +29,7 @@ body {
 
 .header h1 {
   font-size: 24px;
-  color: #00bfbf;
+  color: #d16b86; /* soft rose pink */
   display: flex;
   align-items: center;
   gap: 10px;
@@ -43,7 +38,7 @@ body {
 .back-btn {
   background: none;
   border: none;
-  color: #555;
+  color: #b5566d;
   cursor: pointer;
   font-size: 16px;
   display: flex;
@@ -55,27 +50,26 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #444;
+  color: #a84e69;
 }
 
-/* --- Add Form --- */
+/* 🍓 --- Add Form Section --- */
 .add-form {
   margin-top: 30px;
-  padding: 30px;
-  background: #e6ffff; /* soft teal */
+  background: #ffe6eb; /* light blush pink */
   border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   text-align: center;
 }
 
 .add-form h2 {
-  margin-bottom: 20px;
-  color: #00bfbf;
+  color: #b5566d;
   font-size: 22px;
   font-weight: 600;
+  margin-bottom: 20px;
 }
 
-/* Form Layout */
 .add-form form {
   display: flex;
   justify-content: center;
@@ -89,23 +83,36 @@ body {
 .add-form input {
   width: 200px;
   padding: 10px 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #e2aab9;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff0f3;
+  color: #5a4a4a;
+  text-align: center;
+}
+
+/* Date input */
+input[type="date"] {
+  width: 200px;
+  padding: 10px 15px;
+  border: 1px solid #e2aab9;
   border-radius: 8px;
   font-size: 15px;
   text-align: center;
-  background-color: white;
+  background-color: #fff0f3;
+  color: #5a4039;
 }
 
-/* Remove number input arrows */
+/* Remove number arrows */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Add Topping Button */
+/* Add Flavor Button */
 .add-btn {
-  background-color: #00d4d4;
+  background-color: #d16b86;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -123,25 +130,25 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .add-btn:hover {
-  background-color: #00bfbf;
+  background-color: #b5566d;
 }
 
-/* --- Table --- */
-.topping-list {
+/* 🍰 --- Table --- */
+.flavor-list {
   margin-top: 40px;
   overflow-x: auto;
-  border: 2px solid #00bfbf;
+  border: 2px solid #e7a5b5;
   border-radius: 12px;
   padding: 15px;
-  background-color: #e6ffff;
+  background-color: #fff9fb;
 }
 
-.topping-list h2 {
-  color: #00bfbf;
+.flavor-list h2 {
+  color: #b5566d;
   text-align: center;
 }
 
-.topping-list table {
+.flavor-list table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
@@ -149,29 +156,39 @@ input[type=number]::-webkit-outer-spin-button {
   text-align: center;
 }
 
-.topping-list th,
-.topping-list td {
+.flavor-list th,
+.flavor-list td {
   padding: 12px 15px;
-  border: 1px solid #00bfbf;
+  border: 1px solid #e7a5b5;
   vertical-align: middle;
 }
 
-.topping-list th {
-  background-color: #b3f0f0;
+.flavor-list th {
+  background-color: #f7cad0;
   font-weight: 600;
   text-align: center;
 }
 
-.topping-list td {
+/* Table  Cell Styles*/
+.flavor-list td.flavors-name {
   font-weight: 500;
-  color: #333;
+  color: #5a4a4a;
 }
 
-/* --- Actions --- */
+.flavors-list td.flavors-price {
+  color: #27ae;
+  font-weight: 600;
+}
+
+.flavors-list td.flavors-stock {
+  color: #555;
+  font-weight: 500;
+}
+/* Action Buttons */
 .actions a,
 .actions button {
   margin-right: 8px;
-  color: #00bfbf;
+  color: #c25c78;
   text-decoration: none;
   font-size: 16px;
   border: none;
@@ -180,32 +197,40 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .actions button {
-  padding: 4px 8px;
   border-radius: 4px;
-  background-color: #c2fafa;
+  padding: 4px 8px;
   transition: 0.2s;
 }
 
-.actions button:hover {
-  background-color: #a6f2f2;
+.actions .edit-btn {
+  background-color: #c45f8e;
 }
 
-/* --- Empty Message --- */
-.no-data {
+.actions .delete-btn {
+  background-color: #c45f8e;
+}
+
+.actions button:hover {
+  opacity: 0.85;
+}
+
+/* Empty Message */
+.no-flavors {
   text-align: center;
-  color: #777;
+  color: #888;
   font-style: italic;
   padding: 20px 0;
 }
 
-/* --- Responsive Fixes --- */
+/* --- Responsive --- */
 @media (max-width: 1024px) {
   .add-form form {
     flex-wrap: wrap;
   }
 
   .add-form input,
-  .add-btn {
+  .add-btn,
+  input[type="date"] {
     width: 45%;
   }
 }
@@ -222,11 +247,12 @@ input[type=number]::-webkit-outer-spin-button {
   }
 
   .add-form input,
-  .add-btn {
+  .add-btn,
+  input[type="date"] {
     width: 100%;
   }
 
-  .topping-list table {
+  .flavor-list table {
     min-width: 100%;
   }
 }

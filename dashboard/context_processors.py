@@ -1,19 +1,9 @@
-from .models import Flavor
-from django.db.models import F, Q
+from sidebar.models import Notification
 
-def stock_alerts(request):
-    """
-    Provides global stock alerts for Flavors:
-    - Run Out: quantity = 0
-    - Critical: quantity <= critical_threshold (>0)
-    - Low: quantity <= low_threshold (> critical_threshold)
-    """
-    runout_flavors = Flavor.objects.filter(quantity=0)
-    critical_flavors = Flavor.objects.filter(quantity__lte=F('critical_threshold'), quantity__gt=0)
-    low_flavors = Flavor.objects.filter(quantity__lte=F('low_threshold'), quantity__gt=F('critical_threshold'))
-
-    return {
-        'runout_flavors': runout_flavors,
-        'critical_flavors': critical_flavors,
-        'low_flavors': low_flavors,
-    }
+def notification_count(request):
+    """Returns the number of unread notifications for the logged-in user."""
+    if request.user.is_authenticated:
+        count = Notification.objects.filter(user=request.user, is_read=False).count()
+    else:
+        count = 0
+    return {'notification_count': count}

@@ -6,27 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Packaging Management | Sweets N’ Treats</title>
 
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'dashboard/css/packaging.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="{% static 'css/packaging.css' %}">
 
   <!-- Remove spinners -->
   <style>
     input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    input[type=number] { -moz-appearance: textfield; }
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] { 
+      -moz-appearance: textfield; 
+    }
   </style>
 </head>
-
 <body>
+
   <div class="container">
     <!-- Header -->
     <header class="header">
       <a href="{% url 'home' %}" class="back-btn">
-        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+        <i class="fa-solid fa-arrow-left"></i> Back
       </a>
       <h1><i class="fa-solid fa-box"></i> Packaging Management</h1>
       <div class="admin-profile">
@@ -40,23 +41,11 @@
       <h2>ADD NEW PACKAGING</h2>
       <form method="POST" action="{% url 'add_packaging' %}">
         {% csrf_token %}
-        <div class="form-section">
-          <div>
-            <label>Packaging Name:</label><br>
-            <input type="text" name="name" placeholder="Enter packaging name" required>
-          </div>
-          <div>
-            <label>Quantity:</label><br>
-            <input type="number" name="quantity" placeholder="0" min="0" required>
-          </div>
-          <div>
-            <label>Price:</label><br>
-            <input type="text" name="price" placeholder="Enter price">
-          </div>
-          <button type="submit" class="add-btn">
-            <i class="fa-solid fa-plus"></i> Add Packaging
+            <input type="text" name="name" placeholder="Packaging Name" required>
+            <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
+            <button type="submit" class="add-btn">
+              <i class="fa-solid fa-plus"></i> Add Packaging
           </button>
-        </div>
       </form>
     </section>
 
@@ -67,7 +56,6 @@
         <thead>
           <tr>
             <th>Packaging Name</th>
-            <th>Price</th>
             <th>Quantity</th>
             <th>Actions</th>
           </tr>
@@ -78,18 +66,20 @@
               {% if packaging_to_edit and packaging_to_edit.id == pack.id %}
                 <form method="POST" action="{% url 'packaging' %}" class="inline-edit-form">
                   {% csrf_token %}
-                  <td><input type="text" name="name" value="{{ pack.name }}"></td>
-                  <td><input type="text" name="price" value="{{ pack.price }}"></td>
-                  <td><input type="number" name="quantity" value="{{ pack.quantity }}"></td>
+                  <td>
+                    <input type="text" name="name" value="{{ pack.name }}">
+                  </td>
+                  <td>
+                    <input type="number" name="quantity" value="{{ pack.quantity }}">
+                  </td>
                   <td class="actions">
-                    <button type="submit" name="action" value="update_packaging">Save</button>
+                  <button type="submit" name="action" value="update_packaging">Save</button>
                     <a href="{% url 'packaging' %}" class="cancel-btn">Cancel</a>
                     <input type="hidden" name="packaging_id" value="{{ pack.id }}">
                   </td>
                 </form>
               {% else %}
                 <td>{{ pack.name }}</td>
-                <td>{{ pack.price }}</td>
                 <td>{{ pack.quantity }}</td>
                 <td class="actions">
                   <a href="{% url 'packaging' %}?edit={{ pack.id }}" title="Edit"><i class="fa-solid fa-pen"></i></a>
@@ -100,7 +90,7 @@
               {% endif %}
             </tr>
           {% empty %}
-            <tr><td colspan="4" class="no-data">No packaging found.</td></tr>
+            <tr><td colspan="2" class="no-data">No packaging found.</td></tr>
           {% endfor %}
         </tbody>
       </table>
