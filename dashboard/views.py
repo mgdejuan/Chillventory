@@ -143,7 +143,6 @@ def flavors(request):
 def delete_flavor(request, id):
     flavor = get_object_or_404(Flavor, id=id)
     Log.objects.create(user=request.user, action=f"deleted flavor '{flavor.name}'", timestamp=timezone.now())
-    Notification.objects.filter(message__icontains=flavor.name).delete()
     flavor.delete()
     update_stock_notifications(user=request.user)
     return redirect('flavors')
@@ -205,7 +204,6 @@ def ingredients(request):
 def delete_ingredient(request, id):
     ingredient = get_object_or_404(Ingredient, id=id)
     Log.objects.create(user=request.user, action=f"deleted ingredient '{ingredient.name}'", timestamp=timezone.now())
-    Notification.objects.filter(message__icontains=ingredient.name).delete()
     ingredient.delete()
     update_stock_notifications(user=request.user)
     return redirect('ingredients')
@@ -245,7 +243,6 @@ def toppings(request):
 def delete_topping(request, id):
     topping = get_object_or_404(Topping, id=id)
     Log.objects.create(user=request.user, action=f"deleted topping '{topping.name}'", timestamp=timezone.now())
-    Notification.objects.filter(message__icontains=topping.name).delete()
     topping.delete()
     update_stock_notifications(user=request.user)
     return redirect('toppings')
@@ -283,7 +280,6 @@ def packaging(request):
 def delete_packaging(request, id):
     pkg = get_object_or_404(Packaging, id=id)
     Log.objects.create(user=request.user, action=f"deleted packaging '{pkg.name}'", timestamp=timezone.now())
-    Notification.objects.filter(message__icontains=pkg.name).delete()
     pkg.delete()
     update_stock_notifications(user=request.user)
     return redirect('packaging')
