@@ -72,20 +72,23 @@ def delete_flavor(request, id):
     flavor.delete()
     return redirect('flavors')
 
-
 # ----------------- INGREDIENTS -----------------
 def ingredients(request):
     edit_id = request.GET.get('edit')
     ingredient_to_edit = get_object_or_404(Ingredient, id=edit_id) if edit_id else None
 
-    if request.method == 'POST':
-        action = request.POST.get('action')
+    if request.method == "POST":
+        action = request.POST.get("action")
 
-        if action == 'update_ingredient':
-            ingredient_id = request.POST.get('ingredient_id')
+        if action == "update_ingredient":
+            # UPDATE EXISTING INGREDIENT
+            ingredient_id = request.POST.get("ingredient_id")
             ingredient = get_object_or_404(Ingredient, id=ingredient_id)
-            ingredient.name = request.POST.get('name')
-            ingredient.quantity = int(request.POST.get('quantity') or 0)
+
+            ingredient.name = request.POST.get("name")
+            ingredient.price = request.POST.get("price") or 0
+            ingredient.quantity = int(request.POST.get("quantity") or 0)
+            ingredient.expiration_date = request.POST.get("expiration_date") or None
             ingredient.save()
 
             Log.objects.create(
@@ -93,10 +96,20 @@ def ingredients(request):
                 action=f"updated ingredient '{ingredient.name}'",
                 timestamp=timezone.now()
             )
+
         else:
-            name = request.POST.get('name')
-            quantity = int(request.POST.get('quantity') or 0)
-            Ingredient.objects.create(name=name, quantity=quantity)
+            # ADD NEW INGREDIENT
+            name = request.POST.get("name")
+            price = request.POST.get("price") or 0
+            quantity = int(request.POST.get("quantity") or 0)
+            expiration_date = request.POST.get("expiration_date") or None
+
+            Ingredient.objects.create(
+                name=name,
+                price=price,
+                quantity=quantity,
+                expiration_date=expiration_date
+            )
 
             Log.objects.create(
                 user=request.user,
@@ -104,13 +117,15 @@ def ingredients(request):
                 timestamp=timezone.now()
             )
 
-        return redirect('ingredients')
+        return redirect("ingredients")
 
+    # GET — display page
     ingredients_list = Ingredient.objects.all()
-    return render(request, 'dashboard/ingredients.html', {
-        'ingredients': ingredients_list,
-        'ingredient_to_edit': ingredient_to_edit
+    return render(request, "dashboard/ingredients.html", {
+        "ingredients": ingredients_list,
+        "ingredient_to_edit": ingredient_to_edit,
     })
+
 
 def delete_ingredient(request, id):
     ingredient = get_object_or_404(Ingredient, id=id)
