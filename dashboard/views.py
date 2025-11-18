@@ -72,8 +72,6 @@ def delete_flavor(request, id):
     flavor.delete()
     return redirect('flavors')
 
-
-# ----------------- INGREDIENTS -----------------
 # ----------------- INGREDIENTS -----------------
 def ingredients(request):
     edit_id = request.GET.get('edit')
