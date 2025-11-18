@@ -79,6 +79,43 @@ def inventory(request):
     }
     return render(request, 'sidebar/inventory.html', {'stock': stock})
 
+# ----------------- UPDATE VIEWS -----------------
+
+@login_required
+def edit_flavor(request, flavor_id):
+    flavor = get_object_or_404(Flavor, id=flavor_id)
+    if request.method == 'POST':
+        flavor.quantity = request.POST.get('quantity')
+        flavor.save()
+        return redirect('inventory')
+    return render(request, 'flavor.html', {'item': flavor})
+
+@login_required
+def edit_ingredient(request, ingredient_id):
+    ingredient = get_object_or_404(Ingredient, id=ingredient_id)
+    if request.method == 'POST':
+        ingredient.quantity = request.POST.get('quantity')
+        ingredient.save()
+        return redirect('inventory')
+    return render(request, 'ingredient.html', {'item': ingredient})
+
+@login_required
+def edit_topping(request, topping_id):
+    topping = get_object_or_404(Topping, id=topping_id)
+    if request.method == 'POST':
+        topping.quantity = request.POST.get('quantity')
+        topping.save()
+        return redirect('inventory')
+    return render(request, 'topping.html', {'item': topping})
+
+@login_required
+def edit_packaging(request, packaging_id):
+    packaging = get_object_or_404(Packaging, id=packaging_id)
+    if request.method == 'POST':
+        packaging.quantity = request.POST.get('quantity')
+        packaging.save()
+        return redirect('inventory')
+    return render(request, 'packaging.html', {'item': packaging})
 
 # ----------------- NOTIFICATIONS -----------------
 @login_required
