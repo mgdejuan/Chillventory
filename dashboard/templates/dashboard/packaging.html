@@ -12,12 +12,14 @@
   <!-- Remove spinners -->
   <style>
     input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
-    input[type=number] { 
-      -moz-appearance: textfield; 
+    input[type=number] {
+      appearance: textfield;
+      -webkit-appearance: textfield;
+      -moz-appearance: textfield;
     }
   </style>
 </head>
@@ -41,7 +43,7 @@
     <section class="add-form">
       <h2>ADD NEW PACKAGING</h2>
 
-      <form method="POST" action="{% url 'add_packaging' %}">
+      <form method="POST" action="{% url 'packaging' %}">
         {% csrf_token %}
         <input type="text" name="name" placeholder="Packaging Name" required>
         <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
@@ -65,48 +67,45 @@
         </thead>
 
         <tbody>
-          {% for pack in packaging_list %}
-          <tr>
-
+          {% for pack in packagings %}
             {% if packaging_to_edit and packaging_to_edit.id == pack.id %}
-              <!-- EDIT MODE -->
-              <td>
-                <form method="POST" action="{% url 'packaging' %}">
-                  {% csrf_token %}
-                  <input type="text" name="name" value="{{ pack.name }}" required>
-              </td>
-              <td>
-                  <input type="number" name="quantity" value="{{ pack.quantity }}" min="0" required>
-              </td>
-              <td class="actions">
-                  <input type="hidden" name="packaging_id" value="{{ pack.id }}">
-                  <button type="submit" name="action" value="update_packaging" class="save-btn">Save</button>
-                  <a href="{% url 'packaging' %}" class="cancel-btn">Cancel</a>
-                </form>
-              </td>
-
+              {# Edit mode: wrap the whole row in a form so inputs/buttons remain inside the same form #}
+              <form method="POST" action="{% url 'packaging' %}">
+                {% csrf_token %}
+                <input type="hidden" name="packaging_id" value="{{ pack.id }}">
+                <tr>
+                  <td>
+                    <input type="text" name="name" value="{{ pack.name }}" required>
+                  </td>
+                  <td>
+                    <input type="number" name="quantity" value="{{ pack.quantity }}" min="0" required>
+                  </td>
+                  <td class="actions">
+                    <button type="submit" name="action" value="update_packaging" class="save-btn">Save</button>
+                    <a href="{% url 'packaging' %}" class="cancel-btn">Cancel</a>
+                  </td>
+                </tr>
+              </form>
             {% else %}
-              <!-- NORMAL MODE -->
-              <td>{{ pack.name }}</td>
-              <td>{{ pack.quantity }}</td>
-              <td class="actions">
-                <a href="{% url 'packaging' %}?edit={{ pack.id }}" class="edit-btn">
-                  <i class="fa-solid fa-pen"></i>
-                </a>
-
-                <a href="{% url 'delete_packaging' pack.id %}"
-                   onclick="return confirm('Are you sure you want to delete {{ pack.name }}?')"
-                    class="delete-btn">
-                  <i class="fa-solid fa-trash"></i>
-                </a>
-              </td>
+              <tr>
+                <td>{{ pack.name }}</td>
+                <td>{{ pack.quantity }}</td>
+                <td class="actions">
+                  <a href="{% url 'packaging' %}?edit={{ pack.id }}" title="Edit">
+                    <i class="fa-solid fa-pen"></i>
+                  </a>
+                  <a href="{% url 'delete_packaging' pack.id %}"
+                     onclick="return confirm('Are you sure you want to delete {{ topping.name }}?')"
+                     title="Delete">
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
             {% endif %}
-
-          </tr>
           {% empty %}
-          <tr>
-            <td colspan="3" class="no-data">No packaging found.</td>
-          </tr>
+            <tr>
+              <td colspan="3" class="no-data">No packaging found.</td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>
