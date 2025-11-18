@@ -3,11 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from dashboard.models import Flavor, Ingredient, Topping, Packaging
 from .models import Notification, LogHistory
+from datetime import date
 
-# ----------------- HELPER FUNCTION -----------------
 def update_stock_notifications(item, restock_amount=0):
     """
     Updates item quantity if restock_amount > 0, then updates notifications for all users.
+    Also creates expiration notifications for items expiring in 30 days or less.
     Safe for all item types (Flavor, Ingredient, Topping, Packaging).
     """
     # Restock if needed
@@ -18,19 +19,28 @@ def update_stock_notifications(item, restock_amount=0):
     # Clear existing unread notifications for this item
     Notification.objects.filter(message__icontains=item.name, is_read=False).delete()
 
-    # Set thresholds safely
+    # ----- STOCK LEVEL NOTIFICATIONS -----
     critical_threshold = getattr(item, 'critical_threshold', 2)
     low_threshold = getattr(item, 'low_threshold', 5)
 
-    # Recreate notifications for all users if stock is low
     for user in User.objects.all():
-        if item.quantity <= critical_threshold:
-            message = f"Critical stock: {item.__class__.__name__} '{item.name}' is very low ({item.quantity})"
-            Notification.objects.create(user=user, message=message)
-        elif item.quantity <= low_threshold:
-            message = f"Low stock: {item.__class__.__name__} '{item.name}' is running low ({item.quantity})"
-            Notification.objects.create(user=user, message=message)
+        if hasattr(item, 'quantity'):
+            if item.quantity <= critical_threshold:
+                message = f"Critical stock: {item.__class__.__name__} '{item.name}' is very low ({item.quantity})"
+                Notification.objects.create(user=user, message=message)
+            elif item.quantity <= low_threshold:
+                message = f"Low stock: {item.__class__.__name__} '{item.name}' is running low ({item.quantity})"
+                Notification.objects.create(user=user, message=message)
 
+    # ----- EXPIRATION NOTIFICATIONS -----
+    if hasattr(item, 'expiration_date') and item.expiration_date:
+        days_to_expire = (item.expiration_date - date.today()).days
+        if 0 <= days_to_expire <= 30:
+            for user in User.objects.all():
+                Notification.objects.create(
+                    user=user,
+                    message=f"{item.__class__.__name__} '{item.name}' is about to expire in {days_to_expire} day(s)"
+                )
 
 # ----------------- RESTOCK VIEWS -----------------
 @login_required
@@ -144,3 +154,4 @@ def about(request):
 @login_required
 def logout_view(request):
     return render(request, 'logout_view.html')
+
