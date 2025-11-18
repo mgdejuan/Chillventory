@@ -14,7 +14,7 @@ def login_view(request):
 
             # ✅ Create a log entry for successful login
             LogHistory.objects.create(
-                staff=user,
+                user=user,
                 action_taken="LOGIN"
             )
 
@@ -29,7 +29,7 @@ def logout_view(request):
     # ✅ Optional: log the logout action as well
     if request.user.is_authenticated:
         LogHistory.objects.create(
-            staff=request.user,
+            user=request.user,
             action_taken="LOGOUT"
         )
 
