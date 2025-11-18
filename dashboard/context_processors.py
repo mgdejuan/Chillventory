@@ -1,7 +1,6 @@
 from sidebar.models import Notification
 
 def notification_count(request):
-    """Returns the number of unread notifications for the logged-in user."""
     if request.user.is_authenticated:
         count = Notification.objects.filter(user=request.user, is_read=False).count()
     else:

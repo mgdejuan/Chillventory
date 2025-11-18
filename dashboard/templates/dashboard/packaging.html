@@ -46,6 +46,7 @@
       <form method="POST" action="{% url 'packaging' %}">
         {% csrf_token %}
         <input type="text" name="name" placeholder="Packaging Name" required>
+        <input type="number" name="price" placeholder="Price" min="0" step="0.01" required>
         <input type="number" name="quantity" placeholder="Stock Quantity" min="0" required>
         <button type="submit" class="add-btn">
           <i class="fa-solid fa-plus"></i> Add Packaging
@@ -61,6 +62,7 @@
         <thead>
           <tr>
             <th>Packaging Name</th>
+            <th>Price</th>
             <th>Quantity</th>
             <th>Actions</th>
           </tr>
@@ -69,13 +71,16 @@
         <tbody>
           {% for pack in packagings %}
             {% if packaging_to_edit and packaging_to_edit.id == pack.id %}
-              {# Edit mode: wrap the whole row in a form so inputs/buttons remain inside the same form #}
+              <!-- EDIT MODE -->
               <form method="POST" action="{% url 'packaging' %}">
                 {% csrf_token %}
                 <input type="hidden" name="packaging_id" value="{{ pack.id }}">
                 <tr>
                   <td>
                     <input type="text" name="name" value="{{ pack.name }}" required>
+                  </td>
+                  <td>
+                    <input type="number" name="price" value="{{ pack.price }}" min="0" step="0.01" required>
                   </td>
                   <td>
                     <input type="number" name="quantity" value="{{ pack.quantity }}" min="0" required>
@@ -87,15 +92,17 @@
                 </tr>
               </form>
             {% else %}
+              <!-- NORMAL VIEW -->
               <tr>
                 <td>{{ pack.name }}</td>
+                <td>₱{{ pack.price }}</td>
                 <td>{{ pack.quantity }}</td>
                 <td class="actions">
                   <a href="{% url 'packaging' %}?edit={{ pack.id }}" title="Edit">
                     <i class="fa-solid fa-pen"></i>
                   </a>
                   <a href="{% url 'delete_packaging' pack.id %}"
-                     onclick="return confirm('Are you sure you want to delete {{ topping.name }}?')"
+                     onclick="return confirm('Are you sure you want to delete {{ pack.name }}?')"
                      title="Delete">
                     <i class="fa-solid fa-trash"></i>
                   </a>
@@ -104,7 +111,7 @@
             {% endif %}
           {% empty %}
             <tr>
-              <td colspan="3" class="no-data">No packaging found.</td>
+              <td colspan="4" class="no-data">No packaging found.</td>
             </tr>
           {% endfor %}
         </tbody>
