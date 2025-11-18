@@ -75,6 +75,7 @@ def delete_flavor(request, id):
 
 # ----------------- INGREDIENTS -----------------
 def ingredients(request):
+    # Detect edit mode
     edit_id = request.GET.get('edit')
     ingredient_to_edit = get_object_or_404(Ingredient, id=edit_id) if edit_id else None
 
@@ -82,10 +83,14 @@ def ingredients(request):
         action = request.POST.get('action')
 
         if action == 'update_ingredient':
+            # UPDATE EXISTING INGREDIENT
             ingredient_id = request.POST.get('ingredient_id')
             ingredient = get_object_or_404(Ingredient, id=ingredient_id)
+
             ingredient.name = request.POST.get('name')
+            ingredient.price = request.POST.get('price')
             ingredient.quantity = int(request.POST.get('quantity') or 0)
+            ingredient.expiration_date = request.POST.get('expiration_date') or None
             ingredient.save()
 
             Log.objects.create(
@@ -93,10 +98,20 @@ def ingredients(request):
                 action=f"updated ingredient '{ingredient.name}'",
                 timestamp=timezone.now()
             )
+
         else:
+            # ADD NEW INGREDIENT
             name = request.POST.get('name')
+            price = request.POST.get('price')
             quantity = int(request.POST.get('quantity') or 0)
-            Ingredient.objects.create(name=name, quantity=quantity)
+            expiration_date = request.POST.get('expiration_date') or None
+
+            Ingredient.objects.create(
+                name=name,
+                price=price,
+                quantity=quantity,
+                expiration_date=expiration_date
+            )
 
             Log.objects.create(
                 user=request.user,
@@ -106,25 +121,30 @@ def ingredients(request):
 
         return redirect('ingredients')
 
-    ingredients_list = Ingredient.objects.all()
+    # GET request
+    ingredient_list = Ingredient.objects.all()
     return render(request, 'dashboard/ingredients.html', {
-        'ingredients': ingredients_list,
+        'ingredients': ingredient_list,
         'ingredient_to_edit': ingredient_to_edit
     })
 
+
 def delete_ingredient(request, id):
     ingredient = get_object_or_404(Ingredient, id=id)
+
     Log.objects.create(
         user=request.user,
         action=f"deleted ingredient '{ingredient.name}'",
         timestamp=timezone.now()
     )
+
     ingredient.delete()
     return redirect('ingredients')
 
 
 # ----------------- TOPPINGS -----------------
 def toppings(request):
+    # Detect edit mode
     edit_id = request.GET.get('edit')
     topping_to_edit = get_object_or_404(Topping, id=edit_id) if edit_id else None
 
@@ -132,10 +152,14 @@ def toppings(request):
         action = request.POST.get('action')
 
         if action == 'update_topping':
+            # UPDATE TOPPING
             topping_id = request.POST.get('topping_id')
             topping = get_object_or_404(Topping, id=topping_id)
+
             topping.name = request.POST.get('name')
+            topping.price = request.POST.get('price')
             topping.quantity = int(request.POST.get('quantity') or 0)
+            topping.expiration_date = request.POST.get('expiration_date') or None
             topping.save()
 
             Log.objects.create(
@@ -143,10 +167,20 @@ def toppings(request):
                 action=f"updated topping '{topping.name}'",
                 timestamp=timezone.now()
             )
+
         else:
+            # ADD TOPPING
             name = request.POST.get('name')
+            price = request.POST.get('price')
             quantity = int(request.POST.get('quantity') or 0)
-            Topping.objects.create(name=name, quantity=quantity)
+            expiration_date = request.POST.get('expiration_date') or None
+
+            Topping.objects.create(
+                name=name,
+                price=price,
+                quantity=quantity,
+                expiration_date=expiration_date
+            )
 
             Log.objects.create(
                 user=request.user,
@@ -156,24 +190,29 @@ def toppings(request):
 
         return redirect('toppings')
 
-    toppings_list = Topping.objects.all()
+    # GET request
+    topping_list = Topping.objects.all()
     return render(request, 'dashboard/toppings.html', {
-        'toppings': toppings_list,
+        'toppings': topping_list,
         'topping_to_edit': topping_to_edit
     })
 
+
 def delete_topping(request, id):
     topping = get_object_or_404(Topping, id=id)
+
     Log.objects.create(
         user=request.user,
         action=f"deleted topping '{topping.name}'",
         timestamp=timezone.now()
     )
+
     topping.delete()
     return redirect('toppings')
 
 # ----------------- PACKAGING -----------------
 def packaging(request):
+    # Detect edit mode
     edit_id = request.GET.get('edit')
     packaging_to_edit = get_object_or_404(Packaging, id=edit_id) if edit_id else None
 
@@ -181,21 +220,32 @@ def packaging(request):
         action = request.POST.get('action')
 
         if action == 'update_packaging':
+            # UPDATE PACKAGING ITEM
             packaging_id = request.POST.get('packaging_id')
-            pack = get_object_or_404(Packaging, id=packaging_id)
-            pack.name = request.POST.get('name')
-            pack.quantity = int(request.POST.get('quantity') or 0)
-            pack.save()
+            pkg = get_object_or_404(Packaging, id=packaging_id)
+
+            pkg.name = request.POST.get('name')
+            pkg.price = request.POST.get('price')
+            pkg.quantity = int(request.POST.get('quantity') or 0)
+            pkg.save()
 
             Log.objects.create(
                 user=request.user,
-                action=f"updated packaging '{pack.name}'",
+                action=f"updated packaging '{pkg.name}'",
                 timestamp=timezone.now()
             )
+
         else:
+            # ADD PACKAGING
             name = request.POST.get('name')
+            price = request.POST.get('price')
             quantity = int(request.POST.get('quantity') or 0)
-            Packaging.objects.create(name=name, quantity=quantity)
+
+            Packaging.objects.create(
+                name=name,
+                price=price,
+                quantity=quantity
+            )
 
             Log.objects.create(
                 user=request.user,
@@ -205,20 +255,24 @@ def packaging(request):
 
         return redirect('packaging')
 
+    # GET request
     packaging_list = Packaging.objects.all()
     return render(request, 'dashboard/packaging.html', {
         'packagings': packaging_list,
         'packaging_to_edit': packaging_to_edit
     })
 
+
 def delete_packaging(request, id):
-    pack = get_object_or_404(Packaging, id=id)
+    pkg = get_object_or_404(Packaging, id=id)
+
     Log.objects.create(
         user=request.user,
-        action=f"deleted packaging '{pack.name}'",
+        action=f"deleted packaging '{pkg.name}'",
         timestamp=timezone.now()
     )
-    pack.delete()
+
+    pkg.delete()
     return redirect('packaging')
 
 
