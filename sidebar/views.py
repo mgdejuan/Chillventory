@@ -10,8 +10,8 @@ def update_stock_notifications(item, user=None):
     Updates stock notifications for a single item.
     Removes notifications if stock is now above low threshold.
     """
-    critical_threshold = getattr(item, 'critical_threshold', 2)
-    low_threshold = getattr(item, 'low_threshold', 5)
+    critical_threshold = getattr(item, 'critical_threshold', 5)
+    low_threshold = getattr(item, 'low_threshold', 10)
 
     if user is None:
         users = User.objects.all()
@@ -123,6 +123,9 @@ def notifications(request):
     notifications = Notification.objects.filter(user=request.user, is_read=False).order_by('-created_at')
     return render(request, 'sidebar/notifications.html', {'notifications': notifications})
 
+    notifications = Notification.objects.filter(user=request.user, is_read=False).order_by('-created_at')
+    return render(request, 'sidebar/notifications.html', {'notifications': notifications})
+
 @login_required
 def notifications_list(request):
     Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
@@ -132,6 +135,10 @@ def notifications_list(request):
 @login_required
 def clear_notifications(request):
     Notification.objects.filter(user=request.user).delete()
+    return redirect('notifications')
+
+def clear_all_notifications(request):
+    Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
     return redirect('notifications')
 
 # ----------------- LOG HISTORY -----------------

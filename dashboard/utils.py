@@ -1,41 +1,70 @@
-from datetime import date, timedelta
 from django.utils import timezone
-from sidebar.models import Notification
+from django.contrib.auth.models import User
+from .models import Flavor, Ingredient, Topping, Packaging, Notification
 
-def check_inventory_and_notify(model, user, label, low_threshold=5, critical_threshold=2, expire_days=30):
+def update_stock_and_expiration_notifications(user=None):
     """
-    For each item in model:
-      - Create low / critical stock notifications if quantity <= thresholds
-      - Create near-expiration notifications if expiration_date <= expire_days
-    Avoid duplicates by checking existing unread notifications with same message.
+    Updates stock and expiration notifications for all items.
+    - Critical stock: 5 or below
+    - Low stock: 6–10
+    - Expiring soon: within 5 days
+    - Notifications disappear if resolved (quantity > 10 or expiration passed)
     """
-    today = date.today()
-    soon = today + timedelta(days=expire_days)
+    critical_threshold = 5
+    low_threshold_min = 6
+    low_threshold_max = 10
+    expire_days = 5  # warn if expiration is within 5 days
 
-    for item in model.objects.all():
-        name = getattr(item, 'name', str(item))
-        qty = getattr(item, 'quantity', None)
+    if user is None:
+        users = User.objects.all()
+    else:
+        users = [user]
 
-        # quantity alerts
-        if qty is not None:
-            if qty <= critical_threshold:
-                msg = f"🔴 {label} '{name}' stock is CRITICAL ({qty} left)."
-                if not Notification.objects.filter(user=user, message=msg, is_read=False).exists():
-                    Notification.objects.create(user=user, message=msg)
-            elif qty <= low_threshold:
-                msg = f"🟠 {label} '{name}' stock is LOW ({qty} left)."
-                if not Notification.objects.filter(user=user, message=msg, is_read=False).exists():
-                    Notification.objects.create(user=user, message=msg)
+    now = timezone.now().date()
 
-        # expiration alerts (only if item has expiration_date attribute and it is set)
-        if hasattr(item, 'expiration_date') and item.expiration_date:
-            try:
-                exp_date = item.expiration_date
-                if today <= exp_date <= soon:
-                    days_left = (exp_date - today).days
-                    msg = f"⏳ {label} '{name}' will expire in {days_left} day{'s' if days_left != 1 else ''}."
-                    if not Notification.objects.filter(user=user, message=msg, is_read=False).exists():
-                        Notification.objects.create(user=user, message=msg)
-            except Exception:
-                # ignore malformed dates
-                pass
+    all_items = [
+        (Flavor.objects.all(), "Flavor"),
+        (Ingredient.objects.all(), "Ingredient"),
+        (Topping.objects.all(), "Topping"),
+        (Packaging.objects.all(), "Packaging"),
+    ]
+
+    for items, item_type in all_items:
+        for item in items:
+            for u in users:
+                # Remove old notifications for this item first
+                Notification.objects.filter(user=u, message__icontains=item.name, is_read=False).delete()
+
+                # 1️⃣ Stock notifications
+                if hasattr(item, "quantity"):
+                    if item.quantity <= critical_threshold:
+                        Notification.objects.create(
+                            user=u,
+                            message=f"🔴 {item_type} '{item.name}' stock is CRITICAL ({item.quantity} left).",
+                            is_read=False
+                        )
+                    elif low_threshold_min <= item.quantity <= low_threshold_max:
+                        Notification.objects.create(
+                            user=u,
+                            message=f"🟠 {item_type} '{item.name}' stock is LOW ({item.quantity} left).",
+                            is_read=False
+                        )
+
+                # 2️⃣ Expiration notifications (if item has expiration_date)
+                expiration_date = getattr(item, "expiration_date", None)
+                if expiration_date:
+                    days_left = (expiration_date - now).days
+                    if days_left < 0:
+                        Notification.objects.create(
+                            user=u,
+                            message=f"❌ {item_type} '{item.name}' has EXPIRED!",
+                            is_read=False
+                        )
+                    elif days_left <= expire_days:
+                        Notification.objects.create(
+                            user=u,
+                            message=f"⏳ {item_type} '{item.name}' will expire in {days_left} days.",
+                            is_read=False
+                        )
+
+

@@ -79,15 +79,15 @@
                             <i class="fa-regular fa-clock"></i>
                             <strong>{{ log.date_and_time|date:"F j, Y, g:i A" }}</strong> — 
                             {% if log.action_taken == "LOGIN" %}
-                                Admin {{ log.staff.username|default:"System"|title }} successfully logged in.
+                                Admin {{ log.user.username|default:"System"|title }} successfully logged in.
                             {% elif log.action_taken == "ADD" %}
-                                {{ log.staff.username|title }} added {{ log.product_name }} to inventory ({{ log.stock_status|default:"N/A" }}).
+                                {{ log.user.username|title }} added {{ log.product_name }} to inventory ({{ log.stock_status|default:"N/A" }}).
                             {% elif log.action_taken == "UPDATE" %}
-                                {{ log.staff.username|title }} updated {{ log.product_name }} ({{ log.stock_status|default:"N/A" }}).
+                                {{ log.user.username|title }} updated {{ log.product_name }} ({{ log.stock_status|default:"N/A" }}).
                             {% elif log.action_taken == "DELETE" %}
-                                {{ log.staff.username|title }} deleted {{ log.product_name }} from inventory.
+                                {{ log.user.username|title }} deleted {{ log.product_name }} from inventory.
                             {% else %}
-                                {{ log.staff.username|title }} performed an action: {{ log.get_action_taken_display }}.
+                                {{ log.user.username|title }} performed an action: {{ log.get_action_taken_display }}.
                             {% endif %}
                         </div>
                     {% empty %}
