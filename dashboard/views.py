@@ -10,7 +10,6 @@ def dashboard(request):
 
 # ----------------- FLAVORS -----------------
 def flavors(request):
-    # Detect edit mode
     edit_id = request.GET.get('edit')
     flavor_to_edit = get_object_or_404(Flavor, id=edit_id) if edit_id else None
 
@@ -18,7 +17,6 @@ def flavors(request):
         action = request.POST.get('action')
 
         if action == 'update_flavor':
-            # EDIT EXISTING FLAVOR
             flavor_id = request.POST.get('flavor_id')
             flavor = get_object_or_404(Flavor, id=flavor_id)
 
@@ -34,7 +32,6 @@ def flavors(request):
                 timestamp=timezone.now()
             )
         else:
-            # ADD NEW FLAVOR
             name = request.POST.get('name')
             price = request.POST.get('price')
             quantity = int(request.POST.get('quantity') or 0)
@@ -55,12 +52,12 @@ def flavors(request):
 
         return redirect('flavors')
 
-    # GET request: show all flavors
     flavors_list = Flavor.objects.all()
     return render(request, 'dashboard/flavors.html', {
         'flavors': flavors_list,
         'flavor_to_edit': flavor_to_edit
     })
+
 
 def delete_flavor(request, id):
     flavor = get_object_or_404(Flavor, id=id)
@@ -93,7 +90,6 @@ def ingredients(request):
         expiration_date = request.POST.get('expiration_date') or None
 
         if action == 'update_ingredient':
-            # UPDATE mode
             ingredient_id = request.POST.get('ingredient_id')
             ingredient = get_object_or_404(Ingredient, id=ingredient_id)
 
@@ -108,9 +104,7 @@ def ingredients(request):
                 action=f"updated ingredient '{ingredient.name}'",
                 timestamp=timezone.now()
             )
-
         else:
-            # ADD mode
             Ingredient.objects.create(
                 name=name,
                 price=price,
@@ -126,12 +120,12 @@ def ingredients(request):
 
         return redirect('ingredients')
 
-    # GET request
     ingredients_list = Ingredient.objects.all()
     return render(request, 'dashboard/ingredients.html', {
         'ingredients': ingredients_list,
         'ingredient_to_edit': ingredient_to_edit
     })
+
 
 def delete_ingredient(request, id):
     ingredient = get_object_or_404(Ingredient, id=id)
@@ -152,7 +146,6 @@ def toppings(request):
     if request.method == "POST":
         action = request.POST.get('action')
 
-        # ---------- UPDATE TOPPING ----------
         if action == 'update_topping':
             topping_id = request.POST.get('topping_id')
             topping = get_object_or_404(Topping, id=topping_id)
@@ -168,8 +161,6 @@ def toppings(request):
                 action=f"updated topping '{topping.name}'",
                 timestamp=timezone.now()
             )
-
-        # ---------- CREATE TOPPING ----------
         else:
             name = request.POST.get('name') or None
             price = request.POST.get('price') or 0
@@ -191,7 +182,6 @@ def toppings(request):
 
         return redirect('toppings')
 
-    # ---------- DISPLAY PAGE ----------
     toppings_list = Topping.objects.all()
     return render(request, 'dashboard/toppings.html', {
         'toppings': toppings_list,
@@ -199,7 +189,6 @@ def toppings(request):
     })
 
 
-# ---------- DELETE TOPPING ----------
 def delete_topping(request, id):
     topping = get_object_or_404(Topping, id=id)
 
@@ -235,7 +224,7 @@ def packaging(request):
             Packaging.objects.create(name=name, price=price, quantity=quantity)
             Log.objects.create(user=request.user, action=f"added packaging '{name}'", timestamp=timezone.now())
 
-        update_stock_notifications(user=request.user)
+        update_stock_notifications()  # 🔥 FIXED
         return redirect('packaging')
 
     packaging_list = Packaging.objects.all()
@@ -246,7 +235,7 @@ def delete_packaging(request, id):
     pkg = get_object_or_404(Packaging, id=id)
     Log.objects.create(user=request.user, action=f"deleted packaging '{pkg.name}'", timestamp=timezone.now())
     pkg.delete()
-    update_stock_notifications(user=request.user)
+    update_stock_notifications()  # 🔥 FIXED
     return redirect('packaging')
 
 
@@ -262,9 +251,9 @@ def inventory(request):
     return render(request, 'dashboard/inventory.html', {'stock': stock})
 
 
-# ----------------- RESTOCK -----------------
+# ----------------- RESTOCK NOTIFICATIONS -----------------
 def update_stock_notifications():
-    """Check all inventory and create notifications for low/critical stock"""
+    """Check inventory and create low/critical stock notifications"""
     items = []
 
     for f in Flavor.objects.all():
@@ -297,6 +286,7 @@ def update_stock_notifications():
             Notification.objects.create(message=message, created_at=timezone.now())
 
 
+# ----------------- RESTOCK -----------------
 @login_required
 def restock_flavor(request, id):
     flavor = get_object_or_404(Flavor, id=id)
@@ -304,7 +294,6 @@ def restock_flavor(request, id):
     flavor.save()
     update_stock_notifications()
     return redirect('inventory')
-
 
 @login_required
 def restock_ingredient(request, id):
@@ -314,7 +303,6 @@ def restock_ingredient(request, id):
     update_stock_notifications()
     return redirect('inventory')
 
-
 @login_required
 def restock_topping(request, id):
     topping = get_object_or_404(Topping, id=id)
@@ -322,7 +310,6 @@ def restock_topping(request, id):
     topping.save()
     update_stock_notifications()
     return redirect('inventory')
-
 
 @login_required
 def restock_packaging(request, id):
