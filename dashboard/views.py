@@ -118,29 +118,6 @@ def ingredients(request):
             # UPDATE EXISTING INGREDIENT
             ingredient_id = request.POST.get("ingredient_id")
             ingredient = get_object_or_404(Ingredient, id=ingredient_id)
-<<<<<<< HEAD
-            ingredient.name = request.POST.get('name')
-            ingredient.price = request.POST.get('price')
-            ingredient.quantity = int(request.POST.get('quantity') or 0)
-            ingredient.expiration_date = request.POST.get('expiration_date') or None
-            ingredient.save()
-            Log.objects.create(user=request.user, action=f"updated ingredient '{ingredient.name}'", timestamp=timezone.now())
-        else:
-            name = request.POST.get('name')
-            price = request.POST.get('price')
-            quantity = int(request.POST.get('quantity') or 0)
-            expiration_date = request.POST.get('expiration_date') or None
-            Ingredient.objects.create(name=name, price=price, quantity=quantity, expiration_date=expiration_date)
-            Log.objects.create(user=request.user, action=f"added ingredient '{name}'", timestamp=timezone.now())
-
-        update_stock_notifications(user=request.user)
-        return redirect('ingredients')
-
-    ingredient_list = Ingredient.objects.all()
-    return render(request, 'dashboard/ingredients.html', {'ingredients': ingredient_list, 'ingredient_to_edit': ingredient_to_edit})
-
-=======
-
             ingredient.name = request.POST.get("name")
             ingredient.price = request.POST.get("price") or 0
             ingredient.quantity = int(request.POST.get("quantity") or 0)
@@ -181,7 +158,6 @@ def ingredients(request):
         "ingredients": ingredients_list,
         "ingredient_to_edit": ingredient_to_edit,
     })
->>>>>>> a0c0bd2de432742220e28d3d3fe933f3016fbc27
 
 
 def delete_ingredient(request, id):
