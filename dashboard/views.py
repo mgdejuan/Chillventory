@@ -1,12 +1,113 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from .models import Flavor, Ingredient, Topping, Packaging, Log
 from sidebar.models import Notification  # Make sure Notification model is imported
 
 # ----------------- DASHBOARD -----------------
 def dashboard(request):
+<<<<<<< HEAD
     return render(request, 'dashboard/home.html')
+=======
+    recent_logs = Log.objects.all().order_by('-timestamp')[:10]
+    return render(request, 'dashboard/home.html', {'recent_logs': recent_logs})
+
+
+# ----------------- REAL-TIME NOTIFICATIONS HELPER -----------------
+def update_stock_notifications(user=None):
+    """
+    Check inventory and create notifications for:
+    - Critical stock: 5 or below
+    - Low stock: 6–10
+    - Expired items
+    - Expiring soon items (within 30 days)
+    Remove notifications if resolved (stock above 10, not expired)
+    """
+    today = timezone.now().date()
+    expiring_soon_limit = today + timedelta(days=30)
+
+    items_to_notify = []
+    items_resolved = []
+
+    # Helper to check stock and expiration
+    def check_item(obj, item_type):
+        is_critical = obj.quantity <= 5
+        is_low = 6 <= obj.quantity <= 10
+        is_expired = obj.expiration_date and obj.expiration_date <= today
+        is_expiring_soon = obj.expiration_date and today < obj.expiration_date <= expiring_soon_limit
+
+        # Stock notifications
+        if is_critical:
+            items_to_notify.append((obj.name, "critical", item_type))
+        elif is_low:
+            items_to_notify.append((obj.name, "low", item_type))
+        else:
+            items_resolved.append((obj.name, item_type, ["critical", "low"]))
+
+        # Expiration notifications
+        if is_expired:
+            items_to_notify.append((obj.name, "expired", item_type))
+        elif is_expiring_soon:
+            days_left = (obj.expiration_date - today).days
+            items_to_notify.append((obj.name, "expiring_soon", item_type, days_left))
+
+    # Check all items
+    for f in Flavor.objects.all():
+        check_item(f, "Flavor")
+
+    for i in Ingredient.objects.all():
+        check_item(i, "Ingredient")
+
+    for t in Topping.objects.all():
+        check_item(t, "Topping")
+
+    # Packaging has no expiration
+    for p in Packaging.objects.all():
+        if p.quantity <= 5:
+            items_to_notify.append((p.name, "critical", "Packaging"))
+        elif 6 <= p.quantity <= 10:
+            items_to_notify.append((p.name, "low", "Packaging"))
+        else:
+            items_resolved.append((p.name, "Packaging", ["critical", "low"]))
+
+    # Determine users to notify
+    users = [user] if user else list(User.objects.all())
+
+    # Create/update notifications
+    for u in users:
+        for item in items_to_notify:
+            # Unpack depending on type
+            if len(item) == 4:  # expiring soon
+                name, status, item_type, days_left = item
+            else:
+                name, status, item_type = item
+                days_left = None
+
+            if status == "expired":
+                message = f"❌ {item_type} '{name}' has expired!"
+            elif status == "expiring_soon":
+                message = f"⚠️ {item_type} '{name}' will expire in {days_left} days!"
+            elif status == "critical":
+                message = f"🔴 {item_type} '{name}' stock is CRITICAL!"
+            else:  # low
+                message = f"🟠 {item_type} '{name}' stock is LOW!"
+
+            # Avoid duplicate unread notifications
+            if not Notification.objects.filter(user=u, message=message, is_read=False).exists():
+                Notification.objects.create(user=u, message=message, created_at=timezone.now())
+
+    # Delete notifications for resolved stock issues
+    for u in users:
+        for name, item_type, statuses in items_resolved:
+            for status in statuses:
+                if status == "critical":
+                    message = f"🔴 {item_type} '{name}' stock is CRITICAL!"
+                elif status == "low":
+                    message = f"🟠 {item_type} '{name}' stock is LOW!"
+                Notification.objects.filter(user=u, message=message, is_read=False).delete()
+
+>>>>>>> 80c6c77791f8829d3528efd83f1827c0b1f090b1
 
 # ----------------- FLAVORS -----------------
 def flavors(request):
@@ -84,7 +185,10 @@ def ingredients(request):
             # UPDATE EXISTING INGREDIENT
             ingredient_id = request.POST.get("ingredient_id")
             ingredient = get_object_or_404(Ingredient, id=ingredient_id)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 80c6c77791f8829d3528efd83f1827c0b1f090b1
             ingredient.name = request.POST.get("name")
             ingredient.price = request.POST.get("price") or 0
             ingredient.quantity = int(request.POST.get("quantity") or 0)
