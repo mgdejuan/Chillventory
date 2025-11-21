@@ -10,6 +10,7 @@ def update_stock_notifications(item, restock_amount=0):
     Updates item quantity if restock_amount > 0, then updates notifications for all users.
     Safe for all item types (Flavor, Ingredient, Topping, Packaging).
     """
+<<<<<<< HEAD
     # Restock if needed
     if restock_amount > 0:
         item.quantity += restock_amount
@@ -21,6 +22,10 @@ def update_stock_notifications(item, restock_amount=0):
     # Set thresholds safely
     critical_threshold = getattr(item, 'critical_threshold', 2)
     low_threshold = getattr(item, 'low_threshold', 5)
+=======
+    critical_threshold = getattr(item, 'critical_threshold', 5)
+    low_threshold = getattr(item, 'low_threshold', 10)
+>>>>>>> 80c6c77791f8829d3528efd83f1827c0b1f090b1
 
     # Recreate notifications for all users if stock is low
     for user in User.objects.all():
@@ -127,8 +132,30 @@ def notifications(request):
     notifications = Notification.objects.filter(is_read=False, user=request.user).order_by('-created_at')
     return render(request, 'sidebar/notifications.html', {'notifications': notifications})
 
+<<<<<<< HEAD
 
 # ----------------- LOG HISTORY PAGE -----------------
+=======
+    notifications = Notification.objects.filter(user=request.user, is_read=False).order_by('-created_at')
+    return render(request, 'sidebar/notifications.html', {'notifications': notifications})
+
+@login_required
+def notifications_list(request):
+    Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+    notes = Notification.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'sidebar/notifications.html', {'notifications': notes})
+
+@login_required
+def clear_notifications(request):
+    Notification.objects.filter(user=request.user).delete()
+    return redirect('notifications')
+
+def clear_all_notifications(request):
+    Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+    return redirect('notifications')
+
+# ----------------- LOG HISTORY -----------------
+>>>>>>> 80c6c77791f8829d3528efd83f1827c0b1f090b1
 @login_required
 def log_history(request):
     return render(request, 'dashboard/log_history.html')
